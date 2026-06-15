@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aluminum Market Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--cream:#F2EDE2;--ink:#1a1712;--gold:#8E7C42;--goldb:#B8A567;--dark:#16140f;--creamink:#F7F3E9;
+--green:#007A3D;--orange:#C76210;--line:#d8cfba;--card:#fbf8f1;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--cream);color:var(--ink);font-family:'Saira',-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5}
+a{color:var(--gold)}
+header.top{background:var(--dark);color:var(--creamink);padding:18px 28px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:8px}
+header.top .eb{color:var(--goldb);letter-spacing:3px;font-size:11px;font-weight:600}
+header.top h1{font-size:22px;font-weight:700;letter-spacing:.5px}
+header.top .meta{text-align:right;font-size:12px;color:#cfc6ad}
+.badge{display:inline-block;border:1px solid var(--goldb);color:var(--goldb);padding:2px 8px;border-radius:3px;font-size:10px;letter-spacing:1.5px;margin-top:4px}
+nav{position:sticky;top:0;z-index:10;background:#efe7d6;border-bottom:2px solid var(--gold);display:flex;flex-wrap:wrap;padding:0 18px}
+nav button{background:none;border:none;font-family:inherit;font-size:12.5px;font-weight:600;letter-spacing:.6px;color:#6b6451;padding:12px 16px;cursor:pointer;border-bottom:3px solid transparent}
+nav button:hover{color:var(--ink)}
+nav button.active{color:var(--ink);border-bottom-color:var(--gold)}
+main{max-width:1180px;margin:0 auto;padding:26px 28px 70px}
+section{display:none}section.active{display:block;animation:f .25s ease}
+@keyframes f{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.eyebrow{color:var(--gold);letter-spacing:3px;font-size:11px;font-weight:700;text-transform:uppercase;margin-bottom:4px}
+h2{font-size:24px;font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:16px}
+h3{font-size:15px;font-weight:700;color:var(--ink);margin:22px 0 8px;border-bottom:1px solid var(--gold);padding-bottom:4px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:20px}
+.kpi{background:var(--dark);color:var(--creamink);border-radius:8px;padding:16px 18px;border-left:4px solid var(--goldb)}
+.kpi-l{color:var(--goldb);letter-spacing:1.5px;font-size:10.5px;font-weight:600}
+.kpi-v{font-size:30px;font-weight:700;margin:4px 0}
+.kpi-d{font-size:13px;font-weight:600}
+.callout{background:var(--dark);color:var(--creamink);border-radius:8px;padding:18px 20px;margin:14px 0;border-left:4px solid var(--goldb)}
+.callout .eyebrow{color:var(--goldb)}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:6px 0 4px}
+th{background:var(--dark);color:var(--creamink);font-size:11px;letter-spacing:.5px;text-transform:uppercase;padding:9px 11px;text-align:left}
+td{padding:9px 11px;border-top:1px solid var(--line);vertical-align:top}
+tr:nth-child(even) td{background:#f5f1e6}
+.num{text-align:right;font-variant-numeric:tabular-nums}.ctr{text-align:center}.lbl{font-weight:600}
+.note{color:#6b6451;font-size:12px}
+.grp{color:#9a9277;font-size:11px;font-weight:400}
+.pos{color:var(--green);font-weight:700}.neg{color:var(--orange);font-weight:700}.neu{color:var(--gold);font-weight:700}
+.pill{display:inline-block;padding:2px 9px;border-radius:11px;font-size:11px;font-weight:700}
+.pill.pos{background:rgba(0,122,61,.13);color:var(--green)}
+.pill.neg{background:rgba(199,98,16,.15);color:var(--orange)}
+.pill.neu{background:rgba(184,165,103,.18);color:#7a6a36}
+.src{font-size:11.5px;white-space:nowrap}
+.bul{margin:6px 0 6px 4px;list-style:none}
+.bul li{position:relative;padding:3px 0 3px 18px}
+.bul li:before{content:'▸';color:var(--gold);position:absolute;left:0;top:3px}
+.feed{display:grid;grid-template-columns:84px 1fr 110px;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:5px;padding:10px 12px;margin-bottom:8px}
+.feed-when{font-weight:700;font-size:12px}.feed-txt{font-size:13px}
+.row-links{font-size:12px;font-weight:400}
+.muted{color:#6b6451}
+footer{max-width:1180px;margin:0 auto;padding:18px 28px;border-top:1px solid var(--line);color:#6b6451;font-size:11.5px}
+.load{padding:60px 28px;text-align:center;color:#6b6451}
+</style></head><body>
+<header class="top">
+  <div><div class="eb">COMMERCIAL · MARKET INTELLIGENCE</div><h1>Aluminum Market Dashboard</h1></div>
+  <div class="meta" id="meta"><span class="badge">RESTRICTED</span></div>
+</header>
+<nav id="nav"></nav>
+<main id="main"><div class="load">Loading latest market data…</div></main>
+<footer id="foot"></footer>
+<script>
+const SRC={
+ lme:"https://www.westmetall.com/en/markdaten.php?action=table&field=LME_Al_cash",
+ lme_off:"https://www.lme.com/en/metals/non-ferrous/lme-aluminium",
+ te:"https://tradingeconomics.com/commodity/aluminum",
+ alumina_fm:"https://www.fastmarkets.com/commodity-prices/alumina-index-fob-australia-dollar-tonne-mb-alu-0002/",
+ alumina_focus:"https://www.focus-economics.com/commodities/base-metals/alumina/",
+ prem_lme:"https://www.lme.com/metals/non-ferrous/lme-aluminium-premiums",
+ mwp:"https://www.spglobal.com/commodity-insights/en/market-insights/latest-news/metals/012626-us-aluminum-trade-uncertainty-supply-tightness-push-midwest-premium-above-1lb",
+ shfe:"https://www.metal.com/Aluminum",
+ china:"https://www.chemanalyst.com/NewsAndDeals/NewsDetails/china-ramps-up-aluminum-exports-as-middle-east-supply-crisis-42704"};
+const EARN_SRC={
+ "Alcoa (AA)":"https://www.sec.gov/Archives/edgar/data/1675149/000119312526159018/aa-ex99_1.htm",
+ "Norsk Hydro (NHY)":"https://www.hydro.com/en/global/media/news/2026/hydros-first-quarter-2026-strong-results-reflect-solid-operational-performance/",
+ "Century Aluminum (CENX)":"https://www.stocktitan.net/sec-filings/CENX/10-q-century-aluminum-co-quarterly-earnings-report-f427e1627a79.html",
+ "Alba (Bahrain)":"https://www.albasmelter.com/en/article/alba-reports-its-financial-results-for-the-first-quarter-of-2026",
+ "Ma'aden (1211)":"https://www.maaden.com/news-insights/latest-news/maaden-first-quarter-2026-financial-results",
+ "Rio Tinto (RIO)":"https://aluminiumtoday.com/news/rio-tinto-releases-q1-2026-production-results",
+ "South32 (S32)":"https://www.alcircle.com/news/south32-delivers-mixed-alumina-and-stable-aluminium-results-amid-q326-market-shifts-118166",
+ "Hindalco / Novelis":"https://www.hindalco.com/media/press-releases/hindalco-results-q4-fy26",
+ "Chalco (2600)":"https://www.tipranks.com/news/company-announcements/chalco-forecasts-profit-surge-of-up-to-58-for-q1-2026",
+ "BHP":"https://www.bhp.com/news/media-centre/releases/2026/02/bhp-results-for-the-half-year-ended-31-december-2025",
+ "Glencore":"https://www.glencore.com/investors/2025-preliminary-results-presentation",
+ "Rusal":"https://www.mining.com/web/rusal-swings-to-annual-loss-on-rising-costs-lower-aluminum-output/"};
+const TABS=[["overview","OVERVIEW"],["lme","LME PRICES"],["premiums","PREMIUMS"],["alumina","ALUMINA"],
+ ["macro","MACRO & FX"],["news","NEWS & FEED"],["earnings","PEER EARNINGS"],["weekly","WEEKLY"],["sources","SOURCES"]];
+const e=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nf=(v,d=1)=>Number(v).toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
+const lk=(u,t="source ↗")=>u?`<a class="src" href="${e(u)}" target="_blank" rel="noopener">${e(t)}</a>`:"";
+const tone=s=>{s=String(s).toLowerCase();if(/bull|pos|^up$|firm|tight|high/.test(s))return"pos";if(/bear|neg|^down$|soft/.test(s))return"neg";return"neu";};
+const pill=(t,to)=>`<span class="pill ${to}">${e(t)}</span>`;
+const ul=a=>`<ul class="bul">${a.map(i=>`<li>${e(i)}</li>`).join("")}</ul>`;
+const TR={up:["▲","pos"],down:["▼","neg"],flat:["▬","neu"]};
+let chartDrawn=false,DATA=null;
+
+function benchRows(D){return D.benchmark.map(b=>{const d=b.prev?(b.cur-b.prev)/b.prev:0;
+ const f=b.int?0:1;const ar=b.cur>b.prev?"▲":(b.cur<b.prev?"▼":"▬");const t=b.cur>b.prev?"pos":(b.cur<b.prev?"neg":"neu");
+ return `<tr><td class="lbl">${e(b.name)}</td><td class="num">${nf(b.cur,f)}</td><td class="num">${nf(b.prev,f)}</td>
+ <td class="num ${t}">${(d*100>=0?"+":"")+ (d*100).toFixed(1)}%</td><td class="ctr ${t}">${ar}</td><td class="note">${e(b.note)}</td></tr>`;}).join("");}
+function kpis(D){return D.kpi_cards.map(c=>`<div class="kpi"><div class="kpi-l">${e(c.label)}</div>
+ <div class="kpi-v">${e(c.value)}</div><div class="kpi-d ${c.pos?"pos":"neg"}">${e(c.delta)}</div></div>`).join("");}
+function premRows(rows){return rows.map(p=>{const[g,t]=TR[p.trend];const v=typeof p.val==="number"?nf(p.val,2):e(p.val);
+ return `<tr><td class="lbl">${e(p.name)}</td><td class="num">${v}</td><td class="ctr">${e(p.unit)}</td>
+ <td class="ctr">${e(p.asof)}</td><td class="ctr ${t}">${g}</td><td class="note">${e(p.src)}</td></tr>`;}).join("");}
+function macroRows(D){return D.macro.map(m=>{const t=m.day>0?"pos":(m.day<0?"neg":"neu");const ar=m.day>0?"▲":(m.day<0?"▼":"▬");
+ return `<tr><td class="lbl">${e(m.name)}</td><td class="num">${e(m.value)}</td>
+ <td class="num ${t}">${(m.day>=0?"+":"")+m.day.toFixed(2)}%</td><td class="ctr ${t}">${ar}</td><td class="note">${e(m.note)}</td></tr>`;}).join("");}
+function lmeRows(D){return D.lme_series.map(r=>`<tr><td class="ctr">${e(r[0])}</td><td class="num">${nf(r[1],1)}</td>
+ <td class="num">${nf(r[2],1)}</td><td class="num">${nf(r[3],0)}</td><td class="num">${nf(r[1]-r[2],1)}</td></tr>`).join("");}
+function feedItems(D){return D.feed.map(f=>`<div class="feed"><div class="feed-when">${e(f.when)}</div>
+ <div class="feed-txt">${e(f.text)}</div>${pill(f.impact,tone(f.impact))}</div>`).join("");}
+function newsRows(D){return D.news.map(n=>`<tr><td class="lbl">${e(n.theme)}</td><td>${e(n.headline)}</td>
+ <td class="ctr">${pill(n.impact,tone(n.impact))}</td><td class="ctr">${e(n.horizon)}</td><td class="note">${e(n.source)}</td></tr>`).join("");}
+function earnRows(D){return (D.earnings||[]).map(x=>`<tr><td class="lbl">${e(x.company)}<div class="grp">${e(x.group)}</div></td>
+ <td class="ctr">${e(x.period)}<div class="grp">${e(x.reported)}</div></td><td>${e(x.headline)}</td>
+ <td class="note">${e(x.readthrough)}</td><td class="ctr">${pill(x.sentiment,tone(x.sentiment))}</td>
+ <td class="ctr">${lk(EARN_SRC[x.company])}</td></tr>`).join("");}
+function aluRows(D){return D.alumina.map(a=>{const[g,t]=TR[a.trend];
+ return `<tr><td class="lbl">${e(a.name)}</td><td class="num">${nf(a.val,2)}</td><td class="ctr">${e(a.unit)}</td>
+ <td class="ctr">${e(a.asof)}</td><td class="ctr ${t}">${g}</td><td class="note">${e(a.src)}</td></tr>`;}).join("");}
+function weeklyHTML(D){const W=D.weekly;if(!W)return`<h2>Weekly Brief</h2><p class="muted">Weekly brief not yet generated.</p>`;
+ const pt=W.price_table.map(r=>{const t=r.tone==="up"?"pos":(r.tone==="down"?"neg":"neu");
+  return `<tr><td class="lbl">${e(r.metric)}</td><td class="num">${e(r.wopen)}</td><td class="num">${e(r.wclose)}</td>
+  <td class="ctr ${t}">${e(r.chg)}</td><td class="note">${e(r.note)}</td></tr>`;}).join("");
+ const imp=W.implications.map(i=>`<li><b>${e(i.lead)}:</b> ${e(i.text)}</li>`).join("");
+ return `<div class="eyebrow">${e(W.week_label)}</div><h2>Weekly Brief</h2>${W.exec_summary.map(p=>`<p>${e(p)}</p>`).join("")}
+ <h3>Price action — week in review</h3><table><thead><tr><th>Metric</th><th class="num">Week open</th><th class="num">Latest</th><th class="ctr">Δ WoW</th><th>Note</th></tr></thead><tbody>${pt}</tbody></table>
+ <h3>Key drivers</h3>${ul(W.drivers)}<h3>Commercial implications</h3><ul class="bul">${imp}</ul>
+ <h3>Outlook — week ahead</h3>${ul(W.outlook)}`;}
+
+function render(D){
+ const dt=new Date(D.report_date+"T00:00:00");
+ document.getElementById("meta").innerHTML=`Report date: <b>${dt.toLocaleDateString("en-GB",{weekday:"long",day:"2-digit",month:"long",year:"numeric"})}</b><br>`+
+  (D.generated?`Data refreshed ${e(D.generated.replace("T"," "))}<br>`:"")+`<span class="badge">RESTRICTED</span>`;
+ const nav=document.getElementById("nav");
+ nav.innerHTML=TABS.map((t,i)=>`<button data-t="${t[0]}" class="${i===0?"active":""}">${t[1]}</button>`).join("");
+ const srcRows=D.sources.map(s=>`<tr><td class="lbl">${e(s[0])}</td><td>${e(s[1])}</td></tr>`).join("");
+ const srcLinks=[["lme","LME / Westmetall"],["te","Trading Economics"],["alumina_fm","Fastmarkets alumina"],
+  ["prem_lme","LME premiums"],["mwp","S&P Midwest premium"],["shfe","SHFE / SMM"],["china","China exports"]]
+  .map(([k,t])=>lk(SRC[k],t)).join(" · ");
+ document.getElementById("main").innerHTML=`
+ <section id="overview" class="active"><div class="eyebrow">Snapshot</div><h2>Market Overview</h2>
+   <div class="kpis">${kpis(D)}</div>
+   <div class="callout"><div class="eyebrow">Net Market Read</div><p>${e(D.net_read)}</p></div>
+   <h3>Benchmark prices <span class="row-links">${lk(SRC.lme,"LME/Westmetall")} · ${lk(SRC.te,"Trading Economics")}</span></h3>
+   <table><thead><tr><th>Indicator</th><th class="num">Current</th><th class="num">Previous</th><th class="num">Δ %</th><th class="ctr">Trend</th><th>Note</th></tr></thead><tbody>${benchRows(D)}</tbody></table>
+   <p class="muted" style="margin-top:8px">Legend: ▲ green positive · ▼ orange negative · ▬ gold unchanged. USD/MT unless noted.</p></section>
+ <section id="lme"><div class="eyebrow">London Metal Exchange</div><h2>LME Prices &amp; Inventory</h2>
+   <div style="height:340px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px;margin-bottom:14px"><canvas id="lmeChart" role="img" aria-label="LME cash, 3-month and inventory trend"></canvas></div>
+   <h3>Daily settlement series <span class="row-links">${lk(SRC.lme,"Westmetall ↗")} · ${lk(SRC.lme_off,"LME official ↗")}</span></h3>
+   <table><thead><tr><th class="ctr">Date</th><th class="num">Cash ($/t)</th><th class="num">3-Month ($/t)</th><th class="num">Stock (t)</th><th class="num">Cash–3M</th></tr></thead><tbody>${lmeRows(D)}</tbody></table>
+   <p class="muted" style="margin-top:8px">${e(D.lme_commentary||"")}</p></section>
+ <section id="premiums"><div class="eyebrow">Physical premiums</div><h2>Regional Premiums</h2>
+   <p class="row-links">${lk(SRC.prem_lme,"LME premiums ↗")} · ${lk(SRC.mwp,"S&P US Midwest ↗")}</p>
+   <table><thead><tr><th>Premium</th><th class="num">Latest / status</th><th class="ctr">Unit</th><th class="ctr">As of</th><th class="ctr">Trend</th><th>Source / note</th></tr></thead><tbody>${premRows(D.premiums)}</tbody></table>
+   <p class="muted" style="margin-top:8px">Daily premium prints (Platts/Fastmarkets/Argus) are subscription feeds — figures are most-recent public anchors; reconcile to the licensed feed before pricing.</p></section>
+ <section id="alumina"><div class="eyebrow">Alumina &amp; raw materials</div><h2>Alumina &amp; Raw Materials</h2>
+   <p class="row-links">${lk(SRC.alumina_fm,"Fastmarkets FOB Australia ↗")} · ${lk(SRC.alumina_focus,"FocusEconomics ↗")}</p>
+   <table><thead><tr><th>Index</th><th class="num">Value</th><th class="ctr">Unit</th><th class="ctr">As of</th><th class="ctr">Trend</th><th>Source / note</th></tr></thead><tbody>${aluRows(D)}</tbody></table>
+   <h3>Supply commentary</h3>${ul(D.alumina_notes)}</section>
+ <section id="macro"><div class="eyebrow">Macro &amp; cross-asset</div><h2>Macro &amp; FX</h2>
+   <p class="row-links">${lk(SRC.te,"Trading Economics ↗")}</p>
+   <table><thead><tr><th>Indicator</th><th class="num">Value</th><th class="num">Day %</th><th class="ctr">Trend</th><th>Relevance</th></tr></thead><tbody>${macroRows(D)}</tbody></table>
+   <h3>Macro events &amp; data</h3>${ul(D.macro_events)}</section>
+ <section id="news"><div class="eyebrow">Sentiment</div><h2>Market News &amp; 48-Hour Feed</h2>
+   <h3>Market feed — last 48 hours</h3>${feedItems(D)}
+   <h3>Headlines by theme</h3><table><thead><tr><th>Theme</th><th>Headline / detail</th><th class="ctr">Impact</th><th class="ctr">Horizon</th><th>Source</th></tr></thead><tbody>${newsRows(D)}</tbody></table></section>
+ <section id="earnings"><div class="eyebrow">Aluminum &amp; mining industry</div><h2>Peer Earnings &amp; Results</h2>
+   <p class="muted">Most recent reported results &amp; guidance — quarterly/episodic. Click <b>source ↗</b> for the company release or filing.</p>
+   <table><thead><tr><th>Company / group</th><th class="ctr">Period</th><th>Headline result</th><th>Read-through</th><th class="ctr">Sentiment</th><th class="ctr">Source</th></tr></thead><tbody>${earnRows(D)}</tbody></table></section>
+ <section id="weekly">${weeklyHTML(D)}</section>
+ <section id="sources"><div class="eyebrow">Provenance</div><h2>Sources &amp; Data Quality</h2>
+   <p class="row-links">${srcLinks}</p><table><thead><tr><th>Data set</th><th>Source</th></tr></thead><tbody>${srcRows}</tbody></table>
+   <h3>Data-quality caveats</h3>${ul(D.caveats)}</section>`;
+ document.getElementById("foot").innerHTML=`Aluminum Market Intelligence — Classification: Restricted. Market intelligence, not trading advice; figures are point-in-time and should be re-validated before commercial commitments.`+(D.generated?` Data refreshed ${e(D.generated.replace("T"," "))}.`:"");
+ document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+   document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+   document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+   b.classList.add("active");document.getElementById(b.dataset.t).classList.add("active");
+   window.scrollTo({top:0,behavior:"smooth"});if(b.dataset.t==="lme")drawChart(D);});
+}
+function drawChart(D){if(chartDrawn||typeof Chart==="undefined")return;chartDrawn=true;
+ const s=[...D.lme_series].reverse();const pr=D.chart_price_axis||[3500,3900];const sr=D.chart_stock_axis||[325000,348000];
+ new Chart(document.getElementById("lmeChart"),{type:"line",
+  data:{labels:s.map(r=>r[0]),datasets:[
+   {label:"Cash ($/t)",data:s.map(r=>r[1]),borderColor:"#16140f",tension:.35,pointRadius:0,borderWidth:2,yAxisID:"y"},
+   {label:"3-Month ($/t)",data:s.map(r=>r[2]),borderColor:"#8E7C42",tension:.35,pointRadius:0,borderWidth:2,yAxisID:"y"},
+   {label:"Inventory (t)",data:s.map(r=>r[3]),borderColor:"#9AA0A6",borderDash:[6,4],tension:.35,pointRadius:0,borderWidth:2,yAxisID:"y1"}]},
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},
+   plugins:{legend:{labels:{font:{family:"Saira"},color:"#1a1712"}}},
+   scales:{y:{position:"left",title:{display:true,text:"USD / tonne"},min:pr[0],max:pr[1]},
+    y1:{position:"right",title:{display:true,text:"Stock (t)"},min:sr[0],max:sr[1],grid:{drawOnChartArea:false}}}}});}
+
+fetch("./data.json?ts="+Date.now()).then(r=>{if(!r.ok)throw 0;return r.json();})
+ .then(D=>{DATA=D;render(D);})
+ .catch(()=>{document.getElementById("main").innerHTML=
+  `<div class="load"><h2>Couldn't load data.json</h2><p class="muted">This dashboard reads <code>data.json</code> from the same folder and must be opened over http(s) (e.g. its GitHub Pages URL), not by double-clicking the local file.</p></div>`;});
+</script></body></html>
