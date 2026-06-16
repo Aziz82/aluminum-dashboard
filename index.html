@@ -57,7 +57,7 @@ footer{max-width:1180px;margin:0 auto;padding:18px 28px;border-top:1px solid var
 </style></head><body>
 <header class="top">
   <div><div class="eb">COMMERCIAL · MARKET INTELLIGENCE</div><h1>Aluminum Market Dashboard</h1></div>
-  <div class="meta" id="meta"><span class="badge">RESTRICTED</span></div>
+  <div class="meta" id="meta"><span class="badge">PUBLIC SOURCES</span></div>
 </header>
 <nav id="nav"></nav>
 <main id="main"><div class="load">Loading latest market data…</div></main>
@@ -135,7 +135,7 @@ function weeklyHTML(D){const W=D.weekly;if(!W)return`<h2>Weekly Brief</h2><p cla
 function render(D){
  const dt=new Date(D.report_date+"T00:00:00");
  document.getElementById("meta").innerHTML=`Report date: <b>${dt.toLocaleDateString("en-GB",{weekday:"long",day:"2-digit",month:"long",year:"numeric"})}</b><br>`+
-  (D.generated?`Data refreshed ${e(D.generated.replace("T"," "))}<br>`:"")+`<span class="badge">RESTRICTED</span>`;
+  (D.generated?`Data refreshed ${e(D.generated.replace("T"," "))}<br>`:"")+`<span class="badge">PUBLIC SOURCES</span>`;
  const nav=document.getElementById("nav");
  nav.innerHTML=TABS.map((t,i)=>`<button data-t="${t[0]}" class="${i===0?"active":""}">${t[1]}</button>`).join("");
  const srcRows=D.sources.map(s=>`<tr><td class="lbl">${e(s[0])}</td><td>${e(s[1])}</td></tr>`).join("");
@@ -176,7 +176,7 @@ function render(D){
  <section id="sources"><div class="eyebrow">Provenance</div><h2>Sources &amp; Data Quality</h2>
    <p class="row-links">${srcLinks}</p><table><thead><tr><th>Data set</th><th>Source</th></tr></thead><tbody>${srcRows}</tbody></table>
    <h3>Data-quality caveats</h3>${ul(D.caveats)}</section>`;
- document.getElementById("foot").innerHTML=`Aluminum Market Intelligence — Classification: Restricted. Market intelligence, not trading advice; figures are point-in-time and should be re-validated before commercial commitments.`+(D.generated?` Data refreshed ${e(D.generated.replace("T"," "))}.`:"");
+ document.getElementById("foot").innerHTML=`Aluminum Market Intelligence — compiled from public market sources. For situational awareness, not trading or pricing advice; figures are point-in-time and should be re-validated before commercial commitments.`+(D.generated?` Data refreshed ${e(D.generated.replace("T"," "))}.`:"");
  document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
    document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
    document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
