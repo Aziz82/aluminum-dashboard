@@ -169,6 +169,8 @@ function outlookHTML(D){
      <div class="kpi"><div class="kpi-l">RECENT TREND (${mp.days} sessions)</div><div class="kpi-v" style="font-size:21px">${mp.winChg>=0?'+':''}${mp.winChg}%</div><div class="kpi-d ${mp.winChg>=0?'pos':'neg'}">cash, window change</div></div>
      <div class="kpi"><div class="kpi-l">NEWS SENTIMENT INDEX</div><div class="kpi-v" style="font-size:21px">${st.net>0?'+':''}${st.net}</div><div class="kpi-d ${st.net>15?'pos':(st.net<-15?'neg':'neu')}">${st.label} · ${st.pos}▲ ${st.neg}▼ ${st.neu}▬</div></div>
    </div>
+   <h3>News sentiment trend <span class="row-links">fills in daily</span></h3>
+   <div style="position:relative;width:100%;height:230px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px;margin-bottom:6px"><canvas id="sentChart" role="img" aria-label="News sentiment trend line over recent sessions">News sentiment index trend.</canvas></div>
    <h3>Forward price path</h3>
    <table><thead><tr><th>Tenor / horizon</th><th class="num">Level ($/t)</th><th>Basis</th></tr></thead><tbody>${fp}</tbody></table>
    <p class="muted">${e(O.curve_note||"")}</p>
@@ -178,6 +180,8 @@ function outlookHTML(D){
    <table><thead><tr><th>Year</th><th class="ctr">Balance</th><th>Note</th></tr></thead><tbody>${bal}</tbody></table>
    <h3>Capacity pipeline</h3>
    <table><thead><tr><th>Asset / region</th><th>Change</th><th>Timing</th></tr></thead><tbody>${cap}</tbody></table>
+   <h3>Scenario fan — 12-month</h3>
+   <div style="position:relative;width:100%;height:300px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px;margin-bottom:6px"><canvas id="fanChart" role="img" aria-label="Scenario fan chart: bull, base and bear aluminum price paths">Scenario fan: bull, base, bear price paths.</canvas></div>
    <h3>Scenarios — 12-month</h3>
    <table><thead><tr><th>Case</th><th class="ctr">Prob.</th><th class="num">Target ($/t)</th><th>Key drivers</th></tr></thead><tbody>${sc}</tbody></table>
    <h3>Risk heatmap</h3>
@@ -237,7 +241,32 @@ function render(D){
    document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
    document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
    b.classList.add("active");document.getElementById(b.dataset.t).classList.add("active");
-   window.scrollTo({top:0,behavior:"smooth"});if(b.dataset.t==="lme")drawChart(D);});
+   window.scrollTo({top:0,behavior:"smooth"});if(b.dataset.t==="lme")drawChart(D);if(b.dataset.t==="outlook")drawOutlook(D);});
+}
+let outlookDrawn=false;
+function drawOutlook(D){
+  if(outlookDrawn||typeof Chart==='undefined')return; outlookDrawn=true;
+  const O=D.outlook||{}, sp=O.scenario_paths;
+  if(sp&&document.getElementById('fanChart')){
+    new Chart(document.getElementById('fanChart'),{type:'line',data:{labels:sp.labels,datasets:[
+      {label:'Bear',data:sp.bear,borderColor:'#D85A30',borderDash:[2,3],borderWidth:2,pointRadius:0,tension:.35,fill:false},
+      {label:'Bull',data:sp.bull,borderColor:'#1D9E75',borderDash:[6,3],borderWidth:2,pointRadius:0,tension:.35,fill:'-1',backgroundColor:'rgba(186,117,23,0.12)'},
+      {label:'Base',data:sp.base,borderColor:'#BA7517',borderWidth:3,pointRadius:0,tension:.35,fill:false}]},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        plugins:{legend:{labels:{font:{family:'Saira'},color:'#1a1712',boxWidth:12}}},
+        scales:{y:{ticks:{callback:v=>'$'+v.toLocaleString()}},x:{grid:{display:false}}}}});
+  }
+  const sh=O.sentiment_history||[];
+  if(sh.length&&document.getElementById('sentChart')){
+    const fmtd=s=>{const d=new Date(s+'T00:00:00');return isNaN(d)?s:d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});};
+    const v=sh.map(p=>p.net), Ls=sh.map(p=>fmtd(p.date));
+    new Chart(document.getElementById('sentChart'),{type:'line',data:{labels:Ls,datasets:[
+      {label:'Sentiment',data:v,borderColor:'#185FA5',borderWidth:2.5,tension:.3,fill:'origin',backgroundColor:'rgba(24,95,165,0.10)',pointRadius:4,pointBackgroundColor:v.map(x=>x>=0?'#1D9E75':'#D85A30'),pointBorderColor:'#ffffff',pointBorderWidth:1},
+      {label:'Neutral',data:Ls.map(()=>0),borderColor:'#B4B2A9',borderDash:[4,4],borderWidth:1,pointRadius:0,fill:false}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{y:{min:-100,max:100,ticks:{stepSize:50,callback:v=>(v>0?'+':'')+v}},x:{grid:{display:false}}}}});
+  }
 }
 function drawChart(D){if(chartDrawn||typeof Chart==="undefined")return;chartDrawn=true;
  const s=[...D.lme_series].reverse();const pr=D.chart_price_axis||[3500,3900];const sr=D.chart_stock_axis||[325000,348000];
