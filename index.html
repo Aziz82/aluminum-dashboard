@@ -89,7 +89,7 @@ const EARN_SRC={
  "Glencore":"https://www.glencore.com/investors/2025-preliminary-results-presentation",
  "Rusal":"https://www.mining.com/web/rusal-swings-to-annual-loss-on-rising-costs-lower-aluminum-output/"};
 const TABS=[["overview","OVERVIEW"],["lme","LME PRICES"],["premiums","PREMIUMS"],["alumina","ALUMINA"],
- ["macro","MACRO & FX"],["news","NEWS & FEED"],["earnings","PEER EARNINGS"],["weekly","WEEKLY"],["sources","SOURCES"]];
+ ["macro","MACRO & FX"],["news","NEWS & FEED"],["earnings","PEER EARNINGS"],["outlook","OUTLOOK"],["weekly","WEEKLY"],["sources","SOURCES"]];
 const e=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const nf=(v,d=1)=>Number(v).toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
 const lk=(u,t="source ↗")=>u?`<a class="src" href="${e(u)}" target="_blank" rel="noopener">${e(t)}</a>`:"";
@@ -134,6 +134,55 @@ function weeklyHTML(D){const W=D.weekly;if(!W)return`<h2>Weekly Brief</h2><p cla
  <h3>Key drivers</h3>${ul(W.drivers)}<h3>Commercial implications</h3><ul class="bul">${imp}</ul>
  <h3>Outlook — week ahead</h3>${ul(W.outlook)}`;}
 
+function modelProjection(D){
+  const s=[...(D.lme_series||[])].reverse().map(r=>r[1]); const n=s.length;
+  if(n<3) return {last:s[n-1]||0,lo:0,hi:0,vol:"0",winChg:"0",days:n};
+  const last=s[n-1]; const rets=[]; for(let i=1;i<n;i++) rets.push(s[i]/s[i-1]-1);
+  const mean=rets.reduce((a,b)=>a+b,0)/rets.length;
+  const sd=Math.sqrt(rets.reduce((a,b)=>a+(b-mean)**2,0)/rets.length);
+  const band=sd*Math.sqrt(21);
+  return {last:Math.round(last),lo:Math.round(last*(1-band)),hi:Math.round(last*(1+band)),vol:(sd*100).toFixed(2),winChg:((last/s[0]-1)*100).toFixed(1),days:n};
+}
+function sentimentIndex(D){
+  const items=[...(D.feed||[]).map(x=>x.impact),...(D.news||[]).map(x=>x.impact)];
+  let pos=0,neg=0,neu=0; items.forEach(t=>{const k=tone(t); if(k==="pos")pos++; else if(k==="neg")neg++; else neu++;});
+  const total=items.length||1, net=Math.round((pos-neg)/total*100);
+  return {pos,neg,neu,total,net,label:net>15?"Bullish":(net<-15?"Bearish":"Neutral")};
+}
+function outlookHTML(D){
+  const O=D.outlook||{}; const rows=(arr,f)=>(arr||[]).map(f).join("");
+  const fp=rows(O.forward_path,r=>`<tr><td class="lbl">${e(r.tenor)}</td><td class="num">${e(r.price)}</td><td class="note">${e(r.basis)}</td></tr>`);
+  const cons=rows(O.consensus,r=>`<tr><td class="lbl">${e(r.source)}</td><td class="ctr">${e(r.y2026)}</td><td class="ctr">${e(r.y2027)}</td><td class="note">${e(r.note)}</td></tr>`);
+  const bal=rows(O.balance,r=>`<tr><td class="lbl">${e(r.year)}</td><td class="ctr neg">${e(r.value)}</td><td class="note">${e(r.label)}</td></tr>`);
+  const cap=rows(O.capacity_pipeline,r=>`<tr><td class="lbl">${e(r.asset)}</td><td>${e(r.change)}</td><td class="note">${e(r.timing)}</td></tr>`);
+  const sc=rows(O.scenarios,r=>{const t=r.case==="Bull"?"pos":(r.case==="Bear"?"neg":"neu");return `<tr><td class="lbl ${t}">${e(r.case)}</td><td class="ctr">${e(r.prob)}</td><td class="num">${e(r.target)}</td><td class="note">${e(r.drivers)}</td></tr>`;});
+  const lv=x=>/high/i.test(x)?"neg":(/med/i.test(x)?"neu":"pos");
+  const rk=rows(O.risks,r=>{const ar={up:"▲",down:"▼",flat:"▬"}[r.trend]||"";const tc=r.trend==="up"?"neg":(r.trend==="down"?"pos":"neu");return `<tr><td class="lbl">${e(r.risk)}</td><td class="ctr ${lv(r.likelihood)}">${e(r.likelihood)}</td><td class="ctr ${lv(r.impact)}">${e(r.impact)}</td><td class="ctr ${tc}">${ar}</td></tr>`;});
+  const cat=rows(O.catalysts,r=>`<tr><td class="lbl">${e(r.date)}</td><td>${e(r.event)}</td><td class="ctr">${pill(r.impact,tone(r.impact))}</td></tr>`);
+  const mp=modelProjection(D), st=sentimentIndex(D);
+  return `<section id="outlook"><div class="eyebrow">Forward View</div><h2>Outlook &amp; Forecast</h2>
+   <p class="muted">Four lenses on what's next — market-implied, consensus, model-based and scenario. Indicative market intelligence, not trading or pricing advice.</p>
+   <div class="kpis">
+     <div class="kpi"><div class="kpi-l">MODEL 1-MO RANGE ($/t, ~1σ)</div><div class="kpi-v" style="font-size:21px">${mp.lo.toLocaleString()}–${mp.hi.toLocaleString()}</div><div class="kpi-d neu">random-walk band · daily vol ${mp.vol}%</div></div>
+     <div class="kpi"><div class="kpi-l">RECENT TREND (${mp.days} sessions)</div><div class="kpi-v" style="font-size:21px">${mp.winChg>=0?'+':''}${mp.winChg}%</div><div class="kpi-d ${mp.winChg>=0?'pos':'neg'}">cash, window change</div></div>
+     <div class="kpi"><div class="kpi-l">NEWS SENTIMENT INDEX</div><div class="kpi-v" style="font-size:21px">${st.net>0?'+':''}${st.net}</div><div class="kpi-d ${st.net>15?'pos':(st.net<-15?'neg':'neu')}">${st.label} · ${st.pos}▲ ${st.neg}▼ ${st.neu}▬</div></div>
+   </div>
+   <h3>Forward price path</h3>
+   <table><thead><tr><th>Tenor / horizon</th><th class="num">Level ($/t)</th><th>Basis</th></tr></thead><tbody>${fp}</tbody></table>
+   <p class="muted">${e(O.curve_note||"")}</p>
+   <h3>Analyst &amp; agency consensus</h3>
+   <table><thead><tr><th>Source</th><th class="ctr">2026</th><th class="ctr">2027</th><th>Note</th></tr></thead><tbody>${cons}</tbody></table>
+   <h3>Supply–demand balance</h3>
+   <table><thead><tr><th>Year</th><th class="ctr">Balance</th><th>Note</th></tr></thead><tbody>${bal}</tbody></table>
+   <h3>Capacity pipeline</h3>
+   <table><thead><tr><th>Asset / region</th><th>Change</th><th>Timing</th></tr></thead><tbody>${cap}</tbody></table>
+   <h3>Scenarios — 12-month</h3>
+   <table><thead><tr><th>Case</th><th class="ctr">Prob.</th><th class="num">Target ($/t)</th><th>Key drivers</th></tr></thead><tbody>${sc}</tbody></table>
+   <h3>Risk heatmap</h3>
+   <table><thead><tr><th>Risk</th><th class="ctr">Likelihood</th><th class="ctr">Impact</th><th class="ctr">Trend</th></tr></thead><tbody>${rk}</tbody></table>
+   <h3>Catalyst calendar</h3>
+   <table><thead><tr><th>Date</th><th>Event</th><th class="ctr">Likely impact</th></tr></thead><tbody>${cat}</tbody></table></section>`;
+}
 function render(D){
  const dt=new Date(D.report_date+"T00:00:00");
  document.getElementById("meta").innerHTML=`Report date: <b>${dt.toLocaleDateString("en-GB",{weekday:"long",day:"2-digit",month:"long",year:"numeric"})}</b><br>`+
@@ -174,6 +223,7 @@ function render(D){
  <section id="earnings"><div class="eyebrow">Aluminum &amp; mining industry</div><h2>Peer Earnings &amp; Results</h2>
    <p class="muted">Most recent reported results &amp; guidance — quarterly/episodic. Click <b>source ↗</b> for the company release or filing.</p>
    <table><thead><tr><th>Company / group</th><th class="ctr">Period</th><th>Headline result</th><th>Read-through</th><th class="ctr">Sentiment</th><th class="ctr">Source</th></tr></thead><tbody>${earnRows(D)}</tbody></table></section>
+ ${outlookHTML(D)}
  <section id="weekly">${weeklyHTML(D)}</section>
  <section id="sources"><div class="eyebrow">Provenance</div><h2>Sources &amp; Data Quality</h2>
    <p class="row-links">${srcLinks}</p><table><thead><tr><th>Data set</th><th>Source</th></tr></thead><tbody>${srcRows}</tbody></table>
