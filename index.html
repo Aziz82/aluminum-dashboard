@@ -156,6 +156,8 @@ function outlookHTML(D){
   const bal=rows(O.balance,r=>`<tr><td class="lbl">${e(r.year)}</td><td class="ctr neg">${e(r.value)}</td><td class="note">${e(r.label)}</td></tr>`);
   const cap=rows(O.capacity_pipeline,r=>`<tr><td class="lbl">${e(r.asset)}</td><td>${e(r.change)}</td><td class="note">${e(r.timing)}</td></tr>`);
   const sc=rows(O.scenarios,r=>{const t=r.case==="Bull"?"pos":(r.case==="Bear"?"neg":"neu");return `<tr><td class="lbl ${t}">${e(r.case)}</td><td class="ctr">${e(r.prob)}</td><td class="num">${e(r.target)}</td><td class="note">${e(r.drivers)}</td></tr>`;});
+  const scD=(O.scenarios||[]).map(s=>{const t=s.case==="Bull"?"pos":(s.case==="Bear"?"neg":"neu");const bd=s.case==="Bull"?"#1D9E75":(s.case==="Bear"?"#C76210":"#8E7C42");const dl=(s.drivers_list||[]).map(x=>`<li>${e(x)}</li>`).join("");return `<div style="background:var(--card);border:1px solid var(--line);border-left:4px solid ${bd};border-radius:6px;padding:10px 12px"><div class="${t}" style="font-weight:700;font-size:13px">${e(s.case)} · ${e(s.prob)} · ${e(s.target)}</div><ul class="bul" style="margin-top:6px">${dl}</ul></div>`;}).join("");
+  const scBlock=scD?`<h3>Scenario drivers — what moves each case</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:4px">${scD}</div>`:"";
   const lv=x=>/high/i.test(x)?"neg":(/med/i.test(x)?"neu":"pos");
   const rk=rows(O.risks,r=>{const ar={up:"▲",down:"▼",flat:"▬"}[r.trend]||"";const tc=r.trend==="up"?"neg":(r.trend==="down"?"pos":"neu");return `<tr><td class="lbl">${e(r.risk)}</td><td class="ctr ${lv(r.likelihood)}">${e(r.likelihood)}</td><td class="ctr ${lv(r.impact)}">${e(r.impact)}</td><td class="ctr ${tc}">${ar}</td></tr>`;});
   const cat=rows(O.catalysts,r=>`<tr><td class="lbl">${e(r.date)}</td><td>${e(r.event)}</td><td class="ctr">${pill(r.impact,tone(r.impact))}</td></tr>`);
@@ -184,6 +186,7 @@ function outlookHTML(D){
    <div style="position:relative;width:100%;height:300px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px;margin-bottom:6px"><canvas id="fanChart" role="img" aria-label="Scenario fan chart: bull, base and bear aluminum price paths">Scenario fan: bull, base, bear price paths.</canvas></div>
    <h3>Scenarios — 12-month</h3>
    <table><thead><tr><th>Case</th><th class="ctr">Prob.</th><th class="num">Target ($/t)</th><th>Key drivers</th></tr></thead><tbody>${sc}</tbody></table>
+   ${scBlock}
    <h3>Risk heatmap</h3>
    <table><thead><tr><th>Risk</th><th class="ctr">Likelihood</th><th class="ctr">Impact</th><th class="ctr">Trend</th></tr></thead><tbody>${rk}</tbody></table>
    <h3>Catalyst calendar</h3>
