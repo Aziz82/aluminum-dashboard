@@ -160,8 +160,10 @@ function outlookHTML(D){
   const rk=rows(O.risks,r=>{const ar={up:"▲",down:"▼",flat:"▬"}[r.trend]||"";const tc=r.trend==="up"?"neg":(r.trend==="down"?"pos":"neu");return `<tr><td class="lbl">${e(r.risk)}</td><td class="ctr ${lv(r.likelihood)}">${e(r.likelihood)}</td><td class="ctr ${lv(r.impact)}">${e(r.impact)}</td><td class="ctr ${tc}">${ar}</td></tr>`;});
   const cat=rows(O.catalysts,r=>`<tr><td class="lbl">${e(r.date)}</td><td>${e(r.event)}</td><td class="ctr">${pill(r.impact,tone(r.impact))}</td></tr>`);
   const mp=modelProjection(D), st=sentimentIndex(D);
+  const ai=(O.ai_analysis||[]).map(x=>`<li>${e(x)}</li>`).join(""); const srcL=(O.sources||[]).map(s=>lk(s[1],s[0])).join(" · ");
   return `<section id="outlook"><div class="eyebrow">Forward View</div><h2>Outlook &amp; Forecast</h2>
    <p class="muted">Four lenses on what's next — market-implied, consensus, model-based and scenario. Indicative market intelligence, not trading or pricing advice.</p>
+   ${ai?`<div class="callout"><div class="eyebrow">AI TREND ANALYSIS — auto-generated from today's data</div><ul class="bul" style="margin-top:6px">${ai}</ul></div>`:""}
    <div class="kpis">
      <div class="kpi"><div class="kpi-l">MODEL 1-MO RANGE ($/t, ~1σ)</div><div class="kpi-v" style="font-size:21px">${mp.lo.toLocaleString()}–${mp.hi.toLocaleString()}</div><div class="kpi-d neu">random-walk band · daily vol ${mp.vol}%</div></div>
      <div class="kpi"><div class="kpi-l">RECENT TREND (${mp.days} sessions)</div><div class="kpi-v" style="font-size:21px">${mp.winChg>=0?'+':''}${mp.winChg}%</div><div class="kpi-d ${mp.winChg>=0?'pos':'neg'}">cash, window change</div></div>
@@ -181,7 +183,9 @@ function outlookHTML(D){
    <h3>Risk heatmap</h3>
    <table><thead><tr><th>Risk</th><th class="ctr">Likelihood</th><th class="ctr">Impact</th><th class="ctr">Trend</th></tr></thead><tbody>${rk}</tbody></table>
    <h3>Catalyst calendar</h3>
-   <table><thead><tr><th>Date</th><th>Event</th><th class="ctr">Likely impact</th></tr></thead><tbody>${cat}</tbody></table></section>`;
+   <table><thead><tr><th>Date</th><th>Event</th><th class="ctr">Likely impact</th></tr></thead><tbody>${cat}</tbody></table>
+   ${srcL?`<h3>Sources &amp; further reading</h3><p class="row-links">${srcL}</p>`:""}
+   <p class="muted">AI analysis is machine-generated from public data and simple models — directional context, not advice; verify against the linked primary sources before decisions.</p></section>`;
 }
 function render(D){
  const dt=new Date(D.report_date+"T00:00:00");
