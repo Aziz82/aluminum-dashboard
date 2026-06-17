@@ -193,6 +193,30 @@ function outlookHTML(D){
    ${srcL?`<h3>Sources &amp; further reading</h3><p class="row-links">${srcL}</p>`:""}
    <p class="muted">AI analysis is machine-generated from public data and simple models — directional context, not advice; verify against the linked primary sources before decisions.</p></section>`;
 }
+function arrowFor(c,p){return c>p?'<span class="pos">▲</span>':(c<p?'<span class="neg">▼</span>':'<span class="neu">▬</span>');}
+function overviewSnapshot(D){
+  const card=(go,title,lines)=>`<div style="background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:6px;padding:10px 12px">
+    <div class="snap-go" data-go="${go}" style="cursor:pointer;color:var(--gold);font-weight:700;letter-spacing:1px;font-size:10.5px;text-transform:uppercase">${title} →</div>
+    <div style="font-size:12.5px;margin-top:4px;line-height:1.55">${lines}</div></div>`;
+  const pr=D.premiums||[]; const gp=n=>{const x=pr.find(p=>p.name.indexOf(n)>=0);return x?`${e(x.name.split(" (")[0])} $${nf(x.cur,0)} ${arrowFor(x.cur,x.prev)}`:"";};
+  const prem=[gp("MJP"),gp("CIF Japan"),gp("European Duty"),gp("MW US Transaction")].filter(Boolean).join(" · ")||"—";
+  const al=D.alumina||[],rm=D.raw_materials||[]; const api=al.find(a=>a.name.indexOf("API")>=0),fob=al.find(a=>a.name.indexOf("FOB Australia")>=0);
+  const bx=rm.find(x=>x.name.indexOf("Bauxite")>=0),cs=rm.find(x=>x.name.indexOf("Caustic")>=0);
+  const alu=`Alumina API $${api?nf(api.val,0):"–"} · FOB Aus $${fob?nf(fob.val,0):"–"}<br>Bauxite ${bx?e(bx.val):"–"} $/dmt · Caustic ${cs?e(cs.val):"–"} $/t`;
+  const mc=D.macro||[]; const gm=(n,lbl)=>{const x=mc.find(m=>m.name.indexOf(n)>=0);return x?`${lbl} ${e(x.value)}`:"";};
+  const macro=[gm("Dollar","DXY"),gm("Brent","Brent"),gm("10Y","US 10Y")].filter(Boolean).join(" · ")||"—";
+  const lgs=D.logistics||[]; const hz=lgs.find(x=>x.name.indexOf("Hormuz")>=0)||lgs[0];
+  const inp=`Power ~30–40% (largest cost) · carbon/CPC firm${hz?"<br>"+e(hz.name)+": "+e(hz.val):""}`;
+  const ea=D.earnings||[]; let ep=0,en=0; ea.forEach(x=>{const t=tone(x.sentiment); if(t==="pos")ep++; else if(t==="neg")en++;});
+  const earn=`Recent results: ${ep} positive / ${en} negative across ${ea.length} peers`;
+  const O=D.outlook||{}; const base=(O.scenarios||[]).find(s=>s.case==="Base");
+  const out=`Base ${base?e(base.prob):""} ${base?e(base.target):""}${(O.ai_analysis&&O.ai_analysis[0])?"<br>"+e(O.ai_analysis[0].slice(0,110))+"…":""}`;
+  const W=D.weekly; const wk=W?e(W.week_label)+((W.price_table&&W.price_table[0])?" · Cash "+e(W.price_table[0].chg):""):"Weekly brief (Sundays)";
+  return `<h3>At a glance — all sections</h3>
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:8px">
+     ${card("premiums","Premiums ($/t)",prem)}${card("alumina","Alumina & raw materials",alu)}${card("macro","Macro & FX",macro)}${card("inputs","Inputs & logistics",inp)}${card("earnings","Peer earnings",earn)}${card("outlook","Outlook",out)}${card("weekly","Weekly",wk)}
+   </div>`;
+}
 function render(D){
  const dt=new Date(D.report_date+"T00:00:00");
  document.getElementById("meta").innerHTML=`Report date: <b>${dt.toLocaleDateString("en-GB",{weekday:"long",day:"2-digit",month:"long",year:"numeric"})}</b><br>`+
@@ -207,6 +231,7 @@ function render(D){
  <section id="overview" class="active"><div class="eyebrow">Snapshot</div><h2>Market Overview</h2>
    <div class="kpis">${kpis(D)}</div>
    <div class="callout"><div class="eyebrow">Net Market Read</div><p>${e(D.net_read)}</p></div>
+   ${overviewSnapshot(D)}
    <h3>Benchmark prices <span class="row-links">${lk(SRC.lme,"LME/Westmetall")} · ${lk(SRC.te,"Trading Economics")}</span></h3>
    <table><thead><tr><th>Indicator</th><th class="num">Current</th><th class="num">Previous</th><th class="num">Δ %</th><th class="ctr">Trend</th><th class="num">Avg last mo</th><th>Note</th></tr></thead><tbody>${benchRows(D)}</tbody></table>
    <p class="muted" style="margin-top:8px">Legend: ▲ green positive · ▼ orange negative · ▬ gold unchanged. USD/MT unless noted.</p></section>
@@ -247,6 +272,7 @@ function render(D){
    document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
    b.classList.add("active");document.getElementById(b.dataset.t).classList.add("active");
    window.scrollTo({top:0,behavior:"smooth"});if(b.dataset.t==="lme")drawChart(D);if(b.dataset.t==="outlook")drawOutlook(D);if(b.dataset.t==="premiums")drawPremiums(D);if(b.dataset.t==="alumina")drawAlumina(D);});
+ document.querySelectorAll('[data-go]').forEach(el=>el.onclick=()=>{const bb=document.querySelector('nav button[data-t="'+el.dataset.go+'"]');if(bb)bb.click();});
 }
 function inputsHTML(D){
   const rk=(s,inv)=>{s=String(s);const hi=/high/i.test(s),lo=/low/i.test(s);return inv?(hi?"neg":(lo?"pos":"neu")):(hi?"neg":(lo?"pos":"neu"));};
