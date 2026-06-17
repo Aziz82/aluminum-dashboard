@@ -223,7 +223,8 @@ function render(D){
  <section id="alumina"><div class="eyebrow">Alumina &amp; raw materials</div><h2>Alumina &amp; Raw Materials</h2>
    <p class="row-links">${lk(SRC.alumina_fm,"Fastmarkets FOB Australia ↗")} · ${lk(SRC.alumina_focus,"FocusEconomics ↗")}</p>
    <table><thead><tr><th>Index</th><th class="num">Value</th><th class="ctr">Unit</th><th class="ctr">As of</th><th class="ctr">Trend</th><th>Source / note</th></tr></thead><tbody>${aluRows(D)}</tbody></table>
-   <h3>Supply commentary</h3>${ul(D.alumina_notes)}</section>
+   <h3>Supply commentary</h3>${ul(D.alumina_notes)}
+   ${aluminaExtra(D)}</section>
  <section id="macro"><div class="eyebrow">Macro &amp; cross-asset</div><h2>Macro &amp; FX</h2>
    <p class="row-links">${lk(SRC.te,"Trading Economics ↗")}</p>
    <table><thead><tr><th>Indicator</th><th class="num">Value</th><th class="num">Day %</th><th class="ctr">Trend</th><th>Relevance</th></tr></thead><tbody>${macroRows(D)}</tbody></table>
@@ -244,7 +245,24 @@ function render(D){
    document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
    document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
    b.classList.add("active");document.getElementById(b.dataset.t).classList.add("active");
-   window.scrollTo({top:0,behavior:"smooth"});if(b.dataset.t==="lme")drawChart(D);if(b.dataset.t==="outlook")drawOutlook(D);if(b.dataset.t==="premiums")drawPremiums(D);});
+   window.scrollTo({top:0,behavior:"smooth"});if(b.dataset.t==="lme")drawChart(D);if(b.dataset.t==="outlook")drawOutlook(D);if(b.dataset.t==="premiums")drawPremiums(D);if(b.dataset.t==="alumina")drawAlumina(D);});
+}
+function aluminaExtra(D){
+  const ex=(D.alumina_explainer||[]).map(x=>`<tr><td class="lbl">${e(x.term)}</td><td class="note">${e(x.desc)}</td></tr>`).join("");
+  const rm=(D.raw_materials||[]).map(p=>{const gl={up:"▲",down:"▼",flat:"▬"}[p.trend]||"▬";const t={up:"pos",down:"neg",flat:"neu"}[p.trend]||"neu";
+    return `<tr><td class="lbl">${e(p.name)}</td><td class="num">${e(p.val)}</td><td class="ctr">${e(p.unit)}</td><td class="ctr">${e(p.asof)}</td><td class="ctr ${t}">${gl}</td><td class="note">${e(p.src)}</td></tr>`;}).join("");
+  const hasH=!!(D.alumina_history&&D.alumina_history.labels);
+  const ol=(D.alumina_outlook||[]).map(x=>`<li>${e(x)}</li>`).join("");
+  return `${ex?`<h3>Understanding alumina &amp; raw materials</h3><table><tbody>${ex}</tbody></table>`:""}${rm?`<h3>Bayer-process raw materials <span class="row-links">caustic soda · lime · bauxite</span></h3><table><thead><tr><th>Input</th><th class="num">Latest</th><th class="ctr">Unit</th><th class="ctr">As of</th><th class="ctr">Trend</th><th>Source / note</th></tr></thead><tbody>${rm}</tbody></table>`:""}${hasH?`<h3>Alumina price history <span class="row-links">indicative · last point = Q3 expectation</span></h3><div style="position:relative;height:240px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px"><canvas id="aluChart" role="img" aria-label="Alumina FOB Australia and API price history">Alumina FOB Australia and API history.</canvas></div>`:""}${ol?`<h3>Forward expectations</h3><ul class="bul">${ol}</ul>`:""}`;
+}
+let aluDrawn=false;
+function drawAlumina(D){
+  if(aluDrawn||typeof Chart==='undefined')return; aluDrawn=true;
+  const H=D.alumina_history; if(!H||!H.labels||!document.getElementById('aluChart'))return;
+  new Chart(document.getElementById('aluChart'),{type:'line',data:{labels:H.labels,datasets:[
+    {label:'FOB Australia (Fastmarkets)',data:H.fob,borderColor:'#185FA5',borderWidth:2.5,tension:.3,pointRadius:3,pointBackgroundColor:'#185FA5'},
+    {label:'API / Platts region',data:H.api,borderColor:'#BA7517',borderWidth:2,tension:.3,pointRadius:3,pointBackgroundColor:'#BA7517'}]},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{font:{family:'Saira'},color:'#1a1712',boxWidth:12}},tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.parsed.y}}},scales:{y:{ticks:{callback:v=>'$'+v}},x:{grid:{display:false}}}}});
 }
 function premiumsExtra(D){
   const ex=(D.premium_explainer||[]).map(x=>`<tr><td class="lbl">${e(x.term)}</td><td class="note">${e(x.desc)}</td></tr>`).join("");
