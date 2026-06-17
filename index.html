@@ -232,9 +232,11 @@ function render(D){
    <div class="kpis">${kpis(D)}</div>
    <div class="callout"><div class="eyebrow">Net Market Read</div><p>${e(D.net_read)}</p></div>
    ${overviewSnapshot(D)}
-   <h3>Benchmark prices <span class="row-links">${lk(SRC.lme,"LME/Westmetall")} · ${lk(SRC.te,"Trading Economics")}</span></h3>
+   <h3>Market prices (USD/MT) <span class="row-links">${lk(SRC.lme,"LME/Westmetall")} · ${lk(SRC.te,"Trading Economics")}</span></h3>
    <table><thead><tr><th>Indicator</th><th class="num">Current</th><th class="num">Previous</th><th class="num">Δ %</th><th class="ctr">Trend</th><th class="num">Avg last mo</th><th>Note</th></tr></thead><tbody>${benchRows(D)}</tbody></table>
-   <p class="muted" style="margin-top:8px">Legend: ▲ green positive · ▼ orange negative · ▬ gold unchanged. USD/MT unless noted.</p></section>
+   <p class="muted" style="margin-top:8px">Legend: ▲ green positive · ▼ orange negative · ▬ gold unchanged. USD/MT unless noted.</p>
+   <h3>Regional premiums ($/t) <span class="row-links">${lk(SRC.prem_lme,"LME premiums")} · ${lk(SRC.mwp,"S&P US Midwest")} · <a href="#" data-go="premiums">full detail →</a></span></h3>
+   <table><thead><tr><th>Premium ($/t)</th><th class="num">Current</th><th class="num">Previous</th><th class="num">Δ %</th><th class="ctr">Trend</th><th class="num">Avg last mo</th><th>Source / note</th></tr></thead><tbody>${premRows(D.premiums)}</tbody></table></section>
  <section id="lme"><div class="eyebrow">London Metal Exchange</div><h2>LME Prices &amp; Inventory</h2>
    <div style="height:340px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px;margin-bottom:14px"><canvas id="lmeChart" role="img" aria-label="LME cash, 3-month and inventory trend"></canvas></div>
    <h3>Daily settlement series <span class="row-links">${lk(SRC.lme,"Westmetall ↗")} · ${lk(SRC.lme_off,"LME official ↗")}</span></h3>
@@ -272,7 +274,7 @@ function render(D){
    document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
    b.classList.add("active");document.getElementById(b.dataset.t).classList.add("active");
    window.scrollTo({top:0,behavior:"smooth"});if(b.dataset.t==="lme")drawChart(D);if(b.dataset.t==="outlook")drawOutlook(D);if(b.dataset.t==="premiums")drawPremiums(D);if(b.dataset.t==="alumina")drawAlumina(D);});
- document.querySelectorAll('[data-go]').forEach(el=>el.onclick=()=>{const bb=document.querySelector('nav button[data-t="'+el.dataset.go+'"]');if(bb)bb.click();});
+ document.querySelectorAll('[data-go]').forEach(el=>el.onclick=(ev)=>{ev.preventDefault();const bb=document.querySelector('nav button[data-t="'+el.dataset.go+'"]');if(bb)bb.click();});
 }
 function inputsHTML(D){
   const rk=(s,inv)=>{s=String(s);const hi=/high/i.test(s),lo=/low/i.test(s);return inv?(hi?"neg":(lo?"pos":"neu")):(hi?"neg":(lo?"pos":"neu"));};
