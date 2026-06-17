@@ -88,7 +88,7 @@ const EARN_SRC={
  "BHP":"https://www.bhp.com/news/media-centre/releases/2026/02/bhp-results-for-the-half-year-ended-31-december-2025",
  "Glencore":"https://www.glencore.com/investors/2025-preliminary-results-presentation",
  "Rusal":"https://www.mining.com/web/rusal-swings-to-annual-loss-on-rising-costs-lower-aluminum-output/"};
-const TABS=[["overview","OVERVIEW"],["lme","LME PRICES"],["premiums","PREMIUMS"],["alumina","ALUMINA"],
+const TABS=[["overview","OVERVIEW"],["lme","LME PRICES"],["premiums","PREMIUMS"],["alumina","ALUMINA"],["inputs","INPUTS & LOGISTICS"],
  ["macro","MACRO & FX"],["news","NEWS & FEED"],["earnings","PEER EARNINGS"],["outlook","OUTLOOK"],["weekly","WEEKLY"],["sources","SOURCES"]];
 const e=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const nf=(v,d=1)=>Number(v).toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
@@ -225,6 +225,7 @@ function render(D){
    <table><thead><tr><th>Index</th><th class="num">Value</th><th class="ctr">Unit</th><th class="ctr">As of</th><th class="ctr">Trend</th><th>Source / note</th></tr></thead><tbody>${aluRows(D)}</tbody></table>
    <h3>Supply commentary</h3>${ul(D.alumina_notes)}
    ${aluminaExtra(D)}</section>
+ ${inputsHTML(D)}
  <section id="macro"><div class="eyebrow">Macro &amp; cross-asset</div><h2>Macro &amp; FX</h2>
    <p class="row-links">${lk(SRC.te,"Trading Economics ↗")}</p>
    <table><thead><tr><th>Indicator</th><th class="num">Value</th><th class="num">Day %</th><th class="ctr">Trend</th><th>Relevance</th></tr></thead><tbody>${macroRows(D)}</tbody></table>
@@ -246,6 +247,23 @@ function render(D){
    document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
    b.classList.add("active");document.getElementById(b.dataset.t).classList.add("active");
    window.scrollTo({top:0,behavior:"smooth"});if(b.dataset.t==="lme")drawChart(D);if(b.dataset.t==="outlook")drawOutlook(D);if(b.dataset.t==="premiums")drawPremiums(D);if(b.dataset.t==="alumina")drawAlumina(D);});
+}
+function inputsHTML(D){
+  const rk=(s,inv)=>{s=String(s);const hi=/high/i.test(s),lo=/low/i.test(s);return inv?(hi?"neg":(lo?"pos":"neu")):(hi?"neg":(lo?"pos":"neu"));};
+  const idxc=s=>{s=String(s);return /high/i.test(s)?"pos":(/low|n\/a/i.test(s)?"neg":"neu");};
+  const rows=(D.inputs||[]).map(x=>{const tr={up:"▲",down:"▼",flat:"▬"}[x.trend]||"▬";const tt={up:"pos",down:"neg",flat:"neu"}[x.trend]||"neu";
+    return `<tr><td class="lbl">${e(x.name)}<div class="grp">${e(x.cat)}</div></td><td class="num ${tt}">${e(x.val)} ${tr}</td><td class="ctr">${e(x.unit)}</td><td class="ctr">${e(x.ratio)}</td><td class="ctr">${e(x.share)}</td><td class="ctr ${idxc(x.index)}">${e(x.index)}</td><td class="ctr ${rk(x.risk)}">${e(x.risk)}</td><td class="note">${e(x.src)}</td></tr>`;}).join("");
+  const log=(D.logistics||[]).map(x=>{const tt={up:"neg",down:"pos",flat:"neu"}[x.trend]||"neu";const tr={up:"▲",down:"▼",flat:"▬"}[x.trend]||"";
+    return `<tr><td class="lbl">${e(x.name)}</td><td class="num"><span class="${tt}">${e(x.val)} ${tr}</span></td><td class="note">${e(x.note)}</td></tr>`;}).join("");
+  const sm=(D.inputs_summary||[]).map(x=>`<li>${e(x)}</li>`).join("");
+  return `<section id="inputs"><div class="eyebrow">Critical inputs &amp; logistics</div><h2>Input Basket &amp; Logistics — Feasibility</h2>
+   <p class="muted">The cost stack to make 1 t of primary aluminium, plus the logistics that move raw materials and metal. "Index" = price transparency (can we track it on a market?); "Supply risk" = source concentration. Indicative public anchors — not a licensed feed.</p>
+   <h3>Input cost basket</h3>
+   <table><thead><tr><th>Input</th><th class="num">Price</th><th class="ctr">Unit</th><th class="ctr">~ per t Al</th><th class="ctr">Cost share</th><th class="ctr">Index</th><th class="ctr">Supply risk</th><th>Source / note</th></tr></thead><tbody>${rows}</tbody></table>
+   <h3>Logistics</h3>
+   <table><thead><tr><th>Item</th><th class="num">Latest / status</th><th>Note</th></tr></thead><tbody>${log}</tbody></table>
+   ${sm?`<h3>Feasibility read — what to monitor / source</h3><ul class="bul">${sm}</ul>`:""}
+   <p class="muted">Cost shares are typical industry ranges (vary by smelter and power contract); prices are indicative public anchors. Logistics reflects the current Gulf/Strait-of-Hormuz situation. Not trading or procurement advice.</p></section>`;
 }
 function aluminaExtra(D){
   const ex=(D.alumina_explainer||[]).map(x=>`<tr><td class="lbl">${e(x.term)}</td><td class="note">${e(x.desc)}</td></tr>`).join("");
