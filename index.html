@@ -102,12 +102,11 @@ let chartDrawn=false,DATA=null;
 function benchRows(D){return D.benchmark.map(b=>{const d=b.prev?(b.cur-b.prev)/b.prev:0;
  const f=b.int?0:1;const ar=b.cur>b.prev?"▲":(b.cur<b.prev?"▼":"▬");const t=b.cur>b.prev?"pos":(b.cur<b.prev?"neg":"neu");
  return `<tr><td class="lbl">${e(b.name)}</td><td class="num">${nf(b.cur,f)}</td><td class="num">${nf(b.prev,f)}</td>
- <td class="num ${t}">${(d*100>=0?"+":"")+ (d*100).toFixed(1)}%</td><td class="ctr ${t}">${ar}</td><td class="note">${e(b.note)}</td></tr>`;}).join("");}
+ <td class="num ${t}">${(d*100>=0?"+":"")+ (d*100).toFixed(1)}%</td><td class="ctr ${t}">${ar}</td><td class="num">${b.avg!=null?nf(b.avg,f):"—"}</td><td class="note">${e(b.note)}</td></tr>`;}).join("");}
 function kpis(D){return D.kpi_cards.map(c=>`<div class="kpi"><div class="kpi-l">${e(c.label)}</div>
  <div class="kpi-v">${e(c.value)}</div><div class="kpi-d ${c.pos?"pos":"neg"}">${e(c.delta)}</div></div>`).join("");}
-function premRows(rows){return rows.map(p=>{const[g,t]=TR[p.trend];const v=typeof p.val==="number"?nf(p.val,2):e(p.val);
- return `<tr><td class="lbl">${e(p.name)}</td><td class="num">${v}</td><td class="ctr">${e(p.unit)}</td>
- <td class="ctr">${e(p.asof)}</td><td class="ctr ${t}">${g}</td><td class="note">${e(p.src)}</td></tr>`;}).join("");}
+function premRows(rows){return rows.map(p=>{const cur=p.cur,prev=p.prev,d=prev?(cur-prev)/prev:0;const ar=cur>prev?"▲":(cur<prev?"▼":"▬");const t=cur>prev?"pos":(cur<prev?"neg":"neu");
+ return `<tr><td class="lbl">${e(p.name)}</td><td class="num">${nf(cur,1)}</td><td class="num">${nf(prev,1)}</td><td class="num ${t}">${(d*100>=0?"+":"")+(d*100).toFixed(1)}%</td><td class="ctr ${t}">${ar}</td><td class="num">${p.avg!=null?nf(p.avg,1):"—"}</td><td class="note">${e(p.src)}</td></tr>`;}).join("");}
 function macroRows(D){return D.macro.map(m=>{const t=m.day>0?"pos":(m.day<0?"neg":"neu");const ar=m.day>0?"▲":(m.day<0?"▼":"▬");
  return `<tr><td class="lbl">${e(m.name)}</td><td class="num">${e(m.value)}</td>
  <td class="num ${t}">${(m.day>=0?"+":"")+m.day.toFixed(2)}%</td><td class="ctr ${t}">${ar}</td><td class="note">${e(m.note)}</td></tr>`;}).join("");}
@@ -209,7 +208,7 @@ function render(D){
    <div class="kpis">${kpis(D)}</div>
    <div class="callout"><div class="eyebrow">Net Market Read</div><p>${e(D.net_read)}</p></div>
    <h3>Benchmark prices <span class="row-links">${lk(SRC.lme,"LME/Westmetall")} · ${lk(SRC.te,"Trading Economics")}</span></h3>
-   <table><thead><tr><th>Indicator</th><th class="num">Current</th><th class="num">Previous</th><th class="num">Δ %</th><th class="ctr">Trend</th><th>Note</th></tr></thead><tbody>${benchRows(D)}</tbody></table>
+   <table><thead><tr><th>Indicator</th><th class="num">Current</th><th class="num">Previous</th><th class="num">Δ %</th><th class="ctr">Trend</th><th class="num">Avg last mo</th><th>Note</th></tr></thead><tbody>${benchRows(D)}</tbody></table>
    <p class="muted" style="margin-top:8px">Legend: ▲ green positive · ▼ orange negative · ▬ gold unchanged. USD/MT unless noted.</p></section>
  <section id="lme"><div class="eyebrow">London Metal Exchange</div><h2>LME Prices &amp; Inventory</h2>
    <div style="height:340px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px;margin-bottom:14px"><canvas id="lmeChart" role="img" aria-label="LME cash, 3-month and inventory trend"></canvas></div>
@@ -218,7 +217,7 @@ function render(D){
    <p class="muted" style="margin-top:8px">${e(D.lme_commentary||"")}</p></section>
  <section id="premiums"><div class="eyebrow">Physical premiums</div><h2>Regional Premiums</h2>
    <p class="row-links">${lk(SRC.prem_lme,"LME premiums ↗")} · ${lk(SRC.mwp,"S&P US Midwest ↗")}</p>
-   <table><thead><tr><th>Premium</th><th class="num">Latest / status</th><th class="ctr">Unit</th><th class="ctr">As of</th><th class="ctr">Trend</th><th>Source / note</th></tr></thead><tbody>${premRows(D.premiums)}</tbody></table>
+   <table><thead><tr><th>Premium ($/t)</th><th class="num">Current</th><th class="num">Previous</th><th class="num">Δ %</th><th class="ctr">Trend</th><th class="num">Avg last mo</th><th>Source / note</th></tr></thead><tbody>${premRows(D.premiums)}</tbody></table>
    ${premiumsExtra(D)}
    <p class="muted" style="margin-top:8px">Daily premium prints (Platts/Fastmarkets/Argus) are subscription feeds — figures are most-recent public anchors; reconcile to the licensed feed before pricing.</p></section>
  <section id="alumina"><div class="eyebrow">Alumina &amp; raw materials</div><h2>Alumina &amp; Raw Materials</h2>
@@ -266,8 +265,8 @@ function drawPremiums(D){
   }
   if(H.labels_us&&document.getElementById('premUSChart')){
     new Chart(document.getElementById('premUSChart'),{type:'line',data:{labels:H.labels_us,datasets:[
-      {label:'US Midwest (c/lb)',data:H.usmw_clb,borderColor:'#C76210',borderWidth:2.5,tension:.3,pointRadius:3,pointBackgroundColor:'#C76210',fill:'origin',backgroundColor:'rgba(199,98,16,0.08)'}]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{family:'Saira'},color:'#1a1712',boxWidth:12}},tooltip:{callbacks:{label:c=>c.parsed.y+' c/lb'}}},scales:{y:{ticks:{callback:v=>v+'c'}},x:{grid:{display:false}}}}});
+      {label:'MW US Transaction ($/t)',data:H.usmw_usd,borderColor:'#C76210',borderWidth:2.5,tension:.3,pointRadius:3,pointBackgroundColor:'#C76210',fill:'origin',backgroundColor:'rgba(199,98,16,0.08)'}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{family:'Saira'},color:'#1a1712',boxWidth:12}},tooltip:{callbacks:{label:c=>'$'+c.parsed.y.toLocaleString()}}},scales:{y:{ticks:{callback:v=>'$'+v.toLocaleString()}},x:{grid:{display:false}}}}});
   }
 }
 let outlookDrawn=false;
