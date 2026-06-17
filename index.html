@@ -219,6 +219,7 @@ function render(D){
  <section id="premiums"><div class="eyebrow">Physical premiums</div><h2>Regional Premiums</h2>
    <p class="row-links">${lk(SRC.prem_lme,"LME premiums ↗")} · ${lk(SRC.mwp,"S&P US Midwest ↗")}</p>
    <table><thead><tr><th>Premium</th><th class="num">Latest / status</th><th class="ctr">Unit</th><th class="ctr">As of</th><th class="ctr">Trend</th><th>Source / note</th></tr></thead><tbody>${premRows(D.premiums)}</tbody></table>
+   ${premiumsExtra(D)}
    <p class="muted" style="margin-top:8px">Daily premium prints (Platts/Fastmarkets/Argus) are subscription feeds — figures are most-recent public anchors; reconcile to the licensed feed before pricing.</p></section>
  <section id="alumina"><div class="eyebrow">Alumina &amp; raw materials</div><h2>Alumina &amp; Raw Materials</h2>
    <p class="row-links">${lk(SRC.alumina_fm,"Fastmarkets FOB Australia ↗")} · ${lk(SRC.alumina_focus,"FocusEconomics ↗")}</p>
@@ -244,7 +245,30 @@ function render(D){
    document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
    document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
    b.classList.add("active");document.getElementById(b.dataset.t).classList.add("active");
-   window.scrollTo({top:0,behavior:"smooth"});if(b.dataset.t==="lme")drawChart(D);if(b.dataset.t==="outlook")drawOutlook(D);});
+   window.scrollTo({top:0,behavior:"smooth"});if(b.dataset.t==="lme")drawChart(D);if(b.dataset.t==="outlook")drawOutlook(D);if(b.dataset.t==="premiums")drawPremiums(D);});
+}
+function premiumsExtra(D){
+  const ex=(D.premium_explainer||[]).map(x=>`<tr><td class="lbl">${e(x.term)}</td><td class="note">${e(x.desc)}</td></tr>`).join("");
+  const ol=(D.premium_outlook||[]).map(x=>`<li>${e(x)}</li>`).join("");
+  const hasH=!!(D.premium_history&&D.premium_history.labels_reg);
+  return `${ex?`<h3>Understanding the premiums</h3><table><tbody>${ex}</tbody></table>`:""}${hasH?`<h3>Premium history <span class="row-links">indicative · public anchors · last point = Q3 expectation</span></h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px"><div style="position:relative;height:240px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px"><canvas id="premRegChart" role="img" aria-label="Asian and European aluminium premium history with Q3 expectation">MJP, CIF Japan and EU duty-unpaid premium history.</canvas></div><div style="position:relative;height:240px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px"><canvas id="premUSChart" role="img" aria-label="US Midwest aluminium premium history">US Midwest premium history.</canvas></div></div>`:""}${ol?`<h3>Forward expectations <span class="row-links">H2-26</span></h3><ul class="bul">${ol}</ul>`:""}`;
+}
+let premDrawn=false;
+function drawPremiums(D){
+  if(premDrawn||typeof Chart==='undefined')return; premDrawn=true;
+  const H=D.premium_history; if(!H)return;
+  if(H.labels_reg&&document.getElementById('premRegChart')){
+    new Chart(document.getElementById('premRegChart'),{type:'line',data:{labels:H.labels_reg,datasets:[
+      {label:'MJP (Japan)',data:H.mjp,borderColor:'#BA7517',borderWidth:2.5,tension:.3,pointRadius:3,pointBackgroundColor:'#BA7517'},
+      {label:'CIF Japan',data:H.cif,borderColor:'#185FA5',borderWidth:2,tension:.3,pointRadius:3,pointBackgroundColor:'#185FA5'},
+      {label:'EU duty-unpaid',data:H.edu,borderColor:'#1D9E75',borderWidth:2,tension:.3,pointRadius:3,pointBackgroundColor:'#1D9E75'}]},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{font:{family:'Saira'},color:'#1a1712',boxWidth:12}},tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.parsed.y}}},scales:{y:{ticks:{callback:v=>'$'+v}},x:{grid:{display:false}}}}});
+  }
+  if(H.labels_us&&document.getElementById('premUSChart')){
+    new Chart(document.getElementById('premUSChart'),{type:'line',data:{labels:H.labels_us,datasets:[
+      {label:'US Midwest (c/lb)',data:H.usmw_clb,borderColor:'#C76210',borderWidth:2.5,tension:.3,pointRadius:3,pointBackgroundColor:'#C76210',fill:'origin',backgroundColor:'rgba(199,98,16,0.08)'}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{family:'Saira'},color:'#1a1712',boxWidth:12}},tooltip:{callbacks:{label:c=>c.parsed.y+' c/lb'}}},scales:{y:{ticks:{callback:v=>v+'c'}},x:{grid:{display:false}}}}});
+  }
 }
 let outlookDrawn=false;
 function drawOutlook(D){
