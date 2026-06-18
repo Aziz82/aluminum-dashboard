@@ -118,7 +118,7 @@ function lmeHero(D){
  const cash=s.map(r=>r[1]),m3=s.map(r=>r[2]),stk=s.map(r=>r[3]);
  const dp=a=>((a[0]-a[1])/a[1]*100);
  const card=(lbl,val,d,vals)=>{const up=d>=0,c=up?"var(--green)":"var(--orange)";return `<div style="background:var(--card);border:1px solid var(--line);border-radius:9px;padding:10px 12px"><div style="font-size:10.5px;letter-spacing:.5px;color:#6B6353;text-transform:uppercase">${lbl}</div><div style="font-size:23px;font-weight:700;line-height:1.1">${val}</div><div style="font-size:11.5px;font-weight:600;color:${c}">${up?"▲":"▼"} ${Math.abs(d).toFixed(1)}%</div>${spark(o2n(vals),up?"#1D9E75":"#C76210")}</div>`;};
- const spr=cash[0]-m3[0],back=spr<0;
+ const spr=cash[0]-m3[0],back=spr>0;
  const badge=`<span style="font-size:10.5px;font-weight:700;border-radius:5px;padding:1px 6px;${back?"color:#185FA5;background:#E6F1FB":"color:var(--gold);background:var(--cream)"}">${back?"BACKWARDATION":"CONTANGO"}</span>`;
  const sprCard=`<div style="background:var(--card);border:1px solid var(--line);border-radius:9px;padding:10px 12px"><div style="font-size:10.5px;letter-spacing:.5px;color:#6B6353;text-transform:uppercase">Cash–3M</div><div style="font-size:23px;font-weight:700;line-height:1.1">${spr>=0?"+":"−"}${Math.abs(spr).toFixed(1)}</div>${badge}${spark(o2n(cash.map((c,i)=>c-m3[i])),"#185FA5")}</div>`;
  const bm=D.benchmark||[],fb=n=>bm.find(b=>b.name.indexOf(n)>=0)||{};
