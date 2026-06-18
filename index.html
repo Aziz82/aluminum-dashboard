@@ -110,8 +110,27 @@ function premRows(rows){return rows.map(p=>{const cur=p.cur,prev=p.prev,d=prev?(
 function macroRows(D){return D.macro.map(m=>{const t=m.day>0?"pos":(m.day<0?"neg":"neu");const ar=m.day>0?"▲":(m.day<0?"▼":"▬");
  return `<tr><td class="lbl">${e(m.name)}</td><td class="num">${e(m.value)}</td>
  <td class="num ${t}">${(m.day>=0?"+":"")+m.day.toFixed(2)}%</td><td class="ctr ${t}">${ar}</td><td class="note">${e(m.note)}</td></tr>`;}).join("");}
-function lmeRows(D){return D.lme_series.map(r=>`<tr><td class="ctr">${e(r[0])}</td><td class="num">${nf(r[1],1)}</td>
- <td class="num">${nf(r[2],1)}</td><td class="num">${nf(r[3],0)}</td><td class="num">${nf(r[1]-r[2],1)}</td></tr>`).join("");}
+function lmeRows(D){const s=D.lme_series;return s.map((r,i)=>{const pc=i<s.length-1?s[i+1][1]:r[1];const dd=r[1]-pc;const dc=dd>0?"pos":(dd<0?"neg":"neu");const ar=dd>0?"▲":(dd<0?"▼":"▬");return `<tr><td class="ctr">${e(r[0])}</td><td class="num">${nf(r[1],1)}</td><td class="num">${nf(r[2],1)}</td><td class="num">${nf(r[3],0)}</td><td class="num">${nf(r[1]-r[2],1)}</td><td class="num ${dc}">${ar} ${dd>=0?"+":"−"}${nf(Math.abs(dd),1)}</td></tr>`;}).join("");}
+function spark(vals,color){if(!vals||vals.length<2)return"";const W=110,H=26,mn=Math.min(...vals),mx=Math.max(...vals),rg=(mx-mn)||1,n=vals.length;const pts=vals.map((v,i)=>(i/(n-1)*W).toFixed(1)+","+(H-2-(v-mn)/rg*(H-4)).toFixed(1)).join(" ");return `<svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.6"/></svg>`;}
+function lmeHero(D){
+ const s=D.lme_series; if(!s||s.length<2)return"";
+ const o2n=a=>a.slice().reverse();
+ const cash=s.map(r=>r[1]),m3=s.map(r=>r[2]),stk=s.map(r=>r[3]);
+ const dp=a=>((a[0]-a[1])/a[1]*100);
+ const card=(lbl,val,d,vals)=>{const up=d>=0,c=up?"var(--green)":"var(--orange)";return `<div style="background:var(--card);border:1px solid var(--line);border-radius:9px;padding:10px 12px"><div style="font-size:10.5px;letter-spacing:.5px;color:#6B6353;text-transform:uppercase">${lbl}</div><div style="font-size:23px;font-weight:700;line-height:1.1">${val}</div><div style="font-size:11.5px;font-weight:600;color:${c}">${up?"▲":"▼"} ${Math.abs(d).toFixed(1)}%</div>${spark(o2n(vals),up?"#1D9E75":"#C76210")}</div>`;};
+ const spr=cash[0]-m3[0],back=spr<0;
+ const badge=`<span style="font-size:10.5px;font-weight:700;border-radius:5px;padding:1px 6px;${back?"color:#185FA5;background:#E6F1FB":"color:var(--gold);background:var(--cream)"}">${back?"BACKWARDATION":"CONTANGO"}</span>`;
+ const sprCard=`<div style="background:var(--card);border:1px solid var(--line);border-radius:9px;padding:10px 12px"><div style="font-size:10.5px;letter-spacing:.5px;color:#6B6353;text-transform:uppercase">Cash–3M</div><div style="font-size:23px;font-weight:700;line-height:1.1">${spr>=0?"+":"−"}${Math.abs(spr).toFixed(1)}</div>${badge}${spark(o2n(cash.map((c,i)=>c-m3[i])),"#185FA5")}</div>`;
+ const bm=D.benchmark||[],fb=n=>bm.find(b=>b.name.indexOf(n)>=0)||{};
+ const shfe=fb("SHFE"),avg=fb("Cash settlement").avg,arb=(shfe.cur!=null)?(m3[0]-shfe.cur):null;
+ const hi=Math.max(...cash),lo=Math.min(...cash);
+ const chg=[];for(let i=0;i<cash.length-1;i++)chg.push((cash[i]-cash[i+1])/cash[i+1]*100);
+ const vol=chg.length?Math.sqrt(chg.reduce((a,b)=>a+b*b,0)/chg.length):0;
+ const pill=t=>`<span style="font-size:11.5px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:4px 11px">${t}</span>`;
+ const pills=[pill(`session range <b>${nf(lo,0)}–${nf(hi,0)}</b>`),pill(`<b>${((cash[0]-hi)/hi*100).toFixed(1)}%</b> from window high`),avg?pill(`prior-mo avg <b>${nf(avg,0)}</b>`):"",pill(`daily vol <b>~${vol.toFixed(1)}%</b>`),arb!=null?pill(`LME–SHFE arb <b>${arb>=0?"+":""}${nf(arb,0)}</b>`):""].join("");
+ const read=D.lme_commentary?`<div style="background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:8px;padding:10px 13px;margin-bottom:14px"><div style="font-size:10.5px;letter-spacing:1px;color:var(--gold);font-weight:700;text-transform:uppercase">Trader's read · auto-updated</div><div style="font-size:13px;line-height:1.55;margin-top:3px">${e(D.lme_commentary.replace(/^Commentary:\s*/,""))} <span data-go="outlook" style="color:var(--gold);font-weight:600;cursor:pointer">See EW Outlook →</span></div></div>`:"";
+ return `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px">${card("Cash $/t",nf(cash[0],1),dp(cash),cash)}${card("3-Month $/t",nf(m3[0],1),dp(m3),m3)}${sprCard}${card("Inventory t",nf(stk[0],0),dp(stk),stk)}</div><div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">${pills}</div>${read}`;
+}
 function feedItems(D){return D.feed.map(f=>`<div class="feed"><div class="feed-when">${e(f.when)}</div>
  <div class="feed-txt">${e(f.text)}</div>${pill(f.impact,tone(f.impact))}</div>`).join("");}
 function newsRows(D){return D.news.map(n=>`<tr><td class="lbl">${e(n.theme)}</td><td>${e(n.headline)}</td>
@@ -267,10 +286,10 @@ function render(D){
    <h3>Regional premiums ($/t) <span class="row-links">${lk(SRC.prem_lme,"LME premiums")} · ${lk(SRC.mwp,"S&P US Midwest")} · <a href="#" data-go="premiums">full detail →</a></span></h3>
    <table><thead><tr><th>Premium ($/t)</th><th class="num">Current</th><th class="num">Previous</th><th class="num">Δ %</th><th class="ctr">Trend</th><th class="num">Avg last mo</th><th>Source / note</th></tr></thead><tbody>${premRows(D.premiums)}</tbody></table></section>
  <section id="lme"><div class="eyebrow">London Metal Exchange</div><h2>LME Prices &amp; Inventory</h2>
+   ${lmeHero(D)}
    <div style="height:340px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px;margin-bottom:14px"><canvas id="lmeChart" role="img" aria-label="LME cash, 3-month and inventory trend"></canvas></div>
    <h3>Daily settlement series <span class="row-links">${lk(SRC.lme,"Westmetall ↗")} · ${lk(SRC.lme_off,"LME official ↗")}</span></h3>
-   <table><thead><tr><th class="ctr">Date</th><th class="num">Cash ($/t)</th><th class="num">3-Month ($/t)</th><th class="num">Stock (t)</th><th class="num">Cash–3M</th></tr></thead><tbody>${lmeRows(D)}</tbody></table>
-   <p class="muted" style="margin-top:8px">${e(D.lme_commentary||"")}</p></section>
+   <table><thead><tr><th class="ctr">Date</th><th class="num">Cash ($/t)</th><th class="num">3-Month ($/t)</th><th class="num">Stock (t)</th><th class="num">Cash–3M</th><th class="num">Δ day</th></tr></thead><tbody>${lmeRows(D)}</tbody></table></section>
  <section id="premiums"><div class="eyebrow">Physical premiums</div><h2>Regional Premiums</h2>
    <p class="row-links">${lk(SRC.prem_lme,"LME premiums ↗")} · ${lk(SRC.mwp,"S&P US Midwest ↗")}</p>
    <table><thead><tr><th>Premium ($/t)</th><th class="num">Current</th><th class="num">Previous</th><th class="num">Δ %</th><th class="ctr">Trend</th><th class="num">Avg last mo</th><th>Source / note</th></tr></thead><tbody>${premRows(D.premiums)}</tbody></table>
