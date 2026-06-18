@@ -310,6 +310,8 @@ function render(D){
    <table><thead><tr><th class="ctr">Date</th><th class="num">Cash ($/t)</th><th class="num">3-Month ($/t)</th><th class="num">Stock (t)</th><th class="num">Cash–3M</th><th class="num">Δ day</th></tr></thead><tbody>${lmeRows(D)}</tbody></table></section>
  <section id="premiums"><div class="eyebrow">Physical premiums</div><h2>Regional Premiums</h2>
    <p class="row-links">${lk(SRC.prem_lme,"LME premiums ↗")} · ${lk(SRC.mwp,"S&P US Midwest ↗")}</p>
+   ${premiumsAnalytics(D)}
+   <h3 style="margin-top:20px">All premiums — detail</h3>
    <table><thead><tr><th>Premium ($/t)</th><th class="num">Current</th><th class="num">Previous</th><th class="num">Δ %</th><th class="ctr">Trend</th><th class="num">Avg last mo</th><th>Source / note</th></tr></thead><tbody>${premRows(D.premiums)}</tbody></table>
    ${premiumsExtra(D)}
    <p class="muted" style="margin-top:8px">Daily premium prints (Platts/Fastmarkets/Argus) are subscription feeds — figures are most-recent public anchors; reconcile to the licensed feed before pricing.</p></section>
@@ -375,6 +377,28 @@ function drawAlumina(D){
     {label:'FOB Australia (Fastmarkets)',data:H.fob,borderColor:'#185FA5',borderWidth:2.5,tension:.3,pointRadius:3,pointBackgroundColor:'#185FA5'},
     {label:'API / Platts region',data:H.api,borderColor:'#BA7517',borderWidth:2,tension:.3,pointRadius:3,pointBackgroundColor:'#BA7517'}]},
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{font:{family:'Saira'},color:'#1a1712',boxWidth:12}},tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.parsed.y}}},scales:{y:{ticks:{callback:v=>'$'+v}},x:{grid:{display:false}}}}});
+}
+function premiumsAnalytics(D){
+ const CARD='background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px';
+ const HDR='font-weight:700;font-size:12.5px;margin-bottom:6px',SUB='font-size:10px;color:#6B6353',NOTE='font-size:10px;color:#6B6353;margin-top:6px';
+ const bm=D.benchmark||[],lme=(bm.find(b=>b.name.indexOf("3-Month")>=0)||{}).cur;
+ const pr=D.premiums||[],fp=n=>(pr.find(p=>p.name.indexOf(n)>=0)||{});
+ const mjp=fp("MJP").cur,cif=fp("CIF Japan").cur,edu=fp("European Duty").cur,usdp=fp("US Midwest Duty-Paid").cur;
+ const tg=D.premium_tariff||{us_rate:0.5,eu_duty:0.06};
+ const q=D.premium_quarters||[];let qH="";
+ if(q.length){const vals=q.map(x=>x.v!=null?x.v:(x.range?x.range[1]:0)),mx=Math.max(...vals,1);const bars=q.map(x=>{const pend=(x.v==null),v=pend?(x.range?x.range[1]:0):x.v,h=Math.round(v/mx*82)||40,lbl=pend?(x.range?"$"+x.range[0]+"–"+x.range[1]:"~?"):"$"+nf(x.v,0),fill=pend?"background:repeating-linear-gradient(45deg,#E2D8C4,#E2D8C4 4px,var(--card) 4px,var(--card) 8px);border:1px dashed #C76210":"background:#8E7C42";return `<div style="text-align:center;flex:1"><div style="${fill};height:${h}px;border-radius:4px 4px 0 0"></div><div style="font-size:10.5px;font-weight:700;margin-top:3px">${lbl}</div><div style="${SUB}">${e(x.q)}</div></div>`;}).join("");const src=D.premium_settlement_src;qH=`<div style="${CARD};margin-bottom:12px"><div style="${HDR}">MJP quarterly settlement ($/t, CIF Japan) ${src?'<span class="row-links">'+lk(src[1],src[0])+'</span>':''}</div><div style="display:flex;align-items:flex-end;gap:14px;height:104px">${bars}</div><div style="${NOTE}">Negotiated quarterly; Q3 pending — lower end if Hormuz transit eases, upper end (≈2015 record) if Gulf supply stays curtailed.</div></div>`;}
+ const rowsP=[["MJP Japan",mjp],["CIF Japan spot",cif],["EU duty-unpaid",edu],["US MW duty-paid",usdp]].filter(r=>r[1]!=null).map(r=>{const pc=lme?Math.round(r[1]/(lme+r[1])*100):0;return `<tr style="border-top:1px solid var(--line)"><td style="padding:5px 0">${r[0]}</td><td class="num">${nf(r[1],0)}</td><td class="num"><b style="${pc>=30?'color:#C76210':''}">${pc}%</b></td></tr>`;}).join("");
+ const pctH=`<div style="${CARD}"><div style="${HDR}">Premium &amp; share of all-in price</div><table><thead><tr><th>Premium</th><th class="num">$/t</th><th class="num">% all-in</th></tr></thead><tbody>${rowsP}</tbody></table><div style="${NOTE}">All-in = LME 3M + premium · computed from current prints.</div></div>`;
+ const sp=(a,b)=>(a!=null&&b!=null)?(a-b):null;
+ const sprRows=[["US MW − MJP",sp(usdp,mjp)],["CIF Japan − MJP",sp(cif,mjp)],["EU EDU − MJP",sp(edu,mjp)],["EU import duty (6% LME)",lme?Math.round(tg.eu_duty*lme):null]].filter(r=>r[1]!=null).map(r=>`<div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:3px 0"><span style="color:#6B6353">${r[0]}</span><b>${r[1]>=0?"+":""}${nf(r[1],0)}</b></div>`).join("");
+ const sprH=`<div style="${CARD}"><div style="${HDR}">Regional spreads (computed $/t)</div>${sprRows}<div style="${NOTE}">Differences between real published prints.</div></div>`;
+ let decH="";
+ if(lme&&usdp!=null){const tar=Math.round(tg.us_rate*lme),mkt=Math.round(usdp-tar),tp=Math.max(0,Math.min(100,Math.round(tar/usdp*100)));const seg=(name,val,segs)=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between"><span style="color:#6B6353">${name}</span><b>${nf(val,0)}</b></div><div style="display:flex;height:15px;border-radius:3px;overflow:hidden;margin-top:3px">${segs}</div></div>`;const allMkt='<div style="width:100%;background:#8E7C42"></div>';decH=`<div style="${CARD};margin-top:12px"><div style="${HDR}">Premium decomposition — policy vs market ($/t)</div>${mjp!=null?seg("MJP Japan",mjp,allMkt):''}${edu!=null?seg("EU duty-unpaid",edu,allMkt):''}${seg("US MW duty-paid",usdp,`<div style="width:${tp}%;background:#C76210"></div><div style="width:${100-tp}%;background:#8E7C42"></div>`)}<div style="${NOTE}"><span style="color:#C76210">■</span> tariff/duty — computed (Section-232 ${Math.round(tg.us_rate*100)}% × LME = ${nf(tar,0)}) &nbsp; <span style="color:#8E7C42">■</span> underlying market premium — residual (freight+delivery+tightness, not split). ~${tp}% of the US premium is tariff, not tightness.</div></div>`;}
+ const dr=(D.premium_drivers||[]).map(x=>`<div style="margin-bottom:5px"><b>${e(x.t)}:</b> ${e(x.d)} ${x.src?'<span class="row-links">'+lk(x.src[1],x.src[0])+'</span>':''}</div>`).join("");
+ const drH=dr?`<div style="${CARD};border-left:4px solid var(--gold);margin-top:12px"><div style="font-size:10.5px;letter-spacing:1px;color:var(--gold);font-weight:700;text-transform:uppercase">What's moving premiums · sourced</div><div style="font-size:12px;line-height:1.6;margin-top:4px">${dr}</div></div>`:"";
+ const tUrl="https://www.whitehouse.gov/presidential-actions/2026/06/further-adjusting-the-tariff-regimes-for-imports-of-aluminum-steel-and-copper-into-the-united-states/";
+ const srcFoot=`<div style="${NOTE}">Sources (all public): ${lk(SRC.lme,"LME/Westmetall")} · ${lk(SRC.prem_lme,"LME premiums")} · ${lk(SRC.mwp,"S&P US Midwest")}${D.premium_settlement_src?" · "+lk(D.premium_settlement_src[1],D.premium_settlement_src[0]):""} · ${lk(tUrl,"Section 232 (White House)")}. All figures are public prints/policy; computations are arithmetic on them.</div>`;
+ return `${qH}<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px">${pctH}${sprH}</div>${decH}${drH}${srcFoot}`;
 }
 function premiumsExtra(D){
   const ex=(D.premium_explainer||[]).map(x=>`<tr><td class="lbl">${e(x.term)}</td><td class="note">${e(x.desc)}</td></tr>`).join("");
