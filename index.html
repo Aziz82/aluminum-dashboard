@@ -244,7 +244,7 @@ function ewSVG(P){
   const circ=(t,p,w)=>{const x=xx(t).toFixed(1),y=yy(p).toFixed(1),col=/^[A-Za-z]$/.test(w)?"#C76210":"#8E7C42";return `<circle cx="${x}" cy="${y}" r="8.5" fill="${col}"/><text x="${x}" y="${(+y+4).toFixed(1)}" font-size="11" font-weight="700" fill="#F2EDE2" text-anchor="middle">${e(w)}</text>`;};
   (P.fwd_pivots||[]).forEach(p=>s+=circ(p.t,p.p,p.w));
   waves.forEach(p=>s+=circ(p.t,p.p,p.w));
-  (P.annos||[]).forEach(a=>{const x=xx(a.t).toFixed(1),y=(yy(a.p)+(a.dy||0)).toFixed(1);s+=`<text x="${x}" y="${y}" font-size="10.5" fill="#6B6353" text-anchor="${a.anchor||"middle"}">${e(a.text)}</text>`;});
+  const _pl=[];(P.annos||[]).forEach(a=>{let x=xx(a.t),y=yy(a.p)+(a.dy||0),g=0;while(_pl.some(p=>Math.abs(p.x-x)<78&&Math.abs(p.y-y)<13)&&g<7){y-=14;g++;}_pl.push({x,y});const an=a.anchor||(a.t>0.78?"end":"middle");s+=`<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="10.5" fill="#6B6353" text-anchor="${an}" style="paint-order:stroke;stroke:var(--card);stroke-width:3;stroke-linejoin:round">${e(a.text)}</text>`;});
   (P.xlabels||[]).forEach(l=>s+=`<text x="${xx(l[1]).toFixed(1)}" y="262" font-size="11" fill="#6B6353" text-anchor="middle">${e(l[0])}</text>`);
   const lg=P.legend||[]; if(lg.length){let lx=X0;s+=`<g font-size="11" fill="#6B6353">`;lg.forEach(it=>{s+=`<line x1="${lx}" y1="18" x2="${lx+18}" y2="18" stroke="${it[1]}" stroke-width="2.6" ${it[2]?`stroke-dasharray="${it[2]}"`:""}/><text x="${lx+22}" y="22">${e(it[0])}</text>`;lx+=22+e(it[0]).length*6.4+26;});s+=`</g>`;}
   return s+`</svg>`;
