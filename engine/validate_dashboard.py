@@ -1,215 +1,110 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-validate_dashboard.py — MANDATORY pre-publish gate for the Aluminum dashboard.
+validate_dashboard.py — MANDATORY pre-publish gate for the Aluminum dashboard (v2).
 
-Run this AFTER build_data_json.py and BEFORE the git push. If it exits non-zero,
-DO NOT PUBLISH: fix market_data.json, rebuild, re-validate.
+Run AFTER build_data_json.py and BEFORE the git push. Non-zero exit = DO NOT PUBLISH.
 
     python3 validate_dashboard.py "$ENGDIR" "$SITE"
 
-Two layers:
+The site is now a built React SPA that renders from a camelCase data.json through a
+defensive adapter (it never throws; a missing/malformed section hides itself). The
+fatal class is therefore no longer "renderer throws" but "a critical section is
+EMPTY", which would show placeholders on an executive dashboard. This gate asserts
+the new contract and fails if any must-have section is missing or empty, and enforces
+the same freshness rule as before (data must carry today's report date).
 
-  LAYER 1 — CONTRACT (offline, pure python)
-    Asserts the exact shapes index.html requires. Derived by reading the
-    renderer, not by assumption. Catches the fatal class of bug directly:
-    a field the renderer calls .map() on must be a LIST; a field it indexes
-    as s[0]/s[1] must be a PAIR; row dicts must carry the keys the template
-    interpolates.
-
-  LAYER 2 — HEADLESS RENDER (jsdom)
-    Executes the REAL index.html against the REAL data.json and fails if the
-    page throws or any section comes back empty. This is the authoritative
-    check and catches shape breaks the contract doesn't yet know about.
-
-WHY THIS EXISTS (2026-07-13 incident)
-    index.html wraps render() inside the fetch promise chain:
-        fetch(...).then(r=>r.json()).then(D=>render(D)).catch(()=> show error)
-    That single .catch() swallows BOTH network errors AND rendering exceptions,
-    and always prints "Couldn't load data.json". On 13-Jul, outlook.ai_analysis
-    was written as a string instead of a list; the renderer called .map() on it,
-    threw, and the page showed a load error even though data.json was valid,
-    served a clean 200, and had the correct report_date. Verifying the SERVED
-    FILE therefore proves nothing. Only executing the renderer does.
+v1 (old snake_case + jsdom render of the client-renderer) kept as
+validate_dashboard_v1_oldschema.py.bak for reference.
 """
-import json, os, subprocess, sys
+import json, os, sys
 
 ENGDIR = sys.argv[1] if len(sys.argv) > 1 else "."
 SITE   = sys.argv[2] if len(sys.argv) > 2 else ENGDIR
 DATA   = os.path.join(SITE, "data.json")
-INDEX  = os.path.join(ENGDIR, "index.html")
-HERE   = os.path.dirname(os.path.abspath(__file__))
+INDEX  = os.path.join(SITE, "index.html")
 
 fails, warns = [], []
-
-
-def fail(msg):
-    fails.append(msg)
-
-
-# ── LAYER 1: CONTRACT ────────────────────────────────────────────────────────
-# Fields the renderer calls .map()/rows() on → MUST be lists.
-MUST_BE_LIST = [
-    "kpi_cards", "benchmark", "premiums", "macro", "macro_events", "lme_series",
-    "alumina", "alumina_notes", "alumina_explainer", "alumina_outlook",
-    "raw_materials", "inputs", "inputs_summary", "logistics", "feed", "news",
-    "earnings", "commercial", "caveats", "sources", "premium_explainer",
-    "premium_outlook", "premium_quarters", "premium_drivers", "metals_board",
-    "chart_price_axis", "chart_stock_axis",
-]
-OUTLOOK_MUST_BE_LIST = [
-    "forward_path", "consensus", "balance", "capacity_pipeline",
-    "scenarios", "risks", "catalysts",
-    "ai_analysis",   # ← the 13-Jul fatal: a string is truthy, so `O.ai_analysis||[]`
-                     #   does NOT fall back, and "".map is not a function.
-    "sources",
-]
-# Lists whose ROWS are indexed as s[0]/s[1] → each row MUST be a [label, value] pair.
-LIST_OF_PAIRS = ["sources"]
-# Fields that are THEMSELVES a flat [label, url] pair (not a list of rows).
-FLAT_PAIRS = ["premium_settlement_src"]
-# Row dicts → required keys the template interpolates.
-ROW_KEYS = {
-    "kpi_cards":         {"label", "value", "delta"},
-    "benchmark":         {"name", "cur", "prev", "note"},
-    "premiums":          {"name", "cur", "prev", "avg", "src"},
-    "macro":             {"name", "value", "note"},
-    "metals_board":      {"name", "price", "day", "ytd"},
-    "logistics":         {"name", "val", "note"},
-    "news":              {"theme", "impact", "headline", "source"},
-    "feed":              {"when", "impact", "text"},
-    "earnings":          {"company", "period", "headline", "readthrough"},
-    "premium_drivers":   {"t", "d", "src"},
-    "premium_explainer": {"term", "desc"},
-    "premium_quarters":  {"q", "v"},
-}
-OUTLOOK_ROW_KEYS = {
-    "forward_path":      {"tenor", "price", "basis"},
-    "consensus":         {"source", "y2026", "note"},
-    "balance":           {"year", "value", "label"},
-    "capacity_pipeline": {"asset", "change", "timing"},
-    "risks":             {"risk", "likelihood", "impact", "trend"},   # ← broke 13-Jul
-    "catalysts":         {"date", "event", "impact"},
-}
+def fail(m): fails.append(m)
 
 if not os.path.exists(DATA):
     print("FATAL: %s not found — run build_data_json.py first." % DATA); sys.exit(2)
-if not os.path.exists(INDEX):
-    print("FATAL: %s not found." % INDEX); sys.exit(2)
-
 try:
     D = json.load(open(DATA, encoding="utf-8"))
 except Exception as ex:
     print("FATAL: data.json is not valid JSON — %s" % ex); sys.exit(1)
 
-O = D.get("outlook", {})
+def is_list(x): return isinstance(x, list)
+def nonempty_list(x): return isinstance(x, list) and len(x) > 0
 
-for k in MUST_BE_LIST:
-    if k not in D:
-        fail("missing key: %s" % k)
-    elif not isinstance(D[k], list):
-        fail("%s must be a LIST, got %s  → renderer calls .map() on it and will throw"
-             % (k, type(D[k]).__name__))
+# ── Contract: critical sections that MUST be present and non-empty ───────────
+# (empty here = blank/placeholder section on the live exec dashboard)
+meta = D.get("meta") or {}
+sw   = D.get("soWhat") or {}
+lme  = D.get("lme") or {}
+ew   = D.get("elliottWave") or {}
+outl = D.get("outlook") or {}
 
-for k in OUTLOOK_MUST_BE_LIST:
-    if k not in O:
-        fail("missing key: outlook.%s" % k)
-    elif not isinstance(O[k], list):
-        fail("outlook.%s must be a LIST, got %s  → renderer calls .map() on it and will throw"
-             % (k, type(O[k]).__name__))
+if not sw.get("headline"):                 fail("soWhat.headline is empty (hero brief)")
+if not nonempty_list(sw.get("bullets")):   fail("soWhat.bullets is empty")
+if not nonempty_list(D.get("kpis")):       fail("kpis is empty (KPI cards)")
+if not nonempty_list(lme.get("series")):   fail("lme.series is empty (price/stock chart)")
+bench = lme.get("benchmark") or {}
+if bench.get("cash") is None and bench.get("threeMonth") is None:
+    fail("lme.benchmark has neither cash nor threeMonth")
+if not nonempty_list(D.get("baseMetals")): fail("baseMetals is empty (metals board)")
+prem = D.get("premiums") or {}
+if not nonempty_list(prem.get("regional")):fail("premiums.regional is empty")
+lt = (ew.get("longTerm") or {}).get("points")
+st = (ew.get("shortTerm") or {}).get("points")
+if not (nonempty_list(lt) or nonempty_list(st)):
+    fail("elliottWave has no points in either panel (technicals section)")
+if not (nonempty_list(D.get("news")) or nonempty_list(D.get("peers"))):
+    fail("news AND peers both empty")
+if not (outl.get("consensus") or nonempty_list(outl.get("catalysts")) or nonempty_list(outl.get("risks"))):
+    fail("outlook is empty (consensus/catalysts/risks all missing)")
+if not nonempty_list(D.get("sources")):    fail("sources is empty")
 
-for k in LIST_OF_PAIRS:
-    for i, row in enumerate(D.get(k, []) or []):
-        if not (isinstance(row, list) and len(row) >= 2):
-            fail("%s[%d] must be a [label, value] PAIR, got %s  → renderer indexes s[0]/s[1]"
-                 % (k, i, type(row).__name__))
-            break
+# ── Type sanity where the app calls .map() ──────────────────────────────────
+for k in ["kpis", "baseMetals", "news", "peers", "sources"]:
+    if k in D and not is_list(D[k]):
+        fail("%s must be a LIST, got %s" % (k, type(D[k]).__name__))
+for path_, v in [("lme.series", lme.get("series")),
+                 ("premiums.regional", prem.get("regional")),
+                 ("premiums.quarterly", prem.get("quarterly")),
+                 ("macro.row", (D.get("macro") or {}).get("row")),
+                 ("outlook.catalysts", outl.get("catalysts")),
+                 ("outlook.risks", outl.get("risks"))]:
+    if v is not None and not is_list(v):
+        fail("%s must be a LIST, got %s" % (path_, type(v).__name__))
 
-for k in FLAT_PAIRS:
-    v = D.get(k)
-    if v is not None and not (isinstance(v, list) and len(v) >= 2
-                              and all(isinstance(x, str) for x in v[:2])):
-        fail("%s must be a flat [label, url] pair of strings, got %r" % (k, v))
-for i, row in enumerate(O.get("sources", []) or []):
-    if not (isinstance(row, list) and len(row) >= 2):
-        fail("outlook.sources[%d] must be a [label, url] PAIR, got %s  → renderer indexes s[0]/s[1]"
-             % (i, type(row).__name__))
-        break
+# ── Freshness / anti-stale ──────────────────────────────────────────────────
+exp = os.environ.get("EXPECT_DATE")
+gen = meta.get("generatedAt")
+if exp and gen != exp:
+    fail("meta.generatedAt %r != expected %r (stale data — refresh did not update)" % (gen, exp))
+elif not gen:
+    warns.append("meta.generatedAt is empty — cannot verify freshness")
 
-for k, req in ROW_KEYS.items():
-    for i, row in enumerate(D.get(k, []) or []):
-        if not isinstance(row, dict):
-            fail("%s[%d] must be an object, got %s" % (k, i, type(row).__name__)); break
-        missing = req - set(row)
-        if missing:
-            fail("%s[%d] missing key(s): %s" % (k, i, ", ".join(sorted(missing)))); break
-
-for k, req in OUTLOOK_ROW_KEYS.items():
-    for i, row in enumerate(O.get(k, []) or []):
-        if not isinstance(row, dict):
-            fail("outlook.%s[%d] must be an object, got %s" % (k, i, type(row).__name__)); break
-        missing = req - set(row)
-        if missing:
-            fail("outlook.%s[%d] missing key(s): %s" % (k, i, ", ".join(sorted(missing)))); break
-
-if not all(isinstance(x, str) for x in (O.get("ai_analysis") or []) if True):
-    fail("outlook.ai_analysis must be a list of STRINGS")
-
-sw = D.get("so_what") or {}
-if not isinstance(sw, dict) or "line" not in sw or not isinstance(sw.get("points"), list):
-    fail("so_what must be {line: str, points: [str, ...]}")
-
-# Freshness / anti-stale checks
-if D.get("report_date") != os.environ.get("EXPECT_DATE", D.get("report_date")):
-    fail("report_date %r != expected %r" % (D.get("report_date"), os.environ.get("EXPECT_DATE")))
-if D.get("ew", {}).get("updated") != D.get("report_date"):
-    warns.append("ew.updated (%s) != report_date (%s) — EW should be refreshed every run"
-                 % (D.get("ew", {}).get("updated"), D.get("report_date")))
-
-print("── Layer 1: contract")
-if fails:
-    for f in fails:
-        print("  ✗ " + f)
+# ── index.html sanity (built React shell must reference its bundle) ─────────
+if os.path.exists(INDEX):
+    html = open(INDEX, encoding="utf-8", errors="ignore").read()
+    if 'id="root"' not in html:
+        warns.append('index.html has no <div id="root"> — is it the built React shell?')
+    if "assets/" not in html and "<script" not in html:
+        warns.append("index.html references no assets bundle — shell may be broken")
 else:
-    print("  ✓ all shapes match the renderer contract")
+    warns.append("index.html not found in SITE dir (shell is committed once; ok if only data.json is republished)")
 
-# ── LAYER 2: HEADLESS RENDER ────────────────────────────────────────────────
-print("── Layer 2: headless render (jsdom)")
-js = os.path.join(HERE, "validate_dashboard.js")
-if not os.path.exists(js):
-    js = os.path.join(ENGDIR, "validate_dashboard.js")
-
-render_ok = None
-if not os.path.exists(js):
-    warns.append("validate_dashboard.js not found — render check SKIPPED")
-else:
-    try:
-        subprocess.run(["node", "-e", "require('jsdom')"], check=True,
-                       capture_output=True, cwd="/tmp",
-                       env={**os.environ, "NODE_PATH": "/tmp/node_modules"})
-    except Exception:
-        print("  … installing jsdom")
-        subprocess.run(["npm", "install", "--prefix", "/tmp", "jsdom", "--silent"],
-                       capture_output=True)
-    r = subprocess.run(["node", js, INDEX, DATA], capture_output=True, text=True,
-                       env={**os.environ, "NODE_PATH": "/tmp/node_modules"})
-    out = (r.stdout or "") + (r.stderr or "")
-    print(out.rstrip() or "  (no output)")
-    if r.returncode == 2:
-        warns.append("render check could not run (jsdom unavailable) — contract check only")
-        render_ok = None
-    else:
-        render_ok = (r.returncode == 0)
-        if not render_ok:
-            fail("headless render FAILED — the dashboard would show an error card")
-
-# ── VERDICT ─────────────────────────────────────────────────────────────────
-print()
-for w in warns:
-    print("  ! WARN: " + w)
+# ── Verdict ─────────────────────────────────────────────────────────────────
+print("── Contract (v2 camelCase, non-empty critical sections)")
 if fails:
-    print("\n=== VALIDATION FAILED — DO NOT PUBLISH (%d issue%s) ==="
-          % (len(fails), "" if len(fails) == 1 else "s"))
+    for f in fails: print("  ✗ " + f)
+else:
+    print("  ✓ all critical sections present and non-empty")
+for w in warns: print("  ! WARN: " + w)
+if fails:
+    print("\n=== VALIDATION FAILED — DO NOT PUBLISH (%d issue%s) ===" % (len(fails), "" if len(fails)==1 else "s"))
     sys.exit(1)
 print("=== VALIDATION PASSED — safe to publish ===")
 sys.exit(0)

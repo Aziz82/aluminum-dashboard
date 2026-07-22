@@ -57,6 +57,14 @@ except Exception as _e:
     print("EW guardrail skipped:", _e)
 
 D["generated"] = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
+
+# --- v2 (2026-07-22): emit the NEW React dashboard schema (camelCase contract) ---
+# The site is now a built React SPA that reads a camelCase data.json. We keep the
+# full snake_case pipeline above (refresh, sentiment history, EW now-price guardrail)
+# untouched, then transform the enriched dict into the new contract as the final step.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from schema_v2 import to_dashboard  # noqa: E402
+_out = to_dashboard(D)
 path = os.path.join(out, "data.json")
-json.dump(D, open(path, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
-print("saved", path)
+json.dump(_out, open(path, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
+print("saved", path, "(v2 schema —", len(_out), "sections)")
