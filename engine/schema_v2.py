@@ -1,250 +1,286 @@
 #!/usr/bin/env python3
-"""schema_v2.py — transform the enriched engine dict (snake_case market_data) into
-the new React dashboard data.json contract (camelCase). Faithful, values-only.
-Kept as a module so build_data_json.py can call to_dashboard(D)."""
-import re
+"""schema_v2.py — Map the enriched engine dict (snake_case market_data.json) into the Web_v3
+dashboard data.json contract. Faithful: real values only, no fabrication.
+Exposes to_dashboard(e) -> dict. Standalone run maps /home/claude/market_data.json."""
+import json, re, datetime
+
+_MON = {'jan':1,'feb':2,'mar':3,'apr':4,'may':5,'jun':6,'jul':7,'aug':8,'sep':9,'oct':10,'nov':11,'dec':12}
 
 def pnum(s):
-    """First finite number in a string; commas/tilde/spaces stripped. None if absent."""
     if s is None: return None
     if isinstance(s,(int,float)): return float(s)
-    t = str(s).replace(',','')
-    m = re.search(r'[-+]?\d+(?:\.\d+)?', t)
+    m = re.search(r'[-+]?\d+(?:\.\d+)?', str(s).replace(',',''))
     return float(m.group()) if m else None
 
-def trim(s, n=600):
+def trim(s, n=320):
     return s if not isinstance(s,str) else (s if len(s)<=n else s[:n].rstrip()+'…')
 
-_MON={'jan':1,'feb':2,'mar':3,'apr':4,'may':5,'jun':6,'jul':7,'aug':8,'sep':9,'oct':10,'nov':11,'dec':12}
 def iso(d):
-    """'21-Jul-26' -> '2026-07-21' so the frontend's Date() parses cleanly. Pass-through otherwise."""
     if not isinstance(d,str): return d
-    m=re.match(r'(\d{1,2})[- ]([A-Za-z]{3})[- ](\d{2,4})', d.strip())
+    m = re.match(r'(\d{1,2})[- ]([A-Za-z]{3})[- ](\d{2,4})', d.strip())
     if not m: return d
     day=int(m.group(1)); mon=_MON.get(m.group(2).lower()); yr=int(m.group(3))
     if not mon: return d
     yr = 2000+yr if yr<100 else yr
     return f"{yr:04d}-{mon:02d}-{day:02d}"
 
+def _asof_date(e):
+    rd = e.get('report_date')
+    m = re.match(r'(\d{4})-(\d{2})-(\d{2})', str(rd) or '')
+    if m: return datetime.date(int(m.group(1)),int(m.group(2)),int(m.group(3)))
+    return datetime.date(2026,7,22)
+
+def _dates_back(end, n, step_days):
+    return [(end - datetime.timedelta(days=step_days*(n-1-i))).isoformat() for i in range(n)]
+
+def _dates_fwd(start, n, step_days):
+    return [(start + datetime.timedelta(days=step_days*i)).isoformat() for i in range(n)]
+
+def _rag_from_risk(r):
+    r = (r or '').lower()
+    if 'high' in r: return 'red'
+    if 'med' in r: return 'amber'
+    if 'low' in r: return 'green'
+    return None
+
+def _nearest(ts, t):
+    return min(range(len(ts)), key=lambda i: abs(ts[i]-t)) if ts else 0
+
+
+def _map_panel(panel, pid, asof, weekly):
+    if not isinstance(panel, dict): return None
+    step = 7 if weekly else 1
+    # price path: 'line' [[t,p]] preferred, else 'waves' [{t,p,w}]
+    if panel.get('line'):
+        path = [(x[0], x[1]) for x in panel['line'] if isinstance(x,(list,tuple)) and len(x)>=2]
+    elif panel.get('waves'):
+        path = [(w['t'], w['p']) for w in panel['waves'] if isinstance(w,dict) and 't' in w and 'p' in w]
+    else:
+        path = []
+    ts = [t for t,_ in path]
+    price = [p for _,p in path]
+    n = len(price)
+    hist_dates = _dates_back(asof, n, step) if n else []
+    # wave labels → index into history price
+    wave_labels = []
+    for w in panel.get('waves', []):
+        if not isinstance(w, dict): continue
+        idx = _nearest(ts, w.get('t', 0)) if ts else 0
+        wave_labels.append({'index': idx, 'label': str(w.get('w','')), 'position': 'top'})
+    fib = [{'label': f.get('l'), 'value': f.get('p')} for f in panel.get('fib', [])
+           if isinstance(f, dict) and f.get('p') is not None]
+    proj = panel.get('proj', {}) or {}
+    last_price = price[-1] if price else None
+    scenarios, zones = [], []
+    order = [k for k in ('base','bull','bear') if k in proj] + [k for k in proj if k not in ('base','bull','bear')]
+    max_len = 0
+    for sc in order:
+        pts = [pt[1] for pt in proj[sc] if isinstance(pt,(list,tuple)) and len(pt)>=2]
+        if not pts: continue
+        if last_price is not None:
+            pts = [last_price] + pts[1:] if len(pts) > 1 else [last_price]
+        max_len = max(max_len, len(pts))
+        scenarios.append({'id': sc, 'label': sc.capitalize(),
+                          'summary': None, 'points': pts})
+        if len(pts) >= 2:
+            lo, hi = sorted([pts[-1], pts[-2]])
+            zones.append({'low': lo, 'high': hi, 'label': f'{sc.capitalize()} target', 'scenario': sc})
+    # long-term 'zone' as base target if base absent
+    if 'base' not in [z['scenario'] for z in zones] and isinstance(panel.get('zone'), list) and len(panel['zone'])==2:
+        z = sorted(panel['zone']); zones.append({'low': z[0], 'high': z[1], 'label': 'Base zone', 'scenario': 'base'})
+    proj_dates = _dates_fwd(asof, max_len, step) if max_len else []
+    return {
+        'id': pid, 'title': panel.get('label') or pid, 'timeframe': panel.get('fwd_label') or ('Weekly' if weekly else 'Daily'),
+        'history': {'dates': hist_dates, 'price': price},
+        'projection_dates': proj_dates,
+        'wave_labels': wave_labels, 'fib_levels': fib,
+        'target_zones': zones, 'scenarios': scenarios,
+    }
+
 
 def to_dashboard(e):
-    # ---- meta / soWhat ----
+    asof = _asof_date(e)
     out = {}
-    out['meta'] = {
-        'generatedAt': e.get('report_date'),
-        'version': 'daily',
-        'source': 'Aluminium Market Intelligence Engine — public sources',
-        'timezone': 'Asia/Riyadh (UTC+3)',
-    }
-    sw = e.get('so_what',{})
-    out['soWhat'] = {'headline': sw.get('line'), 'bullets': sw.get('points',[])}
+    # meta / brief
+    out['meta'] = {'generated_at': e.get('generated') or (e.get('report_date')),
+                   'as_of': e.get('report_date'), 'engine_version': 'daily',
+                   'timezone': 'Asia/Riyadh (UTC+3)'}
+    sw = e.get('so_what', {}) or {}
+    out['brief'] = {'headline': sw.get('line'), 'bullets': sw.get('points', [])}
 
-    # ---- kpis (from benchmark: numeric cur/prev/avg) ----
-    kpis=[]
-    for b in e.get('benchmark',[]):
-        cur=b.get('cur'); prev=b.get('prev')
-        name=b.get('name','')
-        unit='t' if 'stock' in name.lower() else '$/t'
-        delta = (cur-prev) if (isinstance(cur,(int,float)) and isinstance(prev,(int,float))) else None
-        dpct = (delta/prev*100) if (delta is not None and prev) else None
-        direction = 'flat'
-        if delta is not None:
-            direction = 'up' if delta>0 else ('down' if delta<0 else 'flat')
-        kpis.append({
-            'id': re.sub(r'[^a-z0-9]+','-',name.lower()).strip('-'),
-            'label': name, 'value': cur, 'unit': unit,
-            'delta': round(delta,2) if delta is not None else None,
-            'deltaPct': round(dpct,2) if dpct is not None else None,
-            'direction': direction, 'note': trim(b.get('note'),400),
-        })
-    out['kpis']=kpis
+    # kpis from benchmark (numeric)
+    kpis = []
+    for b in e.get('benchmark', []):
+        cur, prev = b.get('cur'), b.get('prev')
+        name = b.get('name', '')
+        is_stock = 'stock' in name.lower(); is_spread = 'spread' in name.lower() or 'cash-3m' in name.lower()
+        chg = ((cur-prev)/prev*100) if isinstance(cur,(int,float)) and isinstance(prev,(int,float)) and prev else None
+        trend = 'flat'
+        if isinstance(cur,(int,float)) and isinstance(prev,(int,float)):
+            trend = 'up' if cur>prev else ('down' if cur<prev else 'flat')
+        kpis.append({'id': re.sub(r'[^a-z0-9]+','-',name.lower()).strip('-'), 'label': name,
+                     'value': cur, 'unit': 't' if is_stock else '$/t',
+                     'change_pct': round(chg,2) if chg is not None else None,
+                     'trend': trend, 'note': trim(b.get('note'), 160),
+                     'decimals': 0 if is_stock else (1 if is_spread else 1)})
+    out['kpis'] = kpis
 
-    # ---- lme ----
-    bm = {b.get('name'):b for b in e.get('benchmark',[])}
+    # lme
+    bench_rows = []
+    bm = {b.get('name'): b for b in e.get('benchmark', [])}
     cash = next((b for n,b in bm.items() if 'cash' in (n or '').lower()), {})
-    threeM = next((b for n,b in bm.items() if '3-month' in (n or '').lower() or '3m' in (n or '').lower()), {})
-    series=[]
-    for row in e.get('lme_series',[]):
-        # [date, cash, 3m, stock]
-        if len(row)>=4:
-            series.append({'date':iso(row[0]), 'price':row[1], 'stock':row[3]})
-    series = list(reversed(series))  # chronological
-    out['lme'] = {
-        'benchmark': {
-            'cash': cash.get('cur'), 'threeMonth': threeM.get('cur'),
-            'average': cash.get('avg'), 'unit':'$/t',
-            'commentary': trim(e.get('lme_commentary'),500),
-        },
-        'series': series,
-    }
+    thr  = next((b for n,b in bm.items() if '3-month' in (n or '').lower() or '3m' in (n or '').lower()), {})
+    spr  = next((b for n,b in bm.items() if 'spread' in (n or '').lower()), {})
+    al_spread = spr.get('cur')
+    bench_rows.append({'metal':'Aluminium','cash':cash.get('cur'),'three_month':thr.get('cur'),
+                       'average':cash.get('avg'),'spread':al_spread,
+                       'structure':('Backwardation' if (al_spread or 0)>0 else 'Contango') if al_spread is not None else None})
+    for m in e.get('metals_board', []):
+        nm = m.get('name','')
+        if nm.lower().startswith('alum'): continue
+        bench_rows.append({'metal':nm,'three_month':m.get('price')})
+    series = e.get('lme_series', []) or []
+    ser = list(reversed(series))
+    out['lme'] = {'commentary': trim(e.get('lme_commentary'), 400),
+                  'benchmarks': bench_rows,
+                  'series': {'dates':[iso(r[0]) for r in ser if len(r)>=4],
+                             'price':[r[1] for r in ser if len(r)>=4],
+                             'stocks':[r[3] for r in ser if len(r)>=4]}}
 
-    # ---- baseMetals ----
-    SYM={'aluminium':'AL','aluminum':'AL','copper':'CU','nickel':'NI','zinc':'ZN','lead':'PB'}
-    mh=e.get('metals_history',{})
-    labels=mh.get('labels',[])
-    histmap={'AL':mh.get('al',[]),'CU':mh.get('cu',[]),'NI':mh.get('ni',[])}
-    bmetals=[]
-    for m in e.get('metals_board',[]):
-        nm=m.get('name',''); sym=SYM.get(nm.lower(),nm[:2].upper())
-        hist=[]
-        arr=histmap.get(sym)
-        if arr and labels and len(arr)==len(labels):
-            hist=[{'date':labels[i],'value':arr[i]} for i in range(len(arr))]
-        bmetals.append({'symbol':sym,'name':nm,'price':m.get('price'),
-                        'dayPct':m.get('day'),'ytdPct':m.get('ytd'),'history':hist})
-    out['baseMetals']=bmetals
+    # base_metals
+    SYM = {'aluminium':'AL','aluminum':'AL','copper':'CU','nickel':'NI','zinc':'ZN','lead':'PB'}
+    board = [{'symbol':SYM.get(m.get('name','').lower(), m.get('name','')[:2].upper()),
+              'name':m.get('name'),'price':m.get('price'),'day_pct':m.get('day'),'ytd_pct':m.get('ytd')}
+             for m in e.get('metals_board', [])]
+    mh = e.get('metals_history', {}) or {}
+    hseries = {}
+    for sym,key in (('AL','al'),('CU','cu'),('NI','ni')):
+        if mh.get(key): hseries[sym] = mh[key]
+    out['base_metals'] = {'board': board,
+                          'history': {'dates': mh.get('labels', []), 'rebased_base': 100, 'series': hseries}}
 
-    # ---- premiums ----
-    reg=[]
-    for p in e.get('premiums',[]):
-        cur=p.get('cur'); prev=p.get('prev')
-        chg=(cur-prev) if isinstance(cur,(int,float)) and isinstance(prev,(int,float)) else None
+    # premiums
+    reg = []
+    for p in e.get('premiums', []):
+        cur, prev = p.get('cur'), p.get('prev')
+        chg = (cur-prev) if isinstance(cur,(int,float)) and isinstance(prev,(int,float)) else None
         reg.append({'region':p.get('name'),'premium':cur,'unit':'$/t',
                     'change':round(chg,1) if chg is not None else None,
-                    'status':('up' if (chg or 0)>0 else 'down' if (chg or 0)<0 else 'flat')})
-    quarterly=[]
-    for q in e.get('premium_quarters',[]):
-        note=None
-        if q.get('v') is None and q.get('range'):
-            note=f"Range ${q['range'][0]}–${q['range'][1]}/t"
-        quarterly.append({'quarter':q.get('q'),'value':q.get('v'),'note':note})
-    pt=e.get('premium_tariff',{})
-    tariffs=[]
-    if pt:
-        if pt.get('us_rate') is not None:
-            tariffs.append({'label':'US Section 232 (aluminium)','rate':f"{pt['us_rate']*100:.0f}%",
-                            'note':'Full customs value; eff. 08-Jun-2026 → 31-Dec-2027'})
-        if pt.get('eu_duty') is not None:
-            tariffs.append({'label':'EU import duty (P1020A)','rate':f"{pt['eu_duty']*100:.0f}%",
-                            'note':'Structural floor plus CBAM'})
-        if pt.get('us_dp_match'):
-            tariffs.append({'label':pt['us_dp_match'],'rate':'ref','note':'US duty-paid benchmark'})
-    drivers=[]
-    for d in e.get('premium_drivers',[]):
-        src=d.get('src'); srctxt = src[0] if isinstance(src,list) and src else (src if isinstance(src,str) else None)
-        drivers.append({'title':d.get('t'),'detail':trim(d.get('d'),500),'source':srctxt})
-    out['premiums']={'regional':reg,'quarterly':quarterly,'tariffs':tariffs,'drivers':drivers}
+                    'basis':trim(p.get('src'),60),
+                    'status':('amber' if (chg or 0)>0 else 'green')})
+    ph = e.get('premium_history', {}) or {}
+    settlements = []
+    labels = ph.get('labels_reg', [])
+    for i,q in enumerate(labels):
+        row = {'quarter': q}
+        if i < len(ph.get('mjp',[])): row['MJP'] = ph['mjp'][i]
+        if i < len(ph.get('cif',[])): row['CIF Japan'] = ph['cif'][i]
+        if i < len(ph.get('edu',[])): row['EU duty-unpaid'] = ph['edu'][i]
+        settlements.append(row)
+    pt = e.get('premium_tariff', {}) or {}
+    tariffs = []
+    if pt.get('us_rate') is not None:
+        tariffs.append({'region':'United States','rate':f"{pt['us_rate']*100:.0f}%",'instrument':'Section 232',
+                        'status':'amber','note':'Full customs value; eff. 08-Jun-2026 → 31-Dec-2027'})
+    if pt.get('eu_duty') is not None:
+        tariffs.append({'region':'European Union','rate':f"{pt['eu_duty']*100:.0f}% + CBAM",'instrument':'Import duty',
+                        'status':'amber','note':'Structural floor plus carbon border adjustment'})
+    drivers = []
+    for d in e.get('premium_drivers', []):
+        src = d.get('src'); srctxt = src[0] if isinstance(src,list) and src else (src if isinstance(src,str) else None)
+        drivers.append({'text': trim((d.get('t','') + ' — ' + (d.get('d') or '')).strip(' —'), 300), 'source': srctxt})
+    out['premiums'] = {'regional':reg,'settlements':settlements,'tariffs':tariffs,'drivers':drivers}
 
-    # ---- alumina (alumina board + raw_materials feedstock) ----
-    al_items=[]
-    for a in e.get('alumina',[]):
-        al_items.append({'name':a.get('name'),'price':pnum(a.get('val')),'unit':a.get('unit'),
-                         'changePct':None,'note':trim(a.get('src'),400)})
-    for a in e.get('raw_materials',[]):
-        al_items.append({'name':a.get('name'),'price':pnum(a.get('val')),'unit':a.get('unit'),
-                         'changePct':None,'note':trim(a.get('src'),400)})
-    ah=e.get('alumina_history',{})
-    al_hist=[]
-    if ah.get('labels') and ah.get('fob') and len(ah['labels'])==len(ah['fob']):
-        al_hist=[{'date':ah['labels'][i],'value':ah['fob'][i]} for i in range(len(ah['fob']))]
-    out['alumina']={'items':al_items,'history':al_hist}
+    # alumina (+ raw_materials feedstock)
+    prices = []
+    for a in e.get('alumina', []):
+        prices.append({'label':a.get('name'),'value':pnum(a.get('val')),'unit':a.get('unit'),
+                       'note':trim(a.get('src'),160),'status':None})
+    for a in e.get('raw_materials', []):
+        prices.append({'label':a.get('name'),'value':pnum(a.get('val')),'unit':a.get('unit'),
+                       'note':trim(a.get('src'),160),'status':None})
+    ah = e.get('alumina_history', {}) or {}
+    ahser = {}
+    if ah.get('fob'): ahser['FOB Australia ($/t)'] = ah['fob']
+    if ah.get('api'): ahser['API ex-China ($/t)'] = ah['api']
+    out['alumina'] = {'prices':prices,'notes':e.get('alumina_notes', []),
+                      'history':{'dates':ah.get('labels', []),'series':ahser}}
 
-    # ---- inputs ----
-    in_items=[]
-    for it in e.get('inputs',[]):
-        in_items.append({'name':it.get('name'),'value':pnum(it.get('val')),'unit':it.get('unit'),
-                         'changePct':None,'status':it.get('risk')})
-    log=e.get('logistics',[])
-    hormuz=next((l for l in log if 'hormuz' in (l.get('name','').lower())), log[0] if log else {})
-    out['inputs']={'items':in_items,'hormuz':{'status':hormuz.get('val'),'detail':trim(hormuz.get('note'),400)}}
+    # inputs
+    items = []
+    for it in e.get('inputs', []):
+        items.append({'label':it.get('name'),'value':pnum(it.get('val')),'unit':it.get('unit'),
+                      'note':trim(it.get('src'),160),'status':_rag_from_risk(it.get('risk'))})
+    logistics = []
+    for l in e.get('logistics', []):
+        tr = (l.get('trend') or '').lower()
+        logistics.append({'label':l.get('name'),'status':('red' if tr=='up' else 'green' if tr=='down' else 'amber'),
+                          'note':trim(l.get('note'),200)})
+    out['inputs'] = {'items':items,'logistics':logistics}
 
-    # ---- macro ----
-    mrow=[]
-    for m in e.get('macro',[]):
-        nm=m.get('name',''); unit=None
-        um=re.search(r'\(([^)]+)\)',nm)
-        if um: unit=um.group(1)
-        mrow.append({'label':re.sub(r'\s*\([^)]*\)','',nm).strip(),'value':pnum(m.get('value')),
-                     'unit':unit,'changePct':m.get('day')})
-    mevents=[]
-    for f in e.get('feed',[]):
-        txt=f.get('text',''); title=txt.split(':')[0] if ':' in txt[:80] else txt[:60]
-        mevents.append({'date':f.get('when'),'title':title,'detail':trim(txt,400),'impact':f.get('impact')})
-    out['macro']={'row':mrow,'events':mevents}
+    # macro
+    row = []
+    for m in e.get('macro', []):
+        nm = m.get('name',''); um = re.search(r'\(([^)]+)\)', nm)
+        row.append({'label':re.sub(r'\s*\([^)]*\)','',nm).strip(),'value':pnum(m.get('value')),
+                    'unit':um.group(1) if um else None,'day_pct':m.get('day'),
+                    'status':None})
+    IMP = {'positive':'medium','negative':'medium','high':'high'}
+    events = []
+    for f in e.get('feed', []):
+        txt = f.get('text',''); title = txt.split(':')[0] if ':' in txt[:80] else txt[:60]
+        events.append({'date':f.get('when'),'event':title,'importance':IMP.get((f.get('impact') or '').lower(),'medium'),
+                       'note':trim(txt,200)})
+    out['macro'] = {'row':row,'events':events}
 
-    # ---- elliottWave ----
-    def nearest_idx(pts_t, t):
-        return min(range(len(pts_t)), key=lambda i: abs(pts_t[i]-t)) if pts_t else 0
+    # elliott_wave
+    ew = e.get('ew', {}) or {}
+    panels = []
+    lt = _map_panel(ew.get('long_term'), 'al_weekly', asof, True)
+    st = _map_panel(ew.get('short_term'), 'al_daily', asof, False)
+    for p in (lt, st):
+        if p: panels.append(p)
+    out['elliott_wave'] = {'panels':panels}
 
-    def map_panel(panel):
-        if not panel: return None
-        # price path: prefer 'line', else 'waves'
-        if panel.get('line'):
-            pts=[{'t':x[0],'date':f"{x[0]:.3f}",'price':x[1]} for x in panel['line']]
-        elif panel.get('waves'):
-            pts=[{'t':w['t'],'date':f"{w['t']:.3f}",'price':w['p']} for w in panel['waves']]
-        else:
-            pts=[]
-        pts_t=[p['t'] for p in pts]
-        points=[{'date':p['date'],'price':p['price']} for p in pts]
-        waves=[]
-        for w in panel.get('waves',[]):
-            idx=nearest_idx(pts_t, w['t'])
-            waves.append({'label':w['w'],'index':idx})
-        fib=[{'label':f['l'],'value':f['p']} for f in panel.get('fib',[])]
-        proj=panel.get('proj',{}) or {}
-        projections={}
-        for sc in ('bull','base','bear'):
-            if proj.get(sc):
-                projections[sc]=[{'date':f"{x[0]:.3f}",'price':x[1]} for x in proj[sc]]
-        targets={}
-        for sc in ('bull','base','bear'):
-            p=proj.get(sc)
-            if p and len(p)>=2:
-                vals=sorted([p[-1][1],p[-2][1]])
-                targets[sc]={'low':vals[0],'high':vals[1]}
-        # long-term base target can also use 'zone'
-        if 'base' not in targets and panel.get('zone') and len(panel['zone'])==2:
-            z=sorted(panel['zone']); targets['base']={'low':z[0],'high':z[1],'note':'projection zone'}
-        return {'title':panel.get('label'),'unit':'$/t','points':points,'waves':waves,
-                'fibLevels':fib,'projections':projections,'targets':targets}
+    # news
+    heads = []
+    for n in e.get('news', []):
+        heads.append({'ts':None,'title':n.get('headline'),'source':n.get('source'),'tag':n.get('theme')})
+    out['news'] = {'headlines':heads}
 
-    ew=e.get('ew',{})
-    out['elliottWave']={'longTerm':map_panel(ew.get('long_term')),'shortTerm':map_panel(ew.get('short_term'))}
+    # peers (qualitative note; engine lacks numeric peer financials)
+    earnings = []
+    for p in e.get('earnings', []):
+        comp = p.get('company',''); tm = re.search(r'\(([^)]+)\)', comp)
+        note = ' '.join(x for x in [p.get('headline'), p.get('readthrough')] if x)
+        earnings.append({'company':re.sub(r'\s*\([^)]*\)','',comp).strip(),
+                         'ticker':tm.group(1) if tm else None,'period':p.get('period'),
+                         'note':trim(note, 300)})
+    out['peers'] = {'earnings':earnings}
 
-    # ---- news ----
-    SENT={'bullish':'bullish','bearish':'bearish','positive':'bullish','negative':'bearish'}
-    news=[]
-    for n in e.get('news',[]):
-        imp=(n.get('impact') or '').lower()
-        news.append({'time':n.get('horizon'),'title':n.get('headline'),'source':n.get('source'),
-                     'sentiment':SENT.get(imp,'neutral')})
-    out['news']=news
+    # outlook
+    o = e.get('outlook', {}) or {}
+    consensus = []
+    for c in o.get('consensus', []):
+        consensus.append({'bank':c.get('source'),'target':pnum(c.get('y2026')),'horizon':'2026',
+                          'stance':'neutral'})
+    DIR = {'positive':'up','negative':'down','high':'up'}
+    catalysts = []
+    for c in o.get('catalysts', []):
+        catalysts.append({'text':c.get('event'),'date':c.get('date'),
+                          'direction':DIR.get((c.get('impact') or '').lower(),'flat')})
+    TREND = {'up':'rising','down':'fading','flat':'stable'}
+    risks = []
+    for r in o.get('risks', []):
+        risks.append({'text':trim(r.get('risk'),260),'likelihood':(r.get('likelihood') or '').lower() or None,
+                      'impact':(r.get('impact') or '').lower() or None,
+                      'trend':TREND.get((r.get('trend') or '').lower())})
+    out['outlook'] = {'consensus':consensus,'catalysts':catalysts,'risks':risks}
 
-    # ---- peers (from earnings; financial numerics not in engine → null) ----
-    peers=[]
-    for p in e.get('earnings',[]):
-        comp=p.get('company',''); tk=None
-        tm=re.search(r'\(([^)]+)\)',comp)
-        if tm: tk=tm.group(1)
-        peers.append({'company':re.sub(r'\s*\([^)]*\)','',comp).strip(),'ticker':tk,
-                      'group':p.get('group'),'period':p.get('period'),
-                      'headline':trim(p.get('headline'),320),'readthrough':trim(p.get('readthrough'),320),
-                      'sentiment':p.get('sentiment'),
-                      'eps':None,'revenue':None,'margin':None,'ytdPct':None})
-    out['peers']=peers
-
-    # ---- outlook ----
-    o=e.get('outlook',{})
-    catalysts=[]
-    for c in o.get('catalysts',[]):
-        catalysts.append(f"{c.get('date','')}: {c.get('event','')}".strip(': ').strip())
-    risks=[]
-    TREND={'up':'rising','down':'falling','flat':'stable'}
-    for r in o.get('risks',[]):
-        risks.append({'title':trim(r.get('risk'),260),'likelihood':(r.get('likelihood') or '').lower(),
-                      'impact':(r.get('impact') or '').lower(),'trend':TREND.get((r.get('trend') or '').lower(),r.get('trend')),
-                      'detail':''})
-    out['outlook']={'consensus':trim(e.get('net_read'),500),'catalysts':catalysts,'risks':risks}
-
-    # ---- sources / caveats ----
-    srcs=[]
-    for s in e.get('sources',[]):
-        if isinstance(s,list) and len(s)>=2:
-            srcs.append({'label':s[0],'note':s[1]})
-        elif isinstance(s,list) and s:
-            srcs.append({'label':s[0],'note':None})
-    out['sources']=srcs
-    cav=e.get('caveats',[])
-    out['caveats']=' · '.join(cav) if isinstance(cav,list) else cav
+    # sources
+    refs = []
+    for s in e.get('sources', []):
+        if isinstance(s,list) and len(s)>=2: refs.append({'name':s[0],'url':s[1]})
+        elif isinstance(s,list) and s: refs.append({'name':s[0]})
+    out['sources'] = {'caveats':e.get('caveats', []),'references':refs}
     return out
