@@ -948,78 +948,117 @@
     "company": "Alcoa",
     "ticker": "AA",
     "period": "Q2 2026",
+    "eps": 2.12,
+    "revenue_bn": 3.97,
+    "yoy_pct": null,
     "note": "Revenue $3.97bn (+24% q/q, highest in nearly a decade); adj. EPS $2.12 (MISS vs ~$2.31 consensus); adj. net income $562m; adj. EBITDA $901m (from $595m in Q1); Aluminum segment RECORD EBITDA $1.073bn at 32.3% margin. First producer P&L under the Hormuz-disruption regime: record aluminium margins and…"
    },
    {
     "company": "Norsk Hydro",
     "ticker": "NHY",
     "period": "Q2 2026",
+    "eps": null,
+    "revenue_bn": null,
+    "yoy_pct": null,
     "note": "Q2 2026 results released this morning (22-Jul, 07:00 CEST). Guidance into the quarter pointed to adjusted EBITDA ~NOK 8.7-9.0bn, with ~67% of Q2 primary output hedged near $3,000/t and realised premiums guided at ~$530-580/t. Final reported figures were still being digested at this ~06:05 London ref…"
    },
    {
     "company": "Century Aluminum",
     "ticker": "CENX",
     "period": "Q1 2026",
+    "eps": 1.63,
+    "revenue_bn": 0.649,
+    "yoy_pct": null,
     "note": "Adj. EPS $1.63 (beat $1.56); revenue $649m; net income $327m (incl. $288m Hawesville sale gain). Higher LME + strong US Midwest premiums; Q2 adj. EBITDA guided $315–335m."
    },
    {
     "company": "Alba",
     "ticker": "Bahrain",
     "period": "Q1 2026",
+    "eps": null,
+    "revenue_bn": null,
+    "yoy_pct": 316.0,
     "note": "Net profit $200.3m (+316% YoY); EPS 53 fils; sales −17% on Gulf supply-chain disruption. LME averaged $3,195/t (+22% YoY) drove profit surge; volumes hit by regional conflict; ~19% capacity in controlled shutdown — restart path improves post-truce."
    },
    {
     "company": "Maaden",
     "ticker": "1211",
     "period": "Q1 2026",
+    "eps": null,
+    "revenue_bn": null,
+    "yoy_pct": 5.5,
     "note": "Net profit SAR 1.63bn (~$436m, +5.5% YoY); revenue SAR 8.79bn (+3.2%); EBITDA $964m. Strong pricing across commodities; partly offset by lower phosphate volumes; 2026 capex set >$4bn."
    },
    {
     "company": "Rio Tinto",
     "ticker": "RIO",
     "period": "Q2 2026 (prod.)",
+    "eps": null,
+    "revenue_bn": null,
+    "yoy_pct": 3.0,
     "note": "H1 copper-equivalent output +3% y/y; aluminium division improved; strong bauxite recovery; FY aluminium guidance UNCHANGED at 3.25–3.45 Mt; Pilbara Q2 shipments 89 Mt (+5%). First upstream print of the Q2 season (this morning): Western volumes are intact — the Gulf disruption is expressing itself in…"
    },
    {
     "company": "South32",
     "ticker": "S32",
     "period": "Q3 FY26 (Mar)",
+    "eps": null,
+    "revenue_bn": null,
+    "yoy_pct": null,
     "note": "Hillside Al ~538kt (9M, FY26 guide 720kt); Brazil Alumina record 1,060kt (9M); Worsley steady. Alumina sales −15% q/q on availability/timing; annual guidance intact despite cyclone gas disruption."
    },
    {
     "company": "Hindalco / Novelis",
     "ticker": null,
     "period": "Q4 FY26 (Mar)",
+    "eps": null,
+    "revenue_bn": null,
+    "yoy_pct": 66.0,
     "note": "Hindalco PAT ₹5,283cr (+66% YoY); India Al upstream EBITDA margin ~46%; Novelis FY26 adj. EBITDA $1.6bn (−9%). Record India operations; Novelis pressured by Oswego outage (~$104m) and tariffs (~$143m)."
    },
    {
     "company": "Chalco",
     "ticker": "2600",
     "period": "Q1 2026 (prelim)",
+    "eps": null,
+    "revenue_bn": null,
+    "yoy_pct": 54.0,
     "note": "Net profit guided RMB 5.30–5.59bn (+50–58% YoY). Strong on higher Al prices; China output near self-imposed 45 Mt capacity cap."
    },
    {
     "company": "BHP",
     "ticker": null,
     "period": "H1 FY26 (Dec-25)",
+    "eps": null,
+    "revenue_bn": null,
+    "yoy_pct": 20.0,
     "note": "Underlying profit $6.2bn (+>20%); underlying EBITDA $15.5bn (+25%, 58% margin); interim div 73c. Copper-led strength; broad base-metals read-across positive for the complex."
    },
    {
     "company": "Glencore",
     "ticker": null,
     "period": "FY2025",
+    "eps": null,
+    "revenue_bn": null,
+    "yoy_pct": 9.0,
     "note": "FY25 results; copper & aluminium average prices +9% YoY; zinc metal +4%. Resilient structural demand for Cu/Al cited; broadly constructive sector tone."
    },
    {
     "company": "Rusal",
     "ticker": null,
     "period": "FY2025",
+    "eps": null,
+    "revenue_bn": null,
+    "yoy_pct": null,
     "note": "FY25 net loss $455m (vs $803m profit in 2024) on higher costs & lower output. Analysts expect stronger H1 2026 on higher prices; Asia pivot amid fractured trade flows."
    },
    {
     "company": "Zhongfu Industrial",
     "ticker": "600595.SH",
     "period": "H1 2026 (profit alert)",
+    "eps": null,
+    "revenue_bn": null,
+    "yoy_pct": 165.0,
     "note": "Guides H1-26 net profit ¥1.8–1.95bn, +154.4–175.6% YoY. Credits industry-chain cost reduction, aluminium prices fluctuating at highs, high-value-added deep-processing mix and energy-saving retrofits — the first sizeable China H1 pre-announcement of the season and a positive read-across for Chinese p…"
    }
   ]
