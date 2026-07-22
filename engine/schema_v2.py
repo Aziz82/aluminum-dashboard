@@ -46,6 +46,35 @@ def _rag_from_risk(r):
 def _nearest(ts, t):
     return min(range(len(ts)), key=lambda i: abs(ts[i]-t)) if ts else 0
 
+def _peer_eps(t):
+    """Adjusted/reported EPS in $ only (skips non-$ subunits like fils)."""
+    if not t: return None
+    m = re.search(r'EPS\s*\$\s*([0-9]+\.?[0-9]*)', t, re.I)
+    return float(m.group(1)) if m else None
+
+def _peer_rev_bn(t):
+    """Revenue in $bn ($m converted). Ignores non-$ (SAR/₹/RMB/¥) figures."""
+    if not t: return None
+    m = re.search(r'[Rr]evenue[^.]{0,18}?\$([0-9]+\.?[0-9]*)\s*bn', t)
+    if m: return round(float(m.group(1)), 3)
+    m = re.search(r'[Rr]evenue[^.]{0,18}?\$([0-9]+\.?[0-9]*)\s*m', t)
+    if m: return round(float(m.group(1))/1000, 3)
+    return None
+
+def _peer_yoy(t):
+    """Headline YoY %: explicit YoY/y-y first; else first '+X%' that is NOT q/q.
+    Ranges → midpoint. Real sourced figures only."""
+    if not t: return None
+    m = re.search(r'\+?\s*([0-9]+\.?[0-9]*)\s*(?:[–-]\s*([0-9]+\.?[0-9]*)\s*)?%\s*(?:YoY|y/y)', t, re.I)
+    if m:
+        lo=float(m.group(1)); hi=float(m.group(2)) if m.group(2) else None
+        return round((lo+hi)/2,1) if hi else lo
+    for mm in re.finditer(r'\+\s*>?\s*([0-9]+\.?[0-9]*)\s*(?:[–-]\s*([0-9]+\.?[0-9]*)\s*)?%(\s*q/q)?', t):
+        if mm.group(3): continue  # exclude quarter-on-quarter
+        lo=float(mm.group(1)); hi=float(mm.group(2)) if mm.group(2) else None
+        return round((lo+hi)/2,1) if hi else lo
+    return None
+
 
 def _map_panel(panel, pid, asof, weekly):
     if not isinstance(panel, dict): return None
@@ -255,6 +284,7 @@ def to_dashboard(e):
         note = ' '.join(x for x in [p.get('headline'), p.get('readthrough')] if x)
         earnings.append({'company':re.sub(r'\s*\([^)]*\)','',comp).strip(),
                          'ticker':tm.group(1) if tm else None,'period':p.get('period'),
+                         'eps':_peer_eps(note),'revenue_bn':_peer_rev_bn(note),'yoy_pct':_peer_yoy(note),
                          'note':trim(note, 300)})
     out['peers'] = {'earnings':earnings}
 
