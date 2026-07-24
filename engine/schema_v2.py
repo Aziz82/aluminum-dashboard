@@ -15,6 +15,18 @@ def pnum(s):
 def trim(s, n=320):
     return s if not isinstance(s,str) else (s if len(s)<=n else s[:n].rstrip()+'…')
 
+def _first_url(*vals):
+    """Return the first real http(s) URL found in any of the given strings, else None.
+    Source/driver fields often carry the URL embedded in descriptive text, so the raw
+    field is NOT a safe href — extract the clean URL for anchors."""
+    for v in vals:
+        if not isinstance(v, str):
+            continue
+        m = re.search(r'https?://[^\s)\]]+', v)
+        if m:
+            return m.group(0).rstrip('.,);]')
+    return None
+
 def iso(d):
     if not isinstance(d,str): return d
     m = re.match(r'(\d{1,2})[- ]([A-Za-z]{3})[- ](\d{2,4})', d.strip())
@@ -217,17 +229,18 @@ def to_dashboard(e):
     drivers = []
     for d in e.get('premium_drivers', []):
         src = d.get('src'); srctxt = src[0] if isinstance(src,list) and src else (src if isinstance(src,str) else None)
-        drivers.append({'text': trim((d.get('t','') + ' — ' + (d.get('d') or '')).strip(' —'), 300), 'source': srctxt})
+        srcurl = _first_url(src[1], src[0]) if isinstance(src,list) and len(src)>=2 else _first_url(src if isinstance(src,str) else '')
+        drivers.append({'text': trim((d.get('t','') + ' — ' + (d.get('d') or '')).strip(' —'), 800), 'source': srctxt, 'url': srcurl})
     out['premiums'] = {'regional':reg,'settlements':settlements,'tariffs':tariffs,'drivers':drivers}
 
     # alumina (+ raw_materials feedstock)
     prices = []
     for a in e.get('alumina', []):
         prices.append({'label':a.get('name'),'value':pnum(a.get('val')),'unit':a.get('unit'),
-                       'note':trim(a.get('src'),160),'status':None})
+                       'note':trim(a.get('src'),800),'status':None})
     for a in e.get('raw_materials', []):
         prices.append({'label':a.get('name'),'value':pnum(a.get('val')),'unit':a.get('unit'),
-                       'note':trim(a.get('src'),160),'status':None})
+                       'note':trim(a.get('src'),800),'status':None})
     ah = e.get('alumina_history', {}) or {}
     ahser = {}
     if ah.get('fob'): ahser['FOB Australia ($/t)'] = ah['fob']
@@ -239,12 +252,12 @@ def to_dashboard(e):
     items = []
     for it in e.get('inputs', []):
         items.append({'label':it.get('name'),'value':pnum(it.get('val')),'unit':it.get('unit'),
-                      'note':trim(it.get('src'),160),'status':_rag_from_risk(it.get('risk'))})
+                      'note':trim(it.get('src'),800),'status':_rag_from_risk(it.get('risk'))})
     logistics = []
     for l in e.get('logistics', []):
         tr = (l.get('trend') or '').lower()
         logistics.append({'label':l.get('name'),'status':('red' if tr=='up' else 'green' if tr=='down' else 'amber'),
-                          'note':trim(l.get('note'),200)})
+                          'note':trim(l.get('note'),800)})
     out['inputs'] = {'items':items,'logistics':logistics}
 
     # macro
@@ -253,7 +266,7 @@ def to_dashboard(e):
         nm = m.get('name',''); um = re.search(r'\(([^)]+)\)', nm)
         row.append({'label':re.sub(r'\s*\([^)]*\)','',nm).strip(),'value':pnum(m.get('value')),
                     'unit':um.group(1) if um else None,'day_pct':m.get('day'),
-                    'status':None})
+                    'note':trim(m.get('note'), 800),'status':None})
     IMP = {'positive':'medium','negative':'medium','high':'high'}
     events = []
     for f in e.get('feed', []):
@@ -269,23 +282,47 @@ def to_dashboard(e):
     st = _map_panel(ew.get('short_term'), 'al_daily', asof, False)
     for p in (lt, st):
         if p: panels.append(p)
-    out['elliott_wave'] = {'panels':panels}
+    # Elliott Wave retired 2026-07-25, replaced by the market-implied 'forward' block
+    # (ForwardOutlook section). Panels are no longer emitted; the upstream ew{} data is
+    # left untouched in market_data.json in case it is ever wanted again.
+    _ = panels
 
     # news
     heads = []
     for n in e.get('news', []):
-        heads.append({'ts':None,'title':n.get('headline'),'source':n.get('source'),'tag':n.get('theme')})
+        heads.append({'ts':None,'title':n.get('headline'),'source':n.get('source'),'tag':n.get('theme'),
+                      'url':_first_url(n.get('url'), n.get('source'))})
     out['news'] = {'headlines':heads}
 
-    # peers (qualitative note; engine lacks numeric peer financials)
+    # forward outlook (market-implied baseline + probability cone + condition diagnostics).
+    # Computed by forward_model.py from LME official history; passed through as-is.
+    if e.get('forward'):
+        out['forward'] = e['forward']
+
+    # peers — prefer EXPLICIT sourced fields; fall back to parsing prose only if absent.
+    # Sorted newest-first by reported_iso; entries within 14 days of the report date flagged recent.
+    _rd = _asof_date(e)
     earnings = []
     for p in e.get('earnings', []):
         comp = p.get('company',''); tm = re.search(r'\(([^)]+)\)', comp)
         note = ' '.join(x for x in [p.get('headline'), p.get('readthrough')] if x)
+        eps = p.get('eps', _peer_eps(note)); eps = _peer_eps(note) if eps is None and 'eps' not in p else eps
+        rev = p['revenue_bn'] if 'revenue_bn' in p else _peer_rev_bn(note)
+        yoy = p['yoy_pct'] if 'yoy_pct' in p else _peer_yoy(note)
+        riso = p.get('reported_iso')
+        recent = False
+        if riso and _rd:
+            try:
+                recent = (_rd - __import__('datetime').date.fromisoformat(riso)).days <= 14
+            except Exception:
+                recent = False
         earnings.append({'company':re.sub(r'\s*\([^)]*\)','',comp).strip(),
                          'ticker':tm.group(1) if tm else None,'period':p.get('period'),
-                         'eps':_peer_eps(note),'revenue_bn':_peer_rev_bn(note),'yoy_pct':_peer_yoy(note),
-                         'note':trim(note, 300)})
+                         'eps':(p.get('eps') if 'eps' in p else _peer_eps(note)),
+                         'revenue_bn':rev,'yoy_pct':yoy,
+                         'reported':p.get('reported'),'reported_iso':riso,'recent':recent,
+                         'url':p.get('url'),'note':trim(note, 800)})
+    earnings.sort(key=lambda x: x.get('reported_iso') or '0000-00-00', reverse=True)
     out['peers'] = {'earnings':earnings}
 
     # outlook
@@ -310,7 +347,7 @@ def to_dashboard(e):
     # sources
     refs = []
     for s in e.get('sources', []):
-        if isinstance(s,list) and len(s)>=2: refs.append({'name':s[0],'url':s[1]})
-        elif isinstance(s,list) and s: refs.append({'name':s[0]})
+        if isinstance(s,list) and len(s)>=2: refs.append({'name':s[0],'url':_first_url(s[1], s[0])})
+        elif isinstance(s,list) and s: refs.append({'name':s[0],'url':_first_url(s[0])})
     out['sources'] = {'caveats':e.get('caveats', []),'references':refs}
     return out

@@ -28,9 +28,12 @@ if not ne((lme.get('series') or {}).get('price')): f.append("lme.series.price em
 if not ne(lme.get('benchmarks')): f.append("lme.benchmarks empty")
 if not ne((D.get('base_metals') or {}).get('board')): f.append("base_metals.board empty")
 if not ne((D.get('premiums') or {}).get('regional')): f.append("premiums.regional empty")
-panels = ew.get('panels') or []
-if not panels or not ne((panels[0].get('history') or {}).get('price')):
-    f.append("elliott_wave first panel history empty")
+fwd = D.get('forward') or {}
+if not ne(fwd.get('cone')): f.append("forward.cone empty (probability range)")
+if not ne(fwd.get('history')): f.append("forward.history empty (price chart)")
+if not ne(fwd.get('drivers')): f.append("forward.drivers empty (condition diagnostics)")
+if not (fwd.get('backtest') or {}).get('verdict'):
+    f.append("forward.backtest.verdict missing — the measured-evidence disclosure must always publish")
 if not ne((D.get('news') or {}).get('headlines')) and not ne((D.get('peers') or {}).get('earnings')):
     f.append("news AND peers both empty")
 if not (ne(outl.get('catalysts')) or ne(outl.get('risks')) or ne(outl.get('consensus'))):

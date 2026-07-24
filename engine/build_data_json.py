@@ -6,6 +6,17 @@ Writes <output_dir>/data.json
 import json, os, sys, datetime
 eng = sys.argv[1] if len(sys.argv) > 1 else os.path.dirname(os.path.abspath(__file__))
 out = sys.argv[2] if len(sys.argv) > 2 else eng
+# --- forward model: recompute the market-implied baseline, probability cone and
+# condition diagnostics from price_history.json before assembling the payload, so the
+# 'forward' block is always present and consistent with the latest LME history. ---
+try:
+    import subprocess
+    _r = subprocess.run(["python3", os.path.join(eng, "forward_model.py"), eng],
+                        capture_output=True, text=True, timeout=120)
+    print("forward_model:", "ok" if _r.returncode == 0 else "FAILED\n" + (_r.stderr or "")[:500])
+except Exception as _e:
+    print("forward_model skipped:", _e)
+
 D = json.load(open(os.path.join(eng, "market_data.json"), encoding="utf-8"))
 wkp = os.path.join(eng, "weekly_data.json")
 D["weekly"] = json.load(open(wkp, encoding="utf-8")) if os.path.exists(wkp) else None

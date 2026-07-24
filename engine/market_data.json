@@ -1,1736 +1,2812 @@
 {
- "report_date": "2026-07-21",
- "kpi_cards": [
-  {
-   "label": "LME CASH ($/t)",
-   "value": "3,154.0",
-   "pos": false,
-   "delta": "17-Jul OFFICIAL (Westmetall) - still the latest PUBLISHED official at this ~06:05 London refresh on Tue 21-Jul; Westmetall had not yet posted the 20-Jul settlement. The 20-Jul session itself traded softer (aluminium about $3,138/t, -0.85%, Trading Economics). Backdrop escalated again on Monday: Iran said it disabled two oil tankers attempting to transit Hormuz without permission, a third US service member was confirmed killed since Friday, and Iran struck Kuwaiti power and desalination sites plus Bahrain, home of the US 5th Fleet. Brent topped $90/bbl."
-  },
-  {
-   "label": "LME 3-MONTH ($/t)",
-   "value": "3,146.5",
-   "pos": false,
-   "delta": "17-Jul official, -$20.00 (-0.63%) vs 16-Jul. The LME's day-delayed 3M closing print for the same session was $3,185.00 (+1.11%), so the curve closed firmer than the ring settled. Resistance $3,230 (MA20) then $3,260 (.382 retracement); support the early-July low near $3,085."
-  },
-  {
-   "label": "CASH-3M ($/t)",
-   "value": "+7.5",
-   "pos": true,
-   "delta": "BACKWARDATION on the latest published official. Prompt tightness persists with LME stock at 280,100 t (lowest since 2022, about -45% YTD). Watch whether Monday's tanker interdictions steepen the front of the curve at the next official."
-  },
-  {
-   "label": "LME STOCK (t)",
-   "value": "280,100",
-   "pos": true,
-   "delta": "-1,500 t on the 17-Jul official; roughly -45% YTD from 509,250 t on 02-Jan-2026. Lowest since 2022 and still drawing. SHFE stocks are falling in parallel - a genuinely tight physical picture on both sides of the arb."
-  }
- ],
- "benchmark": [
-  {
-   "name": "LME Cash settlement",
-   "cur": 3154.0,
-   "prev": 3170.0,
-   "avg": 3458.6,
-   "note": "17-Jul OFFICIAL (Westmetall) $3,154.00 vs 16-Jul $3,170.00 = -$16.00 (-0.50%). This remains the LATEST PUBLISHED official: Westmetall had not yet posted the 20-Jul official at this ~06:05 London refresh (LME officials print 13:20 London and are republished with a lag). Separately, the 20-Jul session traded lower - see the metals board. avg = June-2026 monthly mean ($3,458.6)."
-  },
-  {
-   "name": "LME 3-Month",
-   "cur": 3146.5,
-   "prev": 3166.5,
-   "avg": 3438.9,
-   "note": "17-Jul official $3,146.50 vs 16-Jul $3,166.50 (-$20.00, -0.63%) - latest published official. The LME's own day-delayed 3M CLOSING price for 17-Jul printed $3,185.00 (+1.11%), above the official, i.e. the afternoon curve was firmer than the ring. Resistance stack: $3,230 (MA20), then $3,260 (.382 of the June-July decline). avg = June-2026 3M mean ($3,438.9)."
-  },
-  {
-   "name": "Cash-3M spread",
-   "cur": 7.5,
-   "prev": 3.5,
-   "avg": null,
-   "note": "BACKWARDATION at +$7.50 (cash $3,154.00 over 3M $3,146.50) on the 17-Jul official - the latest published curve. Positive cash-3M = backwardation = prompt tightness, consistent with LME stocks at 280,100 t, the lowest since 2022. The next official print is the first chance to see whether the tanker interdictions widen it."
-  },
-  {
-   "name": "LME stock (t)",
-   "cur": 280100,
-   "prev": 281600,
-   "avg": null,
-   "note": "280,100 t at the 17-Jul official, down 1,500 t on the day and roughly -45% year-to-date from 509,250 t on 02-Jan-2026. Lowest since 2022. Draws have been continuous through July; SHFE stockpiles are also declining."
-  }
- ],
- "premiums": [
-  {
-   "name": "MJP Q3 (Main Japanese Port)",
-   "cur": 395,
-   "prev": 351.5,
-   "avg": 195,
-   "src": "Q3-2026 SETTLED at $395/t (S&P Global Platts, assessed 06-Jul-2026) - a decade high, roughly +12% q/q vs Q2's $350-353/t. Q4 negotiations open around September against this anchor; the swing variable is whether Hormuz disruption persists at current intensity. Source: Platts via IndexBox. avg = Q1-26 settlement ($195)."
-  },
-  {
-   "name": "CIF Japan spot (MJP spot)",
-   "cur": 365,
-   "prev": 355,
-   "avg": 319.5,
-   "src": "Spot firming toward the Q3 settlement: Platts CIF Japan spot last publicly at ~$370/t (06-Jul); SMM's 'squeeze risk climbs under LME deep backwardation' analysis flags tight spot supply pushing the QMJP premium up. Point ~$365/t. Verify Fastmarkets MB-AL-0343 / SMM weekly."
-  },
-  {
-   "name": "European Duty Unpaid (EDU)",
-   "cur": 542.5,
-   "prev": 612.5,
-   "avg": 519.1,
-   "src": "Platts P1020A duty-UNPAID in-warehouse Rotterdam assessed $525-560/t (mid $542.50) on 03-Jul-2026, down from $600-625/t on 13-May as the Middle East war premium faded. No fresher public print. Structural floor: 6% EU duty plus CBAM plus idled European capacity. Liquidity thin - Rotterdam competes with Asia for units."
-  },
-  {
-   "name": "Billets Rotterdam Duty-Paid",
-   "cur": 1102,
-   "prev": 1104,
-   "avg": 1144,
-   "src": "Value-added 6063 billet conversion premium, in-whs duty-paid Rotterdam — last public reference (~late-Jun; no fresh public print). Conversion premia are stickier than ingot premia; Mozal remains down. Verify Fastmarkets MB-AL-0002."
-  },
-  {
-   "name": "MW US Transaction (Platts)",
-   "cur": 2396,
-   "prev": 2624,
-   "avg": 2561.9,
-   "src": "Platts US MW Transaction premium last publicly assessed 108.7¢/lb ≈ $2,396/t (03-Jul). The all-in US delivered price embeds the 50% Section-232 tariff (≈$1,577/t at the 17-Jul cash of $3,154), so the policy leg dominates. Alcoa's Q2 flagged Section-232 on Canadian metal rising ~$35m q/q. Verify S&P Global."
-  },
-  {
-   "name": "US Midwest Duty-Paid (P1020A)",
-   "cur": 2420,
-   "prev": 2431,
-   "avg": 2561.9,
-   "src": "SMM weekly DDP print 109.75¢/lb ≈ $2,420/t (10-Jul). Duty-paid = LME + Section-232 tariff (50%) + market premium; the policy leg is ~two-thirds of the all-in. The tariff-$ component eased ~$8/t with Friday's softer LME. Verify Platts/Fastmarkets."
-  }
- ],
- "macro": [
-  {
-   "name": "Brent crude ($/bbl)",
-   "value": "90.40",
-   "day": 1.5,
-   "note": "Topped $90/bbl on Monday as US strikes on Iran entered a ninth consecutive day and Iran disabled two tankers in the Strait of Hormuz. Energy is the largest smelter cost line; European and Asian smelters carry the most exposure through the gas channel."
-  },
-  {
-   "name": "US Dollar Index (DXY)",
-   "value": "≈ 100.9",
-   "day": 0.0,
-   "note": "DXY ~100.9, easing from early-July highs near 101.4 on softer labour-market signals and steadier Treasury yields. A softer dollar removes a headwind for metals even as the geopolitical risk premium re-widens."
-  },
-  {
-   "name": "EUR/USD",
-   "value": "≈ 1.140",
-   "day": 0.0,
-   "note": "Euro ~1.14, holding near recent levels. The ECB still carries a war-energy inflation problem with Brent above $90 and European gas exposed to any further Gulf escalation."
-  },
-  {
-   "name": "USD/CNY",
-   "value": "≈ 6.77",
-   "day": 0.0,
-   "note": "Yuan steady ~6.77. China's Q2 GDP grew 4.3% y/y — below the 4.5% consensus and the weakest since Q4-2022 — with June retail sales +1.0% and industrial output +5.3% (both beat) but H1 fixed-asset investment −5.7% y/y, the lowest since May-2020: production/export strength, deep investment weakness, keeping the record export valve open."
-  },
-  {
-   "name": "USD/JPY",
-   "value": "≈ 162.4",
-   "day": 0.1,
-   "note": "Yen ~162.4, little changed. A still-weak yen cushions Japan-bound cargo premia in local terms; MJP Q4 talks (~Sep) open against a decade-high $395 anchor and a further-escalated Gulf conflict."
-  },
-  {
-   "name": "US 10Y yield (%)",
-   "value": "≈ 4.56",
-   "day": 0.0,
-   "note": "10Y ~4.56%, little changed after last week's cool inflation prints. Real rates remain the macro cap on metals; the swing risk this week is geopolitical (oil-driven inflation pass-through) rather than the Fed."
-  }
- ],
- "macro_events": [
-  "HORMUZ MOVES TO ENFORCEMENT: Iran said on Monday 20-Jul that it disabled two oil tankers which attempted to transit the Strait of Hormuz without its permission. This is the first direct interdiction of individual merchant vessels in the conflict and converts what had been a de-facto shipping stoppage into an actively enforced one. The Gulf accounts for roughly 9% of global primary aluminium supply. (NPR)",
-  "US CASUALTIES AND STRIKE TEMPO: A third US service member was confirmed killed in operations since Friday, and US strikes on Iran ran to a ninth consecutive day following the collapse of talks over a Strait of Hormuz memorandum of understanding. Iran struck electricity and water desalination installations in Kuwait and targeted Bahrain, home of the US Navy's 5th Fleet. (NPR)",
-  "ENERGY: Brent topped $90/bbl on Monday. Sustained crude and gas strength raises smelter operating costs and biases marginal European and Asian capacity toward curtailment rather than restart.",
-  "ALUMINA RELIEF RAMPING: EGA's Al Taweelah refinery has been at full alumina production since 10-Jul, targeting 50% of plant capacity within days of restart and full capability by end-2026. This is the principal counterweight to the geopolitical supply risk and helps explain the flat price drifting lower despite the escalation. (EGA)",
-  "US TRADE POLICY: The Section 232 aluminium tariff remains at 50% on the full customs value for products made entirely or almost entirely of aluminium, under the proclamation signed 01-Jun-2026 effective 08-Jun-2026 through 31-Dec-2027, with CBP implementation guidance issued 05-Jun-2026. This is the single largest administered component of the US duty-paid premium. (CBP)"
- ],
- "lme_series": [
-  [
-   "17-Jul-26",
-   3154,
-   3146.5,
-   280100
-  ],
-  [
-   "16-Jul-26",
-   3170,
-   3166.5,
-   281600
-  ],
-  [
-   "15-Jul-26",
-   3153.5,
-   3150.5,
-   283100
-  ],
-  [
-   "14-Jul-26",
-   3171,
-   3167.5,
-   284600
-  ],
-  [
-   "13-Jul-26",
-   3138.5,
-   3147,
-   286225
-  ],
-  [
-   "10-Jul-26",
-   3156,
-   3153,
-   287725
-  ],
-  [
-   "09-Jul-26",
-   3164,
-   3169,
-   289225
-  ],
-  [
-   "08-Jul-26",
-   3141,
-   3147,
-   290825
-  ],
-  [
-   "07-Jul-26",
-   3119,
-   3127.5,
-   292425
-  ],
-  [
-   "06-Jul-26",
-   3105,
-   3113,
-   295550
-  ],
-  [
-   "03-Jul-26",
-   3080,
-   3087,
-   298775
-  ],
-  [
-   "02-Jul-26",
-   3061.5,
-   3065,
-   300275
-  ],
-  [
-   "01-Jul-26",
-   3075,
-   3073,
-   301775
-  ],
-  [
-   "30-Jun-26",
-   3105.5,
-   3112,
-   303675
-  ],
-  [
-   "29-Jun-26",
-   3160.5,
-   3166,
-   305225
-  ]
- ],
- "chart_price_axis": [
-  2950,
-  3600
- ],
- "chart_stock_axis": [
-  275000,
-  310000
- ],
- "lme_commentary": "The 17-Jul official remains the latest PUBLISHED LME official (cash $3,154.00 / 3M $3,146.50 / stock 280,100 t): Westmetall had not yet posted the 20-Jul settlement at this ~06:05 London refresh on Tue 21-Jul, and LME officials print at 13:20 London before being republished with a lag. The 20-Jul session did trade, and it traded softer - aluminium settled around $3,138/t, down 0.85%, giving back part of the rebound from the early-July four-month low near $3,085 (Trading Economics). Copper's LME day-delayed 3M close for 20-Jul was $13,525.50, down 0.54%. The softness sits awkwardly against the geopolitical tape. On Monday Iran said it disabled two oil tankers that attempted to transit the Strait of Hormuz without its permission - the first time individual merchant vessels have been directly interdicted in this conflict, converting a de-facto stoppage into an enforced one. A third US service member was confirmed killed since Friday, US strikes on Iran ran to a ninth consecutive day, and Iran targeted Kuwaiti electricity and water desalination installations as well as Bahrain, home of the US Navy's 5th Fleet. Brent topped $90/bbl. The counterweight is real: EGA's Al Taweelah refinery resumed full alumina production on 10-Jul and is ramping toward full capability by end-2026, which is the most plausible explanation for why the flat price is drifting rather than spiking. Structurally the market remains tight - LME stock at 280,100 t is the lowest since 2022 and roughly 45% below the start of the year, SHFE stocks are drawing, and the cash-3M curve is in backwardation at +$7.50. The next official print is the first clean read on whether the tanker interdictions steepen the front of the curve.",
- "alumina": [
-  {
-   "name": "Alumina FOB Australia (SMM/Fastmarkets)",
-   "val": 328,
-   "unit": "$/t",
-   "asof": "09-Jul",
-   "trend": "down",
-   "src": "$328/t FOB Western Australia (SMM, 09-Jul) — down from ~$338 as the EGA Al Taweelah refinery restart (10-Jul) ramps and the ex-China surplus deepens. The SMM Alumina Index eased to ¥2,730.17/t (−¥12.8 w/w). Gulf-routed cargoes still carry elevated war-risk cover given the further-escalated Kuwaiti energy-infrastructure strikes. Verify SMM/Fastmarkets."
-  },
-  {
-   "name": "Alumina API / Platts region",
-   "val": 303,
-   "unit": "$/t",
-   "asof": "mid-Jul",
-   "trend": "down",
-   "src": "Ex-China benchmark region ~$303/t — easing on the building surplus (Q1 avg $306.9; latest public reference, no fresher print surfaced). SMM flags ex-China metallurgical-grade output down ~6% y/y in June — a partial offset to the EGA restart. Verify Platts."
-  },
-  {
-   "name": "SHFE-region alumina (SMM Alumina Index)",
-   "val": 2730,
-   "unit": "¥/t",
-   "asof": "early-Jul",
-   "trend": "down",
-   "src": "SMM Alumina Index ¥2,730.17/t, down ¥12.8/t week-on-week; regional spot Shandong ¥2,710–2,780, Henan ¥2,730–2,800, Shanxi ¥2,750–2,800, Guangxi ¥2,600–2,680, Guizhou ¥2,760–2,800. Futures trade below moving averages with port stocks building even as the Gulf strait squeeze still weighs on regional refinery feed (~60% of Gulf alumina imports transit Hormuz)."
-  },
-  {
-   "name": "Platts FOB Australia (futures)",
-   "val": 308,
-   "unit": "$/t",
-   "asof": "mid-Jul",
-   "trend": "flat",
-   "src": "Alumina FOB Australia (Platts) futures ~$308/t — CME/TradingView; no material move in the latest public print."
-  }
- ],
- "alumina_notes": [
-  "The alumina market remains the mirror image of metal: globally LOOSENING (EGA's 2.4 Mtpa restart ramping since 10-Jul, Guinea bauxite oversupply, Chinese port stocks building; SMM Alumina Index down to ¥2,730.17/t, −¥12.8 w/w) — ex-China consolidation has stepped down toward the $300–330 band (FOB Australia now $328, from ~$338).",
-  "The regional wrinkle has widened further overnight: a 9th consecutive night of US strikes on Iran, a second consecutive Iranian strike on Kuwait's Shuaiba desalination/power complex, and Strait transits down to as few as ~3 vessels/24h all re-price the war-risk cover embedded in the ~60% of Gulf alumina imports that transit Hormuz. SMM separately flags ex-China metallurgical-grade output down ~6% y/y in June.",
-  "Guinea's pending export-quota policy (a considered cap near 150 Mt for 2026, vs 178 Mt shipped in 2025, targeting >$100/dmt bauxite) remains undecreed as of end-June and is the one clear bullish catalyst on the commodity leg; record Australian and Metro Mining shipments underline how long the seaborne bauxite market currently is."
- ],
- "net_read": "ENFORCED BLOCKADE MEETS A SOFTER TAPE. Monday's session traded aluminium down to about $3,138/t (-0.85%) even as Iran moved from threatening the Strait of Hormuz to physically disabling two tankers that tried to cross it without permission. That divergence is the story: the market is discounting escalation because the only credible supply relief in the system - EGA's Al Taweelah alumina restart, at full production since 10-Jul and ramping to full capability by end-2026 - is arriving at the same time. The structural picture has not loosened: LME stock is 280,100 t on the latest published official, the lowest since 2022 and roughly -45% YTD, SHFE inventories are falling, and cash-3M holds a +$7.50 backwardation. Brent above $90/bbl keeps smelter power costs pointed the wrong way. The asymmetry favours the upside on any interruption to the Al Taweelah ramp or any widening of the tanker interdictions beyond crude into general merchant traffic.",
- "feed": [
-  {
-   "when": "Mon 20-Jul",
-   "impact": "Positive",
-   "text": "HORMUZ ENFORCEMENT: Iran said it disabled two oil tankers that attempted to transit the Strait of Hormuz without its permission - the first direct interdiction of individual merchant vessels in this conflict, moving the strait from de-facto stoppage to enforced closure (NPR)."
-  },
-  {
-   "when": "Mon 20-Jul",
-   "impact": "Positive",
-   "text": "US CASUALTIES: A third US service member was confirmed killed in military operations since Friday. US strikes on Iran ran to a ninth consecutive day since the Hormuz memorandum-of-understanding talks collapsed (NPR)."
-  },
-  {
-   "when": "Mon 20-Jul",
-   "impact": "Positive",
-   "text": "REGIONAL SPILLOVER: Iran targeted electricity installations and water desalination plants in Kuwait, which hosts a large US military presence, and also struck Bahrain, home of the US Navy's 5th Fleet. Iran's stated posture is to respond in kind to US strikes (NPR)."
-  },
-  {
-   "when": "Mon 20-Jul",
-   "impact": "Positive",
-   "text": "ENERGY: Brent topped $90/bbl as the conflict intensified. Energy is the single largest smelter operating cost line, and European and Asian smelters are the most exposed to the gas-price channel."
-  },
-  {
-   "when": "Mon 20-Jul",
-   "impact": "Negative",
-   "text": "FLAT PRICE SOFTER: The 20-Jul session traded aluminium down to about $3,138/t (-0.85%), giving back part of the rebound from the early-July four-month low near $3,085. LME copper's day-delayed 3M close was $13,525.50 (-0.54%) (Trading Economics; LME)."
-  },
-  {
-   "when": "Fri 10-Jul (ramping)",
-   "impact": "Negative",
-   "text": "SUPPLY RELIEF: EGA resumed full alumina production at Al Taweelah on 10-Jul after a three-and-a-half-month outage, targeting 50% of plant capacity within days and full capability by end-2026. The refinery produced 2.4 Mt of alumina in 2025, close to half of EGA's requirement (EGA)."
-  }
- ],
- "news": [
-  {
-   "theme": "Geopolitics / Hormuz",
-   "impact": "Bullish",
-   "horizon": "Now",
-   "headline": "Iran disabled two oil tankers attempting to transit the Strait of Hormuz without permission on Monday - the first direct interdiction of individual merchant vessels in this conflict. Combined with a third US service member killed since Friday, a ninth consecutive day of US strikes, and Iranian attacks on Kuwaiti power/desalination sites and Bahrain (US 5th Fleet), the strait has moved from blockade-by-threat to blockade-by-enforcement.",
-   "source": "NPR - US-Iran live updates (20-Jul-2026)"
-  },
-  {
-   "theme": "Supply / Alumina",
-   "impact": "Bearish",
-   "horizon": "Weeks",
-   "headline": "EGA's Al Taweelah refinery resumed full alumina production on 10-Jul after a three-and-a-half-month outage, targeting 50% of capacity within days and full capability by end-2026. At 2.4 Mt in 2025 it supplies close to half of EGA's alumina need - the only material supply-side relief currently visible and the most plausible reason the flat price is drifting rather than spiking.",
-   "source": "Emirates Global Aluminium; The National; Reuters (10-Jul-2026)"
-  },
-  {
-   "theme": "Inventory / Curve",
-   "impact": "Bullish",
-   "horizon": "Now",
-   "headline": "LME stocks stand at 280,100 t on the latest published official, the lowest since 2022 and roughly 45% below the 509,250 t start-of-year level, with SHFE stockpiles also declining. Cash-3M holds a +$7.50 backwardation - prompt tightness rather than surplus.",
-   "source": "Westmetall / LME official series (17-Jul-2026)"
-  },
-  {
-   "theme": "Energy costs",
-   "impact": "Bullish",
-   "horizon": "Weeks",
-   "headline": "Brent topped $90/bbl on Monday as the conflict intensified. Power is the largest single smelter cost line; sustained energy strength compresses marginal-producer margins in Europe and Asia and raises the incentive to curtail rather than restart capacity.",
-   "source": "NPR; Trading Economics (20-Jul-2026)"
-  },
-  {
-   "theme": "Earnings / Producers",
-   "impact": "Neutral",
-   "horizon": "Days",
-   "headline": "Norsk Hydro reports Q2 2026 tomorrow, 22-Jul at 07:00 CEST, with a webcast at 08:30 CEST - the first European producer P&L covering a full quarter of the disruption regime, and the cleanest public read on how European smelter power costs and regional premiums are flowing through margins.",
-   "source": "Norsk Hydro investor calendar (announced 24-Jun, reminded 15-Jul)"
-  }
- ],
- "earnings": [
-  {
-   "company": "Alcoa (AA)",
-   "group": "Aluminum producer",
-   "period": "Q2 2026",
-   "reported": "16 Jul 2026",
-   "headline": "Revenue $3.97bn (+24% q/q, highest in nearly a decade); adj. EPS $2.12 (MISS vs ~$2.31 consensus); adj. net income $562m; adj. EBITDA $901m (from $595m in Q1); Aluminum segment RECORD EBITDA $1.073bn at 32.3% margin.",
-   "readthrough": "First producer P&L under the Hormuz-disruption regime: record aluminium margins and near-decade-high revenue on higher LME + strong US Midwest premiums, but adj. EPS missed on higher costs — notably ~$35m more Section-232 tariff on Canadian metal into the US — and the shares fell. South32 upstream acquisition ($4.1bn upfront, up to $5.6bn contingent to 2030) progressing, close expected H1-2027. The tariff is a double edge: it inflates US premia but taxes Alcoa's cross-border Canadian metal.",
-   "sentiment": "Positive (mixed)"
-  },
-  {
-   "company": "Norsk Hydro (NHY)",
-   "group": "Aluminum producer",
-   "period": "Q1 2026",
-   "reported": "29 Apr 2026",
-   "headline": "Adj. EBITDA NOK 8,668m (vs 9,516m yr-ago); adj. EPS NOK 2.07 (beat, up from 1.63).",
-   "readthrough": "Primary Al EBITDA +2.7% YoY as Norwegian smelters reopened; soft alumina prices & stronger NOK; Extrusions outlook cut. Q2 due Wed 22-Jul (07:00 CEST) — the next European producer read on power costs and premium realisation.",
-   "sentiment": "Positive (mixed)"
-  },
-  {
-   "company": "Century Aluminum (CENX)",
-   "group": "Aluminum producer",
-   "period": "Q1 2026",
-   "reported": "7 May 2026",
-   "headline": "Adj. EPS $1.63 (beat $1.56); revenue $649m; net income $327m (incl. $288m Hawesville sale gain).",
-   "readthrough": "Higher LME + strong US Midwest premiums; Q2 adj. EBITDA guided $315–335m.",
-   "sentiment": "Positive"
-  },
-  {
-   "company": "Alba (Bahrain)",
-   "group": "Saudi / regional Gulf",
-   "period": "Q1 2026",
-   "reported": "May 2026",
-   "headline": "Net profit $200.3m (+316% YoY); EPS 53 fils; sales −17% on Gulf supply-chain disruption.",
-   "readthrough": "LME averaged $3,195/t (+22% YoY) drove profit surge; volumes hit by regional conflict; ~19% capacity in controlled shutdown — restart path improves post-truce.",
-   "sentiment": "Positive"
-  },
-  {
-   "company": "Maaden (1211)",
-   "group": "Saudi / regional",
-   "period": "Q1 2026",
-   "reported": "Apr 2026",
-   "headline": "Net profit SAR 1.63bn (~$436m, +5.5% YoY); revenue SAR 8.79bn (+3.2%); EBITDA $964m.",
-   "readthrough": "Strong pricing across commodities; partly offset by lower phosphate volumes; 2026 capex set >$4bn.",
-   "sentiment": "Positive"
-  },
-  {
-   "company": "Rio Tinto (RIO)",
-   "group": "Diversified major",
-   "period": "Q2 2026 (prod.)",
-   "reported": "15 Jul 2026",
-   "headline": "H1 copper-equivalent output +3% y/y; aluminium division improved; strong bauxite recovery; FY aluminium guidance UNCHANGED at 3.25–3.45 Mt; Pilbara Q2 shipments 89 Mt (+5%).",
-   "readthrough": "First upstream print of the Q2 season (this morning): Western volumes are intact — the Gulf disruption is expressing itself in prices, freight and premia rather than output. Kitimat/AP60 ramp continues; H1 financial results due 13-Aug.",
-   "sentiment": "Positive"
-  },
-  {
-   "company": "South32 (S32)",
-   "group": "Alumina / upstream",
-   "period": "Q3 FY26 (Mar)",
-   "reported": "Apr 2026",
-   "headline": "Hillside Al ~538kt (9M, FY26 guide 720kt); Brazil Alumina record 1,060kt (9M); Worsley steady.",
-   "readthrough": "Alumina sales −15% q/q on availability/timing; annual guidance intact despite cyclone gas disruption.",
-   "sentiment": "Neutral"
-  },
-  {
-   "company": "Hindalco / Novelis",
-   "group": "Alumina / downstream",
-   "period": "Q4 FY26 (Mar)",
-   "reported": "May 2026",
-   "headline": "Hindalco PAT ₹5,283cr (+66% YoY); India Al upstream EBITDA margin ~46%; Novelis FY26 adj. EBITDA $1.6bn (−9%).",
-   "readthrough": "Record India operations; Novelis pressured by Oswego outage (~$104m) and tariffs (~$143m).",
-   "sentiment": "Positive (mixed)"
-  },
-  {
-   "company": "Chalco (2600)",
-   "group": "Aluminum producer (China)",
-   "period": "Q1 2026 (prelim)",
-   "reported": "Apr 2026",
-   "headline": "Net profit guided RMB 5.30–5.59bn (+50–58% YoY).",
-   "readthrough": "Strong on higher Al prices; China output near self-imposed 45 Mt capacity cap.",
-   "sentiment": "Positive"
-  },
-  {
-   "company": "BHP",
-   "group": "Diversified major",
-   "period": "H1 FY26 (Dec-25)",
-   "reported": "17 Feb 2026",
-   "headline": "Underlying profit $6.2bn (+>20%); underlying EBITDA $15.5bn (+25%, 58% margin); interim div 73c.",
-   "readthrough": "Copper-led strength; broad base-metals read-across positive for the complex.",
-   "sentiment": "Positive"
-  },
-  {
-   "company": "Glencore",
-   "group": "Diversified major",
-   "period": "FY2025",
-   "reported": "18 Feb 2026",
-   "headline": "FY25 results; copper & aluminium average prices +9% YoY; zinc metal +4%.",
-   "readthrough": "Resilient structural demand for Cu/Al cited; broadly constructive sector tone.",
-   "sentiment": "Neutral"
-  },
-  {
-   "company": "Rusal",
-   "group": "Aluminum producer (Russia)",
-   "period": "FY2025",
-   "reported": "Mar 2026",
-   "headline": "FY25 net loss $455m (vs $803m profit in 2024) on higher costs & lower output.",
-   "readthrough": "Analysts expect stronger H1 2026 on higher prices; Asia pivot amid fractured trade flows.",
-   "sentiment": "Negative"
-  },
-  {
-   "company": "Zhongfu Industrial (600595.SH)",
-   "group": "China producer/processor",
-   "period": "H1 2026 (profit alert)",
-   "reported": "08-Jul-26 announcement (SMM 11-Jul)",
-   "headline": "Guides H1-26 net profit ¥1.8–1.95bn, +154.4–175.6% YoY.",
-   "readthrough": "Credits industry-chain cost reduction, aluminium prices fluctuating at highs, high-value-added deep-processing mix and energy-saving retrofits — the first sizeable China H1 pre-announcement of the season and a positive read-across for Chinese producer margins.",
-   "sentiment": "Positive"
-  }
- ],
- "earnings_note": "Earnings are quarterly and episodic; entries show each listed peer's most recent reported results as of 21-Jul (public, listed-company information). No new peer releases since Alcoa on 16-Jul. Q2 season is open: Alcoa posted record Aluminum-segment EBITDA ($1.073bn, 32.3% margin) and near-decade-high revenue ($3.97bn) but missed on adjusted EPS ($2.12 vs roughly $2.31 consensus) on higher costs including around $35m of additional Section-232 tariff on Canadian metal, and also announced a $4.7bn acquisition. Rio Tinto's 15-Jul production report showed volumes intact with aluminium guidance unchanged at 3.25-3.45 Mt. NEXT: Norsk Hydro Q2 tomorrow, Wed 22-Jul at 07:00 CEST with a webcast at 08:30 CEST - the first European producer P&L covering a full quarter of the disruption regime and the cleanest public read on European smelter power costs and regional premium pass-through.",
- "commercial": [
-  {
-   "function": "Market monitoring - flat price",
-   "priority": "High",
-   "text": "The 20-Jul session traded aluminium to about $3,138/t (-0.85%) while the latest published LME official remains 17-Jul (cash $3,154.00 / 3M $3,146.50). The notable feature is the divergence between a softening flat price and an escalating supply-risk backdrop - Monday's tanker interdictions are not yet in any official print. Resistance $3,230 (MA20) then $3,260; support the early-July low near $3,085."
-  },
-  {
-   "function": "Curve and inventory",
-   "priority": "High",
-   "text": "Cash-3M backwardation at +$7.50 with LME stock at 280,100 t, the lowest since 2022 and roughly -45% YTD, and SHFE stocks also drawing. Prompt tightness is genuine on both sides of the arb. The next official print is the first clean read on whether enforcement at Hormuz steepens the front of the curve."
-  },
-  {
-   "function": "Regional premiums",
-   "priority": "Medium",
-   "text": "The three regions have decoupled on different logic: Japan's Q3 MJP settled at a decade-high $395/t on scarcity, Rotterdam duty-unpaid has faded to a $542.50/t mid as the war premium receded toward a structural 6%-duty-plus-CBAM floor, and the US duty-paid premium is dominated by the 50% Section 232 rate - roughly $1,575/t of administered cost at current LME. Watch Q4 MJP talks opening around September."
-  },
-  {
-   "function": "Input costs",
-   "priority": "Medium",
-   "text": "Brent above $90/bbl keeps the largest smelter cost line pointed the wrong way, with European and Asian producers most exposed through gas. On the other side, EGA's Al Taweelah alumina ramp is the first genuine easing in the raw-material chain since March and is the main reason the flat price is not spiking."
-  },
-  {
-   "function": "Catalyst watch",
-   "priority": "High",
-   "text": "Norsk Hydro Q2 tomorrow (22-Jul, 07:00 CEST). Beyond that: the pace of the Al Taweelah ramp toward 50% and then full capability, whether tanker interdictions extend beyond crude into general merchant traffic, and whether LME stocks keep drawing below 280,100 t."
-  }
- ],
- "bottom_line": "On 21-Jul the benchmark table still carries the 17-Jul LME official (cash $3,154.00, 3M $3,146.50, cash-3M +$7.50 backwardation, stock 280,100 t, about -45% YTD) because Westmetall had not published the 20-Jul settlement at this ~06:05 London refresh. The 20-Jul session itself traded lower - aluminium around $3,138/t, -0.85% - despite a materially worse geopolitical backdrop: Iran disabled two oil tankers attempting to transit the Strait of Hormuz without permission, the first direct interdiction of individual merchant vessels in this conflict; a third US service member was confirmed killed since Friday; US strikes ran to a ninth consecutive day; and Iran struck Kuwaiti power and desalination infrastructure and Bahrain, home of the US 5th Fleet. Brent topped $90/bbl. The offsetting force is EGA's Al Taweelah alumina refinery, at full production since 10-Jul and ramping toward full capability by end-2026. Net: a tight physical market with the lowest LME stocks since 2022 and a backwarded curve, temporarily balanced by visible alumina relief - an equilibrium that is one supply interruption away from breaking upward. Norsk Hydro's Q2 results tomorrow (22-Jul, 07:00 CEST) are the next scheduled catalyst.",
- "sources": [
-  [
-   "LME official settlements & stock (17-Jul - latest PUBLISHED official; Westmetall had not posted 20-Jul at this ~06:05 London refresh)",
-   "London Metal Exchange via Westmetall - westmetall.com (Al cash $3,154.00 / 3M $3,146.50 / stock 280,100 t; June-2026 monthly means from the same table). https://www.westmetall.com/en/markdaten.php?action=table&field=LME_Al_cash"
-  ],
-  [
-   "LME day-delayed 3-month closing prices",
-   "London Metal Exchange - lme.com (Aluminium 3M closing $3,185.00 +1.11% for 17-Jul; Copper 3M closing $13,525.50 -0.54% for 20-Jul). https://www.lme.com/en/metals/non-ferrous/lme-copper"
-  ],
-  [
-   "Aluminium 20-Jul traded close and base-metals board levels",
-   "Trading Economics - aluminium $3,137.80 on 20-Jul (-0.85%, -6.69% m/m, +18.63% y/y); zinc, nickel and lead levels as published. https://tradingeconomics.com/commodity/aluminum"
-  ],
-  [
-   "US-Iran conflict, Hormuz tanker interdictions, US casualties (20-Jul)",
-   "NPR - 'U.S. and Iran launch new strikes after 3 U.S. service members are killed' (20-Jul-2026); Iran disabled two tankers attempting transit; strikes on Kuwaiti power/desalination and Bahrain; Brent above $90/bbl. https://www.npr.org/2026/07/20/nx-s1-5900601/us-iran-updates"
-  ],
-  [
-   "Alumina supply - EGA Al Taweelah restart",
-   "Emirates Global Aluminium media release; The National; Reuters (10-Jul-2026) - full alumina production resumed, 50% of capacity targeted within days, full capability by end-2026; 2.4 Mt produced in 2025. https://media.ega.ae/ega-reports-strong-early-progress-in-al-taweelah-restart-and-updates-on-business-performance/"
-  ],
-  [
-   "European premium assessment",
-   "S&P Global - 'TRADE REVIEW: European aluminum market seeks floor as Middle East war premium fades' (07-Jul-2026): Rotterdam duty-unpaid P1020A $525-560/t (mid $542.50) on 03-Jul; US Midwest 108.7 c/lb on 03-Jul. https://www.spglobal.com/energy/en/news-research/latest-news/metals/070726-trade-review-european-aluminum-market-seeks-floor-as-middle-east-war-premium-fades"
-  ],
-  [
-   "Japan quarterly premium settlement",
-   "S&P Global Platts Q3-2026 MJP CIF Japan settlement $395/t (assessed 06-Jul-2026), via IndexBox - decade high, roughly +12% q/q. https://www.indexbox.io/blog/japan-q3-2026-aluminum-premium-hits-decade-high-at-395mt/"
-  ],
-  [
-   "US trade policy - Section 232 aluminium",
-   "U.S. Customs and Border Protection - Section 232 FAQs: 50% on full customs value for articles made entirely or almost entirely of aluminium; proclamation signed 01-Jun-2026, effective 08-Jun-2026 to 31-Dec-2027; CBP guidance CSMS #68855869 issued 05-Jun-2026. https://www.cbp.gov/trade/programs-administration/entry-summary/232-tariffs-aluminum-and-steel-faqs"
-  ],
-  [
-   "Peer earnings calendar",
-   "Norsk Hydro investor calendar - Q2 2026 results 22-Jul-2026 07:00 CEST, webcast 08:30 CEST. https://www.hydro.com/en/global/investors/financial-calendar/q2-2026/"
-  ]
- ],
- "caveats": [
-  "Report refreshed Tue 21-Jul-2026, ~06:05 London - BEFORE today's LME ring (official settlement 13:20 London). Westmetall had not yet published the 20-Jul official at refresh time, so the benchmark table carries the 17-Jul official (cash $3,154.00 / 3M $3,146.50 / stock 280,100 t). This is a publication-timing constraint, not a stale copy: the 20-Jul session is captured separately in the metals board using the publicly reported traded close.",
-  "MIXED SOURCE BASIS ON THE BOARD: aluminium, nickel, zinc and lead levels on the metals board are publicly reported traded prices (Trading Economics), while copper uses the LME's own day-delayed 3-month closing price. LME OFFICIAL settlements (the benchmark table and lme_series) come from Westmetall. Official, closing and traded prices are different reference points and will not tie out exactly - for 17-Jul, aluminium's 3M official was $3,146.50 while the LME 3M closing price was $3,185.00.",
-  "GEOPOLITICAL DEVELOPMENTS ARE FAST-MOVING and are NOT yet reflected in any published LME official. Monday's tanker interdictions, the third US fatality since Friday, and the strikes on Kuwaiti and Bahraini infrastructure all post-date the 17-Jul official. Treat the flat price as lagging the news flow.",
-  "PREMIUM ASSESSMENTS ARE PERIODIC, NOT DAILY: MJP settles quarterly, Rotterdam duty-unpaid and US Midwest are assessed by Platts/Fastmarkets on their own schedules. The figures shown are the latest PUBLIC prints (Rotterdam duty-unpaid mid $542.50/t and US Midwest 108.7 c/lb from the 03-Jul assessments; MJP Q3 settled $395/t on 06-Jul). They are not daily marks and should not be read as such.",
-  "ALL CONTENT IS PUBLIC MARKET INFORMATION for situational awareness only. No confidential, internal, company-specific or position data is included, and nothing here is trading, hedging or investment advice. Elliott Wave analysis is technical context, not a forecast or recommendation."
- ],
- "outlook": {
-  "forward_path": [
-   {
-    "tenor": "Cash (17-Jul official)",
-    "price": "3,154.0",
-    "basis": "Latest PUBLISHED official (Westmetall); unchanged since 17-Jul (no session has traded). The cash–3M spread remains +$7.50 backwardation. Next official today, 20-Jul, 13:20 London."
-   },
-   {
-    "tenor": "3-Month (17-Jul official)",
-    "price": "3,146.5",
-    "basis": "Latest published official; unchanged since 17-Jul; front spread +$7.50 BACKWARDATION. Resistance $3,230 (MA20) → $3,260 (.382). Next official today, 13:20 London."
-   }
-  ],
-  "curve_note": "The diagnostic has held steady through a weekend and overnight period that moved sharply against it. The cash–3M spread was last published at +$7.50 BACKWARDATION on the 17-Jul official — unchanged since Friday because no session has traded — on a 280,100 t stock base (−45.0% YTD). What has changed is the disruption the spread is pricing: overnight the US flew a 9th consecutive night of strikes on Iran, reinforced the theatre with F-16s (Germany) and F-35s (UK), and confirmed further US casualties (1 killed, 1 wounded, Iraq, 18-Jul, atop 2 KIA in Jordan, 17-Jul) — the war's US death toll now 17. The counterweight is still quantified at record scale — China exported 711 kt in June into a Q2 GDP print that missed consensus at 4.3% — but the swing factor has moved decisively toward renewed and deepening disruption rather than resolution. The 2026 consensus band ($3,200–3,500 averages) and the ~−365 kt structural deficit remain the floor beneath the argument; today's 13:20 London ring is the first chance for the curve to actually reprice the accumulated news.",
-  "consensus": [
-   {
-    "source": "World Bank (Apr-26 CMO)",
-    "y2026": "$3,200",
-    "y2027": "$3,000",
-    "note": "+21.6% vs 2025 ($2,632)"
-   },
-   {
-    "source": "Analyst consensus",
-    "y2026": "$3,300–3,600",
-    "y2027": "—",
-    "note": "Running above the World Bank base"
-   },
-   {
-    "source": "BofA / Morgan / BNP",
-    "y2026": "Deficit",
-    "y2027": "Deficit",
-    "note": "First structural deficit in ~20 years; BofA flags near-term downside"
-   },
-   {
-    "source": "Reuters analyst poll (balance)",
-    "y2026": "−365 kt",
-    "y2027": "—",
-    "note": "Shortfall, up from −100 kt in 2025"
-   }
-  ],
-  "balance": [
-   {
-    "year": "2025",
-    "value": "−100 kt",
-    "label": "Deficit"
-   },
-   {
-    "year": "2026",
-    "value": "−365 kt",
-    "label": "Deficit — Reuters analyst poll"
-   },
-   {
-    "year": "2027",
-    "value": "Deficit",
-    "label": "BofA/Morgan/BNP structural deficit; Goldman flags later surplus risk"
-   }
-  ],
-  "capacity_pipeline": [
-   {
-    "asset": "EGA Al Taweelah (UAE)",
-    "change": "Alumina refinery restarted 10-Jul (ramping through H2, full capability targeted end-2026); smelter rebuild ahead of schedule",
-    "timing": "Pre-incident output targeted within ~a year"
-   },
-   {
-    "asset": "Alba (Bahrain)",
-    "change": "~19% capacity in controlled shutdown through the Gulf disruption; restart path improves as US–Iran diplomacy advances",
-    "timing": "Restart path tied to de-escalation"
-   },
-   {
-    "asset": "China",
-    "change": "Output near the 45 Mt self-imposed cap; June unwrought-aluminium exports a RECORD 711 kt (+12.5% m/m; H1 3.4 Mt, +16.3% y/y); Q2 GDP 4.3% — production strong, domestic demand weak",
-    "timing": "Structural ceiling on output; record export flow"
-   },
-   {
-    "asset": "Indonesia",
-    "change": "New smelter capacity ramping (BofA flags as added supply)",
-    "timing": "2026 ramp"
-   },
-   {
-    "asset": "Rio Tinto AP60 / Kitimat (Canada)",
-    "change": "Q2 production report (15-Jul): H1 CuEq +3%, aluminium guidance intact 3.25–3.45 Mt, bauxite recovering; AP60/Kitimat incremental low-carbon capacity",
-    "timing": "Ramping through 2026"
-   }
-  ],
-  "scenarios": [
-   {
-    "case": "Bull",
-    "prob": "45%",
-    "target": "$3,350-3,850",
-    "drivers": "Hormuz enforcement widens from crude tankers into general merchant traffic, or the Al Taweelah ramp stalls - either puts physical units at risk into a market with the lowest LME stocks since 2022 and no inventory buffer",
-    "drivers_list": [
-     "Enforcement escalation: Iran disabled two tankers on 20-Jul; extension to general merchant traffic would expose roughly 9% of global primary supply",
-     "No inventory cushion: LME stock 280,100 t (lowest since 2022, about -45% YTD), SHFE drawing, cash-3M in backwardation",
-     "Energy: Brent above $90/bbl raises marginal costs and biases European/Asian capacity toward curtailment"
-    ]
-   },
-   {
-    "case": "Base",
-    "prob": "40%",
-    "target": "$3,050-3,300",
-    "drivers": "The current standoff persists - enforced but contained disruption at Hormuz offset by a steady Al Taweelah alumina ramp, leaving the flat price ranging between the early-July low near $3,085 and the $3,230-3,260 resistance stack",
-    "drivers_list": [
-     "Al Taweelah ramps to 50% and beyond on schedule, capping alumina-driven cost pressure",
-     "Interdictions stay focused on crude rather than general cargo, keeping aluminium flows degraded but not halted",
-     "Backwardation persists but does not gap - prompt tight, forward balanced"
-    ]
-   },
-   {
-    "case": "Bear",
-    "prob": "15%",
-    "target": "$2,830-3,050",
-    "drivers": "A credible diplomatic track reopens the strait while the Al Taweelah ramp completes ahead of schedule, releasing both the war premium and the alumina cost pressure into softening demand",
-    "drivers_list": [
-     "Hormuz memorandum-of-understanding talks resume and shipping normalises, collapsing the war-risk premium",
-     "Alumina relief arrives faster than expected as Al Taweelah reaches full capability early",
-     "Demand destruction from sustained high prices plus the 50% Section 232 rate on US imports"
-    ]
-   }
-  ],
-  "risks": [
-   {
-    "risk": "Hormuz enforcement escalates: Iran disabled two tankers attempting transit on 20-Jul, the first direct interdiction of individual merchant vessels; extension from crude into general merchant traffic would put Gulf aluminium units (roughly 9% of global supply) directly at risk",
-    "likelihood": "High",
-    "impact": "High",
-    "trend": "up"
-   },
-   {
-    "risk": "Inventory floor: LME stock at 280,100 t is the lowest since 2022 and roughly -45% YTD with SHFE also drawing - there is no inventory buffer to absorb a fresh supply interruption",
-    "likelihood": "High",
-    "impact": "High",
-    "trend": "up"
-   },
-   {
-    "risk": "Energy cost squeeze: Brent above $90/bbl with EU gas following on a lag compresses marginal-producer margins in Europe and Asia and biases capacity toward curtailment rather than restart",
-    "likelihood": "High",
-    "impact": "Medium",
-    "trend": "up"
-   },
-   {
-    "risk": "Al Taweelah ramp disappoints or is interrupted - the alumina relief is the principal offset holding the flat price down and it is a ramp toward end-2026, not delivered tonnage",
-    "likelihood": "Medium",
-    "impact": "High",
-    "trend": "flat"
-   },
-   {
-    "risk": "Demand destruction: sustained elevated prices plus the 50% Section 232 rate on US imports encourage substitution and scrap displacement, particularly in packaging and construction",
-    "likelihood": "Medium",
-    "impact": "Medium",
-    "trend": "flat"
-   },
-   {
-    "risk": "Policy reversal risk in either direction - a Section 232 rate change or a credible Hormuz diplomatic track would reprice the premium complex sharply and quickly",
-    "likelihood": "Low",
-    "impact": "High",
-    "trend": "flat"
-   }
-  ],
-  "catalysts": [
-   {
-    "date": "Wed 22-Jul, 07:00 CEST",
-    "event": "Norsk Hydro Q2 2026 results (webcast 08:30 CEST) - first European producer P&L covering a full quarter of the disruption regime; read on European smelter power costs and regional premium pass-through",
-    "impact": "High"
-   },
-   {
-    "date": "Today, 13:20 London",
-    "event": "Next LME official ring - the first official print able to reflect Monday's tanker interdictions; watch whether the cash-3M backwardation steepens beyond +$7.50",
-    "impact": "High"
-   },
-   {
-    "date": "Daily",
-    "event": "LME warehouse stock report - whether draws continue below 280,100 t, the lowest level since 2022",
-    "impact": "Medium"
-   },
-   {
-    "date": "Through Q3",
-    "event": "EGA Al Taweelah ramp from 50% of capacity toward full capability by end-2026 - the principal supply-side offset in the current balance",
-    "impact": "High"
-   },
-   {
-    "date": "Around September",
-    "event": "Q4-2026 MJP CIF Japan premium negotiations open against the decade-high Q3 settlement of $395/t",
-    "impact": "Medium"
-   },
-   {
-    "date": "Ongoing",
-    "event": "Strait of Hormuz transit volumes and whether interdictions extend from crude carriers into general merchant traffic",
-    "impact": "High"
-   }
-  ],
-  "ai_analysis": [
-   "The defining feature of this session is divergence: the flat price traded down to about $3,138/t (-0.85%) on 20-Jul at the same time as Iran physically disabled two tankers attempting to cross the Strait of Hormuz. Markets do not usually sell escalation of that kind unless something on the supply side is offsetting it - and here it is EGA's Al Taweelah alumina refinery, at full production since 10-Jul and ramping toward full capability by end-2026.",
-   "That makes the current balance conditional rather than settled. The structural tightness has not eased: LME stock at 280,100 t is the lowest since 2022 and roughly 45% below the start of the year, SHFE inventories are drawing, and cash-3M holds a +$7.50 backwardation. A market with those characteristics does not have inventory to absorb a fresh interruption. The alumina relief is the only slack in the system, and it is a ramp, not a delivered volume.",
-   "The risk skew is therefore asymmetric to the upside even though price action is soft. The two triggers to watch are any interruption to the Al Taweelah ramp, and any widening of the tanker interdictions from crude carriers into general merchant traffic - the latter would put physical aluminium units, not just sentiment, directly at risk on roughly 9% of global supply.",
-   "Regionally the premium complex is decoupled and should be read separately rather than as one signal: Japan's Q3 MJP settled at a decade-high $395/t on genuine scarcity, Rotterdam duty-unpaid has faded to $542.50/t as the war premium receded toward a structural floor of 6% duty plus CBAM, and the US duty-paid premium is dominated by the administered 50% Section 232 rate rather than by physical balance. Norsk Hydro's Q2 tomorrow is the next public data point on how these are flowing into producer margins."
-  ],
-  "sources": [
-   [
-    "Westmetall - LME official price & stock series (latest published 17-Jul)",
-    "https://www.westmetall.com/en/markdaten.php?action=table&field=LME_Al_cash"
-   ],
-   [
-    "London Metal Exchange - LME Aluminium (day-delayed 3M closing price)",
-    "https://www.lme.com/en/metals/non-ferrous/lme-aluminium"
-   ],
-   [
-    "London Metal Exchange - LME Copper (day-delayed 3M closing price, 20-Jul)",
-    "https://www.lme.com/en/metals/non-ferrous/lme-copper"
-   ],
-   [
-    "Trading Economics - Aluminum price, 20-Jul session close",
-    "https://tradingeconomics.com/commodity/aluminum"
-   ],
-   [
-    "NPR - U.S. and Iran launch new strikes after 3 U.S. service members are killed (20-Jul-2026)",
-    "https://www.npr.org/2026/07/20/nx-s1-5900601/us-iran-updates"
-   ],
-   [
-    "Emirates Global Aluminium - Al Taweelah restart progress",
-    "https://media.ega.ae/ega-reports-strong-early-progress-in-al-taweelah-restart-and-updates-on-business-performance/"
-   ],
-   [
-    "S&P Global - European aluminum market seeks floor as Middle East war premium fades (07-Jul-2026)",
-    "https://www.spglobal.com/energy/en/news-research/latest-news/metals/070726-trade-review-european-aluminum-market-seeks-floor-as-middle-east-war-premium-fades"
-   ],
-   [
-    "S&P Global Platts Q3-2026 MJP settlement $395/t, via IndexBox",
-    "https://www.indexbox.io/blog/japan-q3-2026-aluminum-premium-hits-decade-high-at-395mt/"
-   ],
-   [
-    "U.S. Customs and Border Protection - Section 232 Tariffs on Steel and Aluminum FAQs",
-    "https://www.cbp.gov/trade/programs-administration/entry-summary/232-tariffs-aluminum-and-steel-faqs"
-   ],
-   [
-    "Norsk Hydro - Q2 2026 financial calendar (results 22-Jul, 07:00 CEST)",
-    "https://www.hydro.com/en/global/investors/financial-calendar/q2-2026/"
-   ]
-  ],
-  "scenario_paths": {
-   "labels": [
-    "Now",
-    "Sep-26",
-    "Dec-26",
-    "Mar-27",
-    "Jun-27"
-   ],
-   "bull": [
-    3146.5,
-    3360,
-    3560,
-    3700,
-    3800
-   ],
-   "base": [
-    3146.5,
-    3150,
-    3200,
-    3240,
-    3260
-   ],
-   "bear": [
-    3146.5,
-    2980,
-    2900,
-    2860,
-    2840
-   ]
-  }
- },
- "premium_explainer": [
-  {
-   "term": "What a premium is",
-   "desc": "The physical-delivery adder over the LME price: regional logistics, duties/tariffs and local tightness — quoted $/t (or ¢/lb in the US) on top of LME cash. It is what converts an exchange price into a delivered price."
-  },
-  {
-   "term": "MJP — Japan (quarterly)",
-   "desc": "Q3-2026 settled at $395/t CIF Japan (Platts, 06-Jul) — a decade high and the fourth straight rise ($86 → $195 → $351.5 → $395). SMM flags spot tightness and squeeze risk under the LME's deep backwardation, firming CIF spot toward ~$365. Q4 talks (~Sep) open against a decade-high anchor and a still-disrupted strait — with US–Iran diplomacy (MoU to ~18-Aug) the swing factor."
-  },
-  {
-   "term": "EDU Rotterdam — Europe (daily)",
-   "desc": "Platts duty-unpaid last publicly marked ~$525–560 (mid $542.50, 03-Jul). The 6% EU duty, CBAM and Mozal's care & maintenance keep the structural floor; the war-risk freight component is easing at the margin as the US–Iran conflict de-escalates. The prospective 20% strait toll died on 14-Jul."
-  },
-  {
-   "term": "US Midwest (daily)",
-   "desc": "SMM's weekly DDP print ~109.75¢/lb ≈ $2,420/t (10-Jul); Platts MW Transaction last printed 108.7¢ (03-Jul). The 50% Section-232 tariff-$ leg (≈$1,577 at the 17-Jul LME cash) dominates the all-in — US premia track Washington and the LME, not local tightness. Alcoa Q2 confirmed the tariff as a ~$35m q/q cost on its Canadian metal."
-  },
-  {
-   "term": "Policy vs market split",
-   "desc": "The decomposition below separates the mechanical tariff leg (Section-232 rate × LME) from the residual market premium. Most of the US 'premium' is a policy transfer, not a scarcity signal — and the new 20% strait toll extends the same logic to the freight leg of any Gulf-origin cargo, US-bound or not."
-  }
- ],
- "premium_history": {
-  "labels_reg": [
-   "Q1-26 sett.",
-   "Q2-26 sett.",
-   "Q3-26 settled",
-   "Now (MJP spot)"
-  ],
-  "mjp": [
-   195,
-   351.5,
-   395,
-   365
-  ],
-  "cif": [
-   195,
-   319.5,
-   395,
-   365
-  ],
-  "edu": [
-   519.1,
-   612.5,
-   542.5,
-   535
-  ],
-  "labels_us": [
-   "May peak (Platts)",
-   "03-Jul (Platts MW)",
-   "Now (10-Jul SMM DDP)",
-   "Q3-26e"
-  ],
-  "usmw_usd": [
-   2624,
-   2396,
-   2420,
-   2390
-  ]
- },
- "premium_outlook": [
-  "Asian (MJP / CIF Japan): Q3 settled $395 (decade high, unchanged); CIF spot ~$365 on squeeze risk under the LME's deep backwardation. The overnight escalation (9th consecutive night of strikes, further US casualties, Strait transits near a standstill) strengthens the case for Q4 talks (~Sep) to open at or above the $395 anchor rather than fade toward the lower half of the $340–410 range.",
-  "European (EDU): last public Platts mark ~$525–560 (03-Jul), unchanged. The 6% duty + CBAM floor plus Mozal's outage keep Europe structurally tighter than pre-war; the marginal driver — Gulf war-risk freight — continues to widen rather than ease.",
-  "US Midwest: SMM DDP ~109.75¢/lb (10-Jul), unchanged. The tariff leg (50% × LME ≈ $1,577 at the 17-Jul cash) is ~two-thirds of the all-in, so US premia track the LME and Washington more than Gulf events directly — but a sustained, further-escalating Gulf disruption raises input-cost and logistics risk for any US-bound metal that transits affected routes. Watch the next weekly print, not the spot survey."
- ],
- "alumina_explainer": [
-  {
-   "term": "Alumina (Al₂O₃)",
-   "desc": "Refined intermediate from bauxite via the Bayer process; ~1.9–2 t alumina per 1 t aluminium. Smelter-grade is the traded form."
-  },
-  {
-   "term": "Alumina API / Platts",
-   "desc": "The ex-China benchmark (Platts Alumina Price Index) referenced in many alumina contracts."
-  },
-  {
-   "term": "FOB Australia (Fastmarkets)",
-   "desc": "Spot index for Australian-origin smelter-grade alumina — a key seaborne reference."
-  },
-  {
-   "term": "Bauxite",
-   "desc": "The ore refined into alumina; ~2–3 t bauxite per 1 t alumina. Guinea & Australia dominate seaborne supply."
-  },
-  {
-   "term": "Caustic soda (NaOH)",
-   "desc": "Primary Bayer reagent that dissolves alumina from bauxite — a major refining cost (~$80–120 per t of alumina)."
-  },
-  {
-   "term": "Lime (CaO / quicklime)",
-   "desc": "Used for causticisation & desilication in refining — a smaller but essential reagent cost."
-  }
- ],
- "raw_materials": [
-  {
-   "name": "Bauxite (Guinea, CIF China)",
-   "val": "~68",
-   "unit": "$/dmt",
-   "asof": "Jul-26",
-   "trend": "flat",
-   "src": "~$68 CIF China (FOB Guinea ~$38, 45/3 grade); oversupply persists — Metro Mining shipped a record 1.8 Mt in Q2 (+7% y/y; 2026 guidance 6.6–7.1 Mt held). Guinea is reportedly considering capping 2026 exports near 150 Mt (vs 178 Mt shipped in 2025, a ~15.7% cut) targeting >$100/dmt, but no formal decree had been issued as of end-June; no fresher public print surfaced over the weekend."
-  },
-  {
-   "name": "Caustic soda (flakes ≥98%, FOB NE Asia)",
-   "val": "~500",
-   "unit": "$/t",
-   "asof": "Q2-26",
-   "trend": "flat",
-   "src": "~$500–510 FOB NE Asia; CFR Asia ~$380–560 — major refining reagent (ChemAnalyst/ChemTradeAsia); no fresher public print over the weekend."
-  },
-  {
-   "name": "Lime / quicklime (CaO)",
-   "val": "~120–180",
-   "unit": "$/t",
-   "asof": "2026",
-   "trend": "flat",
-   "src": "No liquid global index — largely regional/contract; indicative range (causticisation reagent); no fresher public print over the weekend."
-  }
- ],
- "alumina_history": {
-  "labels": [
-   "Q1-26 avg",
-   "May-26",
-   "Now (Jul)",
-   "Q3-26e"
-  ],
-  "fob": [
-   355,
-   345,
-   328,
-   325
-  ],
-  "api": [
-   307,
-   304,
-   303,
-   300
-  ]
- },
- "alumina_outlook": [
-  "Alumina: surplus intact and deepening — EGA's restart ramps through H2, SHFE-adjacent SMM Alumina Index eased to ¥2,730.17/t (−¥12.8 w/w), and ex-China consolidation has stepped down to $300–330 (FOB Australia $328, API ~$303, Platts futures ~$308). SMM's June ex-China output dip (−6% y/y) and Guinea's still-undecreed quota push are the counterweights to watch.",
-  "Bauxite: Guinea oversupply keeps CIF China ~$68/dmt (FOB Guinea ~$38); record Australian shipments add length. Guinea is reportedly weighing a 2026 export cap near 150 Mt (vs 178 Mt in 2025) to defend a >$100/dmt target, but had issued no formal decree as of end-June.",
-  "Caustic soda / lime / freight: caustic stable (~$500/t FOB NE Asia). The delivered-cost leg has moved further the wrong way overnight — a 9th consecutive night of US strikes on Iran, a second consecutive strike on Kuwait's desalination/power infrastructure, and Strait transits down to as few as ~3 vessels/24h mean war-risk cover on Gulf-bound reagent and alumina freight is wider again, not fading. The commodity is still cheap; insuring and moving it through the Gulf is more expensive and less certain than at any point since the conflict began."
- ],
- "inputs": [
-  {
-   "cat": "Smelter carbon",
-   "name": "Calcined petroleum coke (CPC, anode-grade)",
-   "val": "~600",
-   "unit": "$/t",
-   "ratio": "~0.33 t",
-   "share": "part of ~15% (carbon)",
-   "index": "Low–Med",
-   "risk": "High",
-   "trend": "up",
-   "src": "Peaked ~$896/t (2022); battery-anode demand + tight seaborne supply pressuring — CRU; limited price transparency"
-  },
-  {
-   "cat": "Smelter carbon",
-   "name": "Coal tar pitch (CTP)",
-   "val": "~800",
-   "unit": "$/t",
-   "ratio": "~0.10 t",
-   "share": "(within carbon)",
-   "index": "Low",
-   "risk": "Medium",
-   "trend": "flat",
-   "src": "Anode binder; by-product of steel coke ovens — supply tied to steel output; thin spot market"
-  },
-  {
-   "cat": "Smelter carbon",
-   "name": "Pre-baked anodes",
-   "val": "~600",
-   "unit": "$/t",
-   "ratio": "~0.42 t net C",
-   "share": "~12–15%",
-   "index": "Low",
-   "risk": "Medium",
-   "trend": "flat",
-   "src": "Often produced in-house; China the swing exporter — mostly contract pricing"
-  },
-  {
-   "cat": "Power / energy",
-   "name": "Electricity (smelter power)",
-   "val": "~30–60",
-   "unit": "$/MWh",
-   "ratio": "~13–15 MWh",
-   "share": "~30–40% (largest)",
-   "index": "N/A",
-   "risk": "High",
-   "trend": "flat",
-   "src": "Single largest cost & the competitiveness driver; no single index — PPAs / regional grid / self-gen. Energy complex firm: Brent broke above $90/bbl in early Monday trade (highest since mid-June) on the further-escalated US-Iran conflict; EU TTF gas ~€53/MWh — gas-indexed smelter power follows with a lag. Rising carbon-cost exposure."
-  },
-  {
-   "cat": "Bath & cell",
-   "name": "Aluminium fluoride (AlF₃)",
-   "val": "~1,800",
-   "unit": "$/t",
-   "ratio": "~15–20 kg",
-   "share": "small",
-   "index": "Low–Med",
-   "risk": "Medium",
-   "trend": "flat",
-   "src": "~$1,500–2,200 (China); tied to fluorspar/HF — China-concentrated"
-  },
-  {
-   "cat": "Bath & cell",
-   "name": "Cryolite / bath makeup",
-   "val": "contract",
-   "unit": "$/t",
-   "ratio": "makeup",
-   "share": "small",
-   "index": "Low",
-   "risk": "Low",
-   "trend": "flat",
-   "src": "Largely synthetic & recycled in-cell; limited spot market"
-  },
-  {
-   "cat": "Bath & cell",
-   "name": "Cathode / graphite blocks",
-   "val": "contract",
-   "unit": "$/set",
-   "ratio": "reline",
-   "share": "periodic capex",
-   "index": "Low",
-   "risk": "Medium",
-   "trend": "flat",
-   "src": "Multi-year pot-reline cost; graphite-electrode supply (China) is the risk"
-  },
-  {
-   "cat": "Alloying & casting",
-   "name": "Silicon metal",
-   "val": "~1,250–1,600",
-   "unit": "$/t",
-   "ratio": "alloy-dep.",
-   "share": "alloy-dep.",
-   "index": "Medium",
-   "risk": "Medium",
-   "trend": "down",
-   "src": "China Q2-26 ~$1,250 FOB; EU ~$1,580, US ~$2,625 (tariff split) — SMM/ChemAnalyst"
-  },
-  {
-   "cat": "Alloying & casting",
-   "name": "Magnesium (99.9%)",
-   "val": "~2,400",
-   "unit": "$/t",
-   "ratio": "alloy-dep.",
-   "share": "alloy-dep.",
-   "index": "Medium",
-   "risk": "High",
-   "trend": "flat",
-   "src": "China ~85% of global supply (~$2,359 Jan-26) — concentration risk; SMM/Asian Metal"
-  },
-  {
-   "cat": "Alloying & casting",
-   "name": "Copper (LME)",
-   "val": "~13,610",
-   "unit": "$/t",
-   "ratio": "alloy-dep.",
-   "share": "alloy-dep.",
-   "index": "High",
-   "risk": "Medium",
-   "trend": "up",
-   "src": "LME-transparent leg of the input basket — Cu 3M $13,606.00 (16-Jul official, latest published); the complex firmed through the week (Cu +8.8% YTD). Busbar/cathode exposure prices off the LME."
-  },
-  {
-   "cat": "Alloying & casting",
-   "name": "Ti-B grain refiner (AlTi5B1)",
-   "val": "contract",
-   "unit": "$/t",
-   "ratio": "~1–2 kg",
-   "share": "small",
-   "index": "Low",
-   "risk": "Low–Med",
-   "trend": "flat",
-   "src": "Master-alloy rod; priced off titanium + conversion — mostly contract"
-  }
- ],
- "logistics": [
-  {
-   "name": "Strait of Hormuz transit",
-   "val": "Near standstill, deteriorating further — ~3 vessels/24h",
-   "trend": "up",
-   "note": "Overnight the US flew a 9th consecutive night of strikes on Iran and is reinforcing with F-16s (Germany) and F-35s (UK). Wire reporting puts Strait transits at as few as ~3 vessels per 24 hours, versus a normal ~110/day pre-war; the IRGC claims to have intercepted 4 further vessels. ~80–85% of Gulf aluminium exports and ~60% of regional alumina imports use this waterway."
-  },
-  {
-   "name": "Southern (Omani) corridor",
-   "val": "Not verified reopened; risk further widened",
-   "trend": "up",
-   "note": "The workaround corridor discussed in prior weeks has not materialised into confirmed reopening. With Oman among the states struck in recent days and the conflict escalating (9th night of strikes, mounting US casualties), the corridor's near-term viability looks weaker than at any point since it was first floated."
-  },
-  {
-   "name": "Gulf war-risk insurance / surcharges",
-   "val": "Sharply wider — escalation continuing, not fading",
-   "trend": "up",
-   "note": "Lloyd's List and the Hormuz Strait Monitor have cited war-risk quotes around $10–14m per voyage on some routes, with rates near 2.5% and up to ~5% for US/UK/Israel-linked tonnage. With a 9th consecutive night of strikes, further US casualties, and repeated hits on Kuwaiti energy/water infrastructure, retain elevated insurance, interdiction and deviation-risk assumptions in all Gulf-routed freight and delivered-cost models."
-  },
-  {
-   "name": "Baltic Dry Index (BDI)",
-   "val": "2,752 (17-Jul close, −3.1% d/d) — latest published, today's print pending",
-   "trend": "down",
-   "note": "Last published at 2,752 on 17-Jul (−3.10% d/d, third straight down session), down more than 6% on the week — dry-bulk demand softening even as the Gulf war-risk premium (a separate, faster-moving cost line) continues to build. Today's session print was not yet available at this report's refresh; price the two legs (dry-bulk freight vs. war-risk surcharge) separately (Trading Economics/Hellenic Shipping News/Baltic Exchange)."
-  },
-  {
-   "name": "Land-bridge (Gulf → Jeddah / Red Sea)",
-   "val": "Active contingency, higher utilisation likely",
-   "trend": "up",
-   "note": "With Strait transits near a standstill and the conflict escalating rather than cooling (9th night of strikes, further US casualties), overland trucking to Red Sea ports remains a more actively-used contingency than earlier in the conflict. Keep carrier capacity, costings and lead times current for any Gulf-origin cargo."
-  },
-  {
-   "name": "Incoterms / demurrage",
-   "val": "Force-majeure & war-risk clauses firmly live",
-   "trend": "up",
-   "note": "Repeated strikes on Kuwaiti and other Gulf infrastructure, plus mounting US casualties, keep force-majeure and deviation clauses firmly live for any Gulf-routed cargo; war-risk surcharge pass-through and interdiction/delay risk are live, worsening contract points to negotiate cargo-by-cargo. Generic supply-chain observation, not company-specific."
-  }
- ],
- "inputs_summary": [
-  "Track closely (material and tradeable): power - Brent topped $90/bbl on Monday as the conflict intensified, with EU gas exposure following on a lag; calcined pet coke (rising, low transparency); silicon and magnesium (indexed, China-concentrated); copper (LME-transparent, 3M day-delayed close $13,525.50 on 20-Jul, -0.54%).",
-  "Easing for the first time since March: alumina. EGA's Al Taweelah refinery has been at full production since 10-Jul, targeting 50% of plant capacity within days and full capability by end-2026. At 2.4 Mt in 2025 it covered close to half of EGA's alumina requirement. This is the single most important input-cost development in the current picture.",
-  "Low transparency / contract (monitor via proxies): coal tar pitch, pre-baked anodes, cryolite, cathodes, Ti-B - no liquid index; track through supplier contracts and China export trends.",
-  "Highest supply-concentration risk: magnesium (roughly 85% China), CPC, and Gulf-routed material now exposed to enforced rather than merely threatened interdiction at Hormuz."
- ],
- "ew": {
-  "updated": "2026-07-21",
-  "long_term": {
-   "label": "Long-term — weekly (position degree)",
-   "ymin": 2200,
-   "ymax": 3950,
-   "yticks": [
-    2200,
-    2600,
-    3000,
-    3400,
-    3800
-   ],
-   "now_x": 0.66,
-   "fwd_label": "forecast 12-mo →",
-   "xlabels": [
-    [
-     "May-25",
-     0.0
-    ],
-    [
-     "Jan-26",
-     0.22
-    ],
-    [
-     "Jun-26",
-     0.6
-    ],
-    [
-     "Jun-27",
-     1.0
-    ]
-   ],
-   "waves": [
+  "report_date": "2026-07-25",
+  "kpi_cards": [
     {
-     "t": 0.0,
-     "p": 2300,
-     "w": "0"
+      "label": "LME CASH ($/t)",
+      "value": "3,194.0",
+      "pos": false,
+      "delta": "23-Jul OFFICIAL (Westmetall) - the latest PUBLISHED official at this Sat 25-Jul weekend refresh (LME closed; next session Mon 27-Jul). -$11.00 (-0.34%) vs 22-Jul $3,205.00: the front eased after two firm sessions as the war-risk premium began to narrow (Brent -3.9% on US-Iran talk hopes), though physical tightness persists (stock at a 2022 low)."
     },
     {
-     "t": 0.2,
-     "p": 3325,
-     "w": "1"
+      "label": "LME 3-MONTH ($/t)",
+      "value": "3,182.0",
+      "pos": false,
+      "delta": "23-Jul official, -$3.00 (-0.09%) vs 22-Jul; the traded 3M slipped to ~$3,165 on 24-Jul but holds the rebound off the $3,085 four-month low. Resistance $3,230 (MA20) then $3,260 (.382)."
     },
     {
-     "t": 0.26,
-     "p": 3050,
-     "w": "2"
+      "label": "CASH-3M ($/t)",
+      "value": "+12.0",
+      "pos": true,
+      "delta": "BACKWARDATION at +$12.00 (cash $3,194 over 3M $3,182), NARROWED from +$20.00 on 22-Jul as the premium eased - but still backwardation on a 275,175 t stock base, a fresh low since 2022."
     },
     {
-     "t": 0.42,
-     "p": 3676,
-     "w": "3"
-    },
-    {
-     "t": 0.48,
-     "p": 3520,
-     "w": "4"
-    },
-    {
-     "t": 0.55,
-     "p": 3855,
-     "w": "5"
-    },
-    {
-     "t": 0.6,
-     "p": 3359,
-     "w": "A"
-    },
-    {
-     "t": 0.63,
-     "p": 3406,
-     "w": "B"
-    },
-    {
-     "t": 0.65,
-     "p": 3061.5,
-     "w": "C"
+      "label": "LME STOCK (t)",
+      "value": "275,175",
+      "pos": true,
+      "delta": "275,175 t (-1,600 t on the day); ~-46% YTD from 509,250 t on 02-Jan. A fresh low since 2022 - stock kept drawing even as price eased, with SHFE also falling. No inventory buffer against a fresh interruption."
     }
-   ],
-   "fib": [
+  ],
+  "benchmark": [
     {
-     "l": "23.6%",
-     "p": 3488,
-     "k": "res"
+      "name": "LME Cash settlement",
+      "cur": 3194.0,
+      "prev": 3205.0,
+      "avg": 3458.6,
+      "note": "23-Jul OFFICIAL (Westmetall) $3,194.00 vs 22-Jul $3,205.00 = -$11.00 (-0.34%). The 23-Jul settlement has now posted and eased after two firm sessions; it is the latest PUBLISHED official at this Sat 25-Jul refresh - the LME is closed for the weekend and Monday 27-Jul is the next session. avg = June-2026 monthly mean ($3,458.6)."
     },
     {
-     "l": "38.2%",
-     "p": 3261,
-     "k": "sup"
+      "name": "LME 3-Month",
+      "cur": 3182.0,
+      "prev": 3185.0,
+      "avg": 3438.9,
+      "note": "23-Jul official $3,182.00 vs 22-Jul $3,185.00 (-$3.00, -0.09%). Broadly steady at the front; the traded 3M slipped further to ~$3,165 on 24-Jul (Trading Economics) but is holding the rebound off the early-July four-month low near $3,085. Resistance $3,230 (MA20) then $3,260 (.382). avg = June-2026 3M mean ($3,438.9)."
     },
     {
-     "l": "50%",
-     "p": 3077,
-     "k": "key"
+      "name": "Cash-3M spread",
+      "cur": 12.0,
+      "prev": 20.0,
+      "avg": null,
+      "note": "BACKWARDATION at +$12.00 (cash $3,194.00 over 3M $3,182.00) on the 23-Jul official, NARROWED from +$20.00 on 22-Jul. Positive cash-3M = backwardation = prompt tightness; the front eased as the war-risk premium began to unwind, but the curve is still backwardated on a 275,175 t stock base, the lowest since 2022."
     },
     {
-     "l": "61.8%",
-     "p": 2894,
-     "k": "deep"
+      "name": "LME stock (t)",
+      "cur": 275175,
+      "prev": 276775,
+      "avg": null,
+      "note": "275,175 t at the 23-Jul official, down 1,600 t on the day and roughly -46% year-to-date from 509,250 t on 02-Jan-2026. A fresh low since 2022 - inventories kept drawing even as the flat price eased. SHFE stockpiles are also declining."
     }
-   ],
-   "zone": [
+  ],
+  "premiums": [
+    {
+      "name": "MJP Q3 (Main Japanese Port)",
+      "cur": 395,
+      "prev": 351.5,
+      "avg": 195,
+      "src": "Q3-2026 SETTLED at $395/t (S&P Global Platts, assessed 06-Jul-2026) - a decade high, ~+12% q/q vs Q2's $350-353. Latest settled quarter (unchanged). Q4 talks open ~September against this anchor; with the war-risk premium now narrowing on US-Iran talk hopes, the Q4 swing has become more two-sided. avg = Q1-26 settlement ($195)."
+    },
+    {
+      "name": "CIF Japan spot (MJP spot)",
+      "cur": 365,
+      "prev": 355,
+      "avg": 319.5,
+      "src": "Platts CIF Japan spot last publicly ~$365-370/t; SMM flags squeeze risk under the LME backwardation, though the front eased with the narrowing risk premium. Point ~$365/t. Verify Fastmarkets MB-AL-0343 / SMM weekly."
+    },
+    {
+      "name": "European Duty Unpaid (EDU)",
+      "cur": 542.5,
+      "prev": 612.5,
+      "avg": 519.1,
+      "src": "Platts P1020A duty-UNPAID in-warehouse Rotterdam $525-560/t (mid $542.50, 03-Jul) - latest public mark. Structural floor: 6% EU duty + CBAM + idled European capacity; the war-risk freight leg is easing again as Brent comes off $100. No fresher public print."
+    },
+    {
+      "name": "Billets Rotterdam Duty-Paid",
+      "cur": 1102,
+      "prev": 1104,
+      "avg": 1144,
+      "src": "Value-added 6063 billet conversion premium, in-whs duty-paid Rotterdam - last public reference (late-Jun). Conversion premia are stickier than ingot premia; Mozal remains down. Verify Fastmarkets MB-AL-0002."
+    },
+    {
+      "name": "MW US Transaction (Platts)",
+      "cur": 2396,
+      "prev": 2624,
+      "avg": 2561.9,
+      "src": "Platts US MW Transaction last ~108.7 c/lb ~ $2,396/t (03-Jul); Fastmarkets ddp ~110-112 c/lb (07-Jul). The 50% Section-232 tariff leg (~$1,597/t at the 23-Jul cash of $3,194) dominates the all-in, so the US price tracks Washington and the LME more than local tightness. Verify S&P Global."
+    },
+    {
+      "name": "US Midwest Duty-Paid (P1020A)",
+      "cur": 2420,
+      "prev": 2431,
+      "avg": 2561.9,
+      "src": "SMM weekly DDP ~109.75 c/lb ~ $2,420/t (10-Jul). Duty-paid = LME + Section-232 (50%) + market premium; the policy leg is ~two-thirds of the all-in. A new 20-Jul Section-232 incentive program lets approved US-investing producers import primary at half-rate. Verify Platts/Fastmarkets."
+    }
+  ],
+  "macro": [
+    {
+      "name": "Brent crude ($/bbl)",
+      "value": "~ 96.7",
+      "day": -3.9,
+      "note": "EASED off the $100+ spike - Brent fell ~3.9% to $96.72 on 24-Jul (intraday to ~$95) after reports that Pakistan, backed by China, is seeking to revive US-Iran negotiations, raising hopes of a diplomatic off-ramp. Still up ~8% on the week. US Central Command ran a 13th straight night of strikes and Trump threatened a 'massive attack'; the US says Hormuz 'remains open with American support'. Energy is the largest smelter cost line - the fading spike is a modest cost relief for European and Asian smelters."
+    },
+    {
+      "name": "US Dollar Index (DXY)",
+      "value": "~ 101.5",
+      "day": 0.0,
+      "note": "DXY ~101.5, easing from a 15-month high but still firm. A steady-to-firm dollar is a mild headwind for dollar-priced metals; the risk-off bid faded with the oil pullback."
+    },
+    {
+      "name": "EUR/USD",
+      "value": "~ 1.137",
+      "day": -0.1,
+      "note": "Euro ~1.137. The oil pullback eases the near-term war-energy inflation impulse for the ECB, though TTF gas (~EUR 63/MWh, +1.6% on the day) stays exposed to any renewed Gulf/Red Sea escalation."
+    },
+    {
+      "name": "USD/CNY",
+      "value": "~ 6.77",
+      "day": -0.1,
+      "note": "Yuan ~6.77. China's Q2 GDP grew 4.3% y/y (below the 4.5% consensus); H1 unwrought-aluminium exports were a record 3.4 Mt (+16.3% y/y; June 711 kt), but the SHFE/LME arb has recovered and narrowed the export margin - semis-export flow now faces reduction risk if margins stay compressed."
+    },
+    {
+      "name": "USD/JPY",
+      "value": "~ 163.8",
+      "day": 0.0,
+      "note": "Yen ~163.8. A weak yen cushions Japan-bound cargo premia in local terms; MJP Q4 talks (~Sep) open against the decade-high $395 anchor, but into a war-risk premium that is now narrowing rather than widening."
+    },
+    {
+      "name": "US 10Y yield (%)",
+      "value": "~ 4.68",
+      "day": 0.02,
+      "note": "10Y ~4.68%, little changed as the oil-driven inflation impulse faded with the crude pullback. Real rates remain the macro cap on metals; this week's swing factor is the US-Iran diplomacy-versus-escalation balance."
+    }
+  ],
+  "macro_events": [
+    "OIL EASES ON DIPLOMACY HOPES: Brent fell ~3.9% to $96.72 on 24-Jul (intraday ~$95), off the $100+ spike, after reports that Pakistan - with Chinese support - is seeking to revive US-Iran negotiations; Chinese officials are said to be increasingly concerned that Gulf disruptions are hurting their economy. Crude still ended the week up ~8%. A fading oil spike is a modest smelter-cost relief. (Trading Economics; Reuters)",
+    "STRIKES CONTINUE, RHETORIC HOT: US Central Command carried out a 13th consecutive night of strikes on Iran, targeting military and maritime infrastructure; the US says Hormuz 'remains open with American support'. President Trump warned he was weighing an 'unprecedented' / 'massive' military response and severe retaliation for any further Houthi attacks on Red Sea shipping. Escalation and de-escalation tracks now run in parallel. (CNBC; Reuters)",
+    "RED SEA & KAZAKH OIL: Houthi attacks on two Saudi tankers have pushed Asian buyers to reroute Saudi crude via Suez and around Africa, and the Caspian Pipeline Consortium suspended Black Sea loadings after tanker attacks, disrupting ~80% of Kazakhstan's oil exports - alternative routes are themselves under stress. (Trading Economics; Reuters)",
+    "INVENTORY FLOOR HOLDS: LME aluminium stock drew to 275,175 t on the 23-Jul official (~-46% YTD), a fresh low since 2022, with SHFE also drawing; Macquarie flags a ~930 kt 2026 deficit. The physical-tightness case is intact beneath the softer flat price. (Westmetall; alcircle)",
+    "ALUMINA RELIEF RAMPING: EGA's Al Taweelah refinery has been at full alumina output since 10-Jul, targeting 50% of capacity within days and full capability by end-2026; ex-China alumina eased to ~$322/t FOB Australia as the surplus deepens - the principal supply-side counterweight. (EGA; SMM)",
+    "US TRADE POLICY: Section 232 stays at 50% on covered aluminium (eff. 08-Jun through 31-Dec-2027); a new 20-Jul incentive program grants approved US-investing producers a half-rate on tied primary imports. At the 23-Jul cash of $3,194 the tariff leg is ~$1,597/t - the largest administered component of the US duty-paid premium. (White House; CBP)"
+  ],
+  "lme_series": [
+    [
+      "23-Jul-26",
+      3194.0,
+      3182.0,
+      275175
+    ],
+    [
+      "22-Jul-26",
+      3205.0,
+      3185.0,
+      276775
+    ],
+    [
+      "21-Jul-26",
+      3183.5,
+      3170.5,
+      278275
+    ],
+    [
+      "20-Jul-26",
+      3156.0,
+      3147.5,
+      279775
+    ],
+    [
+      "17-Jul-26",
+      3154.0,
+      3146.5,
+      280100
+    ],
+    [
+      "16-Jul-26",
+      3170.0,
+      3166.5,
+      281600
+    ],
+    [
+      "15-Jul-26",
+      3153.5,
+      3150.5,
+      283100
+    ],
+    [
+      "14-Jul-26",
+      3171.0,
+      3167.5,
+      284600
+    ],
+    [
+      "13-Jul-26",
+      3138.5,
+      3147.0,
+      286225
+    ],
+    [
+      "10-Jul-26",
+      3156.0,
+      3153.0,
+      287725
+    ],
+    [
+      "09-Jul-26",
+      3164.0,
+      3169.0,
+      289225
+    ],
+    [
+      "08-Jul-26",
+      3141.0,
+      3147.0,
+      290825
+    ],
+    [
+      "07-Jul-26",
+      3119.0,
+      3127.5,
+      292425
+    ],
+    [
+      "06-Jul-26",
+      3105.0,
+      3113.0,
+      295550
+    ],
+    [
+      "03-Jul-26",
+      3080.0,
+      3087.0,
+      298775
+    ]
+  ],
+  "chart_price_axis": [
     2950,
-    3110
-   ],
-   "proj": {
-    "bull": [
-     [
-      0.66,
-      3146.5
-     ],
-     [
-      0.76,
-      3410
-     ],
-     [
-      0.88,
-      3630
-     ],
-     [
-      1,
-      3800
-     ]
-    ],
-    "base": [
-     [
-      0.66,
-      3146.5
-     ],
-     [
-      0.78,
-      3245
-     ],
-     [
-      0.9,
-      3340
-     ],
-     [
-      1,
-      3450
-     ]
-    ],
-    "bear": [
-     [
-      0.66,
-      3146.5
-     ],
-     [
-      0.8,
-      2975
-     ],
-     [
-      1,
-      2830
-     ]
-    ]
-   },
-   "fwd_pivots": [
-    {
-     "t": 0.76,
-     "p": 3260,
-     "w": ".382 trigger"
-    },
-    {
-     "t": 0.9,
-     "p": 2894,
-     "w": ".618 bear"
-    }
-   ],
-   "annos": [
-    {
-     "t": 0.55,
-     "p": 3855,
-     "dy": -10,
-     "text": "3,855 · 4-yr high"
-    },
-    {
-     "t": 0.6,
-     "p": 3359,
-     "dy": 16,
-     "text": "A 3,359"
-    },
-    {
-     "t": 0.65,
-     "p": 3061.5,
-     "dy": 16,
-     "text": "C 3,061.5 (.50 held)",
-     "anchor": "start"
-    }
-   ],
-   "legend": [
-    [
-     "price",
-     "#3A3322",
-     ""
-    ],
-    [
-     "bull",
-     "#007A3D",
-     "7 4"
-    ],
-    [
-     "base",
-     "#8E7C42",
-     ""
-    ],
-    [
-     "bear",
-     "#C76210",
-     "2 4"
-    ]
-   ],
-   "writeup": "LONG TERM (weekly / position). The count remains a completed five-wave impulse from the 2,300 base into the 3,855 high of 02-Jun-2026 - wave 5 extended, as commodities typically do - followed by a corrective A-B-C. Wave A fell to 3,359, B recovered to 3,406, and C bottomed at 3,061.50 on 02-Jul, holding the .50 retracement at 3,077 within a target zone of 2,950-3,110 defined by the confluence of the .50 level and the prior fourth wave of lesser degree. All three cardinal rules remain satisfied on the impulse: wave 2 did not retrace beyond 100% of wave 1, wave 3 is not the shortest, and wave 4 does not overlap wave 1. BASE CASE (55%): the C low is in and price is building a corrective base beneath the .382 trigger at 3,260, with the 20-Jul softness to about $3,138 a normal retest rather than a new leg down. A sustained break above 3,260 opens 3,450. BULL ALTERNATE (30%): the correction ended at 3,061.50 and a new impulse is forming - a decisive close above 3,260 with the backwardation steepening would confirm, targeting 3,620-3,800. BEAR ALTERNATE (15%): the C leg is extending as a deeper zigzag toward the .618 at 2,894. INVALIDATION: a weekly close below 3,061.50 negates the completed-C reading and shifts the count to the bear alternate; a weekly close above 3,406 (the B high) negates the bear case entirely. CONFIDENCE: moderate - the .50 hold and the persistent backwardation support the base case, but the divergence between softening price and escalating supply risk argues for tighter-than-usual invalidation discipline. Technical context only, not advice."
-  },
-  "short_term": {
-   "label": "Short-term — daily (swing degree)",
-   "ymin": 3000,
-   "ymax": 3900,
-   "yticks": [
-    3100,
-    3300,
-    3500,
-    3700
-   ],
-   "now_x": 0.975,
-   "fwd_label": "forecast 4–6 wk →",
-   "xlabels": [
-    [
-     "Jun 3",
-     0
-    ],
-    [
-     "Jul 20",
-     0.975
-    ],
-    [
-     "Aug-26",
-     1
-    ]
-   ],
-   "line": [
-    [
-     0,
-     3855
-    ],
-    [
-     0.1,
-     3608
-    ],
-    [
-     0.22,
-     3536
-    ],
-    [
-     0.33,
-     3359
-    ],
-    [
-     0.45,
-     3405
-    ],
-    [
-     0.55,
-     3400
-    ],
-    [
-     0.6,
-     3607
-    ],
-    [
-     0.68,
-     3271
-    ],
-    [
-     0.74,
-     3164
-    ],
-    [
-     0.78,
-     3160.5
-    ],
-    [
-     0.82,
-     3112
-    ],
-    [
-     0.85,
-     3073
-    ],
-    [
-     0.875,
-     3065
-    ],
-    [
-     0.9,
-     3087
-    ],
-    [
-     0.92,
-     3113
-    ],
-    [
-     0.9375,
-     3127.5
-    ],
-    [
-     0.95,
-     3147
-    ],
-    [
-     0.9625,
-     3167.5
-    ],
-    [
-     0.9675,
-     3150.5
-    ],
-    [
-     0.97,
-     3166.5
-    ],
-    [
-     0.975,
-     3146.5
-    ]
-   ],
-   "waves": [
-    {
-     "t": 0.0,
-     "p": 3855,
-     "w": "5"
-    },
-    {
-     "t": 0.33,
-     "p": 3359,
-     "w": "A"
-    },
-    {
-     "t": 0.6,
-     "p": 3607,
-     "w": "B"
-    },
-    {
-     "t": 0.875,
-     "p": 3065,
-     "w": "C"
-    }
-   ],
-   "fib": [
-    {
-     "l": "R .618",
-     "p": 3666,
-     "k": "res"
-    },
-    {
-     "l": ".382",
-     "p": 3260,
-     "k": "key"
-    },
-    {
-     "l": "S .50",
-     "p": 3077,
-     "k": "sup"
-    }
-   ],
-   "proj": {
-    "base": [
-     [
-      0.975,
-      3146.5
-     ],
-     [
-      0.99,
-      3205
-     ],
-     [
-      1,
-      3260
-     ]
-    ]
-   },
-   "fwd_pivots": [
-    {
-     "t": 1,
-     "p": 3260,
-     "w": ".382"
-    }
-   ],
-   "annos": [
-    {
-     "t": 0.0,
-     "p": 3855,
-     "dy": -9,
-     "text": "3,855"
-    },
-    {
-     "t": 0.6,
-     "p": 3607,
-     "dy": -9,
-     "text": "B 3,607 (spike sold)",
-     "anchor": "start"
-    },
-    {
-     "t": 0.875,
-     "p": 3065,
-     "dy": 14,
-     "text": "C 3,065 · .50 held"
-    }
-   ],
-   "legend": [
-    [
-     "price",
-     "#3A3322",
-     ""
-    ],
-    [
-     "expected path",
-     "#8E7C42",
-     ""
-    ]
-   ],
-   "writeup": "SHORT TERM (daily / swing). The corrective sequence off the 3,855 high of 02-Jun counts as A to 3,359, B to 3,607 (the spike that was sold), and C to 3,065 on 02-Jul, which held the .50 retracement. Since then price has been carving a shallow base: the early-July low near 3,085, a rebound that stalled below the 3,230 MA20, and a 20-Jul session back down to about 3,138. Because wave A was a five-wave move, alternation argues the correction resolves as a zigzag rather than a flat, and the shallow, overlapping recovery since 02-Jul is consistent with base-building rather than impulsive advance. BASE CASE (55%): the base holds and price grinds toward the 3,230 MA20 and then the .382 at 3,260. BULL ALTERNATE (30%): a gap higher on Hormuz enforcement news clears 3,260 directly - the setup is asymmetric given LME stocks at the lowest since 2022 and a backwarded curve. BEAR ALTERNATE (15%): failure at 3,138 opens a retest of 3,085 and then 3,061.50. INVALIDATION: a daily close below 3,061.50 voids the base-building count; a daily close above 3,260 voids the bear alternate. Watch RSI for divergence at the 3,230-3,260 resistance stack and whether the cash-3M backwardation steepens on the next official - curve confirmation is the tell. CONFIDENCE: moderate. Technical context only, not advice."
-  }
- },
- "metals_board": [
-  {
-   "name": "Aluminium",
-   "price": 3137.8,
-   "day": -0.85,
-   "ytd": 4.2
-  },
-  {
-   "name": "Copper",
-   "price": 13525.5,
-   "day": -0.54,
-   "ytd": 8.1
-  },
-  {
-   "name": "Nickel",
-   "price": 16969.38,
-   "day": 0.23,
-   "ytd": 0.3
-  },
-  {
-   "name": "Zinc",
-   "price": 3525.2,
-   "day": 0.28,
-   "ytd": 12.6
-  },
-  {
-   "name": "Lead",
-   "price": 1887.7,
-   "day": 0.22,
-   "ytd": -6.0
-  }
- ],
- "metals_history": {
-  "labels": [
-   "Jun-25",
-   "Jul",
-   "Aug",
-   "Sep",
-   "Oct",
-   "Nov",
-   "Dec",
-   "Jan-26",
-   "Feb",
-   "Mar",
-   "Apr",
-   "May",
-   "now"
+    3600
   ],
-  "al": [
-   100,
-   103,
-   105,
-   104,
-   108,
-   112,
-   116,
-   121,
-   126,
-   129,
-   132,
-   135,
-   118.7
+  "chart_stock_axis": [
+    275000,
+    310000
   ],
-  "cu": [
-   100,
-   104,
-   108,
-   110,
-   115,
-   121,
-   126,
-   132,
-   136,
-   138,
-   140,
-   141,
-   139.1
+  "lme_commentary": "At this Saturday 25-Jul refresh the latest PUBLISHED LME official is the 23-Jul settlement (cash $3,194.00 / 3M $3,182.00 / stock 275,175 t); the LME is closed for the weekend and Monday 27-Jul is the next session. The 23-Jul official eased after two firm sessions - cash -$11.00 (-0.34%) and 3M -$3.00 (-0.09%) - narrowing the cash-3M backwardation to +$12.00 from +$20.00, and the traded 3M slipped further to ~$3,165 on 24-Jul (Trading Economics). The driver was a narrowing war-risk premium: Brent fell ~4% toward $96 after reports Pakistan, backed by China, is seeking to revive US-Iran talks, even as US Central Command ran a 13th straight night of strikes and Trump threatened a 'massive attack'. Structurally the market stays tight - LME stock at 275,175 t is the lowest since 2022 and ~46% below the start of the year, SHFE stocks are drawing, and the curve is still backwardated (+$12) - so the pullback reads as a pause, not a reversal, holding the rebound off the early-July $3,085 four-month low. Copper eased to a $13,741/t 3M official (23-Jul) from ~$13,876. Norsk Hydro's Q2 beat (22-Jul, adjusted EBITDA NOK 8.9bn) confirms producers are capturing the higher price and premiums. The supply counterweights are building - EGA's Al Taweelah alumina refinery at full output since 10-Jul and a China export arb that has narrowed - so the near-term skew has swung from one-way escalation back to two-sided. Monday's official is the next read on whether the front re-steepens or the premium keeps unwinding.",
+  "alumina": [
+    {
+      "name": "Alumina FOB Australia (SMM/Fastmarkets)",
+      "val": 322,
+      "unit": "$/t",
+      "asof": "late-Jul",
+      "trend": "down",
+      "src": "~$322/t FOB Western Australia - down from ~$328 as the EGA Al Taweelah refinery restart (full alumina output since 10-Jul) ramps and the ex-China surplus deepens. The commodity is loosening; Gulf- and Red Sea-routed cargoes still carry wider war-risk cover, though that leg eases as Brent comes off $100. Verify SMM/Fastmarkets."
+    },
+    {
+      "name": "Alumina API / Platts region",
+      "val": 300,
+      "unit": "$/t",
+      "asof": "mid-Jul",
+      "trend": "down",
+      "src": "Ex-China benchmark region ~$300/t - easing on the building surplus (Q1 avg $306.9). SMM flags ex-China metallurgical-grade output down ~6% y/y in June - a partial offset to the EGA restart. Verify Platts."
+    },
+    {
+      "name": "SHFE-region alumina (SMM Alumina Index)",
+      "val": 2700,
+      "unit": "Y/t",
+      "asof": "late-Jul",
+      "trend": "down",
+      "src": "SMM Alumina Index ~Y2,700/t, easing week-on-week as futures decline and port stocks build; regional spot broadly Y2,600-2,800. Gulf/Red Sea freight risk still weighs on the war-risk leg of imported feed (~60% of Gulf alumina imports transit Hormuz)."
+    },
+    {
+      "name": "Platts FOB Australia (futures)",
+      "val": 305,
+      "unit": "$/t",
+      "asof": "23-Jul",
+      "trend": "down",
+      "src": "Alumina FOB Australia (Platts) futures ~$305/t (CME/TradingView, latest) - easing on the building ex-China surplus as the EGA restart ramps."
+    }
   ],
-  "ni": [
-   100,
-   101,
-   103,
-   102,
-   104,
-   106,
-   108,
-   107,
-   109,
-   110,
-   111,
-   112,
-   103.6
-  ]
- },
- "premium_quarters": [
-  {
-   "q": "Q4-25",
-   "v": 86
+  "alumina_notes": [
+    "The alumina market remains the mirror image of metal: globally LOOSENING (EGA's 2.4 Mtpa restart at full output since 10-Jul, Guinea bauxite oversupply, Chinese port stocks building; SMM Alumina Index easing toward ~Y2,700/t) - ex-China consolidation has slipped to ~$300-322 (FOB Australia ~$322, from ~$328).",
+    "The regional wrinkle persists but is easing: the shipping disruption still spans two waterways (a strained Hormuz plus Houthi attacks on Saudi tankers in the Red Sea), yet the war-risk cover embedded in the ~60% of Gulf alumina imports that transit Hormuz is re-pricing lower at the margin as Brent comes off $100 and US-Iran talks are floated. SMM separately flags ex-China metallurgical-grade output down ~6% y/y in June.",
+    "Guinea's pending export-quota policy (a considered cap near 150 Mt for 2026, vs 178 Mt shipped in 2025, targeting >$100/dmt bauxite) remains undecreed and is the one clear bullish catalyst on the commodity leg; record Australian and Metro Mining shipments underline how long the seaborne bauxite market currently is."
+  ],
+  "net_read": "TIGHT MARKET, WAR PREMIUM NARROWING, SKEW BACK TO TWO-SIDED. The flat price paused its rebound: the latest published 23-Jul official is cash $3,194.00 / 3M $3,182.00 with the cash-3M backwardation NARROWED to +$12.00 (from +$20.00) and stock at a fresh 2022 low of 275,175 t (~-46% YTD). The curve is still backwardated - physical tightness is intact - but the war-risk premium began to unwind: Brent fell ~4% toward $96 on 24-Jul after reports Pakistan, backed by China, is trying to revive US-Iran talks, even as US strikes ran a 13th straight night and Trump threatened a 'massive attack'. Roughly 9% of global primary supply still sits behind Hormuz and the Red Sea, so the floor is real; the offsets are also building - EGA's Al Taweelah alumina ramp (full output since 10-Jul), a deepening ex-China alumina surplus (~$322 FOB Australia), and a SHFE/LME arb that has narrowed enough to threaten the record China export flow. Norsk Hydro's Q2 beat (22-Jul, adjusted EBITDA NOK 8.9bn) shows the price/premium capture reaching producer margins. Net: a genuinely tight market whose near-term skew has swung from one-way escalation back to two-sided, with the diplomacy track (Pakistan/China) now the key downside trigger and the 2022-low inventory the floor.",
+  "feed": [
+    {
+      "when": "Fri 24-Jul",
+      "impact": "Negative",
+      "text": "BRENT SLIDES ON DIPLOMACY HOPES: Brent fell ~3.9% to $96.72 (intraday ~$95) after reports Pakistan, backed by China, is seeking to revive US-Iran negotiations - a possible off-ramp that trimmed the war-risk premium across the metals complex, even as US strikes continued (Trading Economics; Reuters)."
+    },
+    {
+      "when": "Thu 23-Jul",
+      "impact": "Positive",
+      "text": "STOCK AT FRESH 2022 LOW: LME aluminium stock drew another 1,600 t to 275,175 t on the 23-Jul official (~-46% YTD), the lowest since 2022, with SHFE also drawing - inventories kept falling even as the flat price eased (Westmetall)."
+    },
+    {
+      "when": "Thu 23-Jul",
+      "impact": "Neutral",
+      "text": "OFFICIAL EASES: The 23-Jul LME official printed cash $3,194.00 / 3M $3,182.00, down $11/$3 on the day, narrowing the cash-3M backwardation to +$12.00 from +$20.00 - a pause after two firm sessions rather than a reversal (Westmetall)."
+    },
+    {
+      "when": "This week",
+      "impact": "Positive",
+      "text": "DEFICIT CALLS WIDEN: Macquarie flags a ~930 kt 2026 aluminium deficit, wider than the Reuters analyst poll's -365 kt, against a China output cap near 45 Mt - the structural-tightness case beneath the softer tape (alcircle; Macquarie)."
+    },
+    {
+      "when": "This week",
+      "impact": "Neutral",
+      "text": "CHINA ARB NARROWS: The SHFE/LME price ratio recovered last week, sharply narrowing the export margins that drove record H1 semis exports (June 711 kt); new orders are already softening and export flow faces reduction risk if margins stay compressed (SMM; alcircle)."
+    },
+    {
+      "when": "Fri 10-Jul",
+      "impact": "Negative",
+      "text": "ALUMINA SURPLUS DEEPENS: EGA's Al Taweelah refinery has been at full alumina output since 10-Jul, ramping toward 50% of capacity; ex-China alumina eased to ~$322/t FOB Australia as the surplus builds - the principal supply-side offset to the geopolitics (EGA; SMM)."
+    },
+    {
+      "when": "Mon 20-Jul",
+      "impact": "Neutral",
+      "text": "US POLICY TWEAK: A new Section-232 incentive program lets approved companies investing in US primary-aluminium capacity import metal tied to expected output at half the 50% rate - a first, targeted crack in the administered US tariff wall (White House; CBP)."
+    }
+  ],
+  "news": [
+    {
+      "theme": "Oil / Diplomacy",
+      "impact": "Bearish",
+      "horizon": "Now",
+      "headline": "Brent fell ~3.9% to $96.72 on 24-Jul (intraday ~$95) after reports Pakistan, backed by China, is seeking to revive US-Iran negotiations - raising hopes of a diplomatic off-ramp and trimming the war-risk premium across metals, even as US Central Command ran a 13th straight night of strikes and Trump threatened a 'massive attack'. Two-sided again, not one-way.",
+      "source": "Trading Economics; Reuters (24-Jul-2026)",
+      "url": "https://tradingeconomics.com/commodity/brent-crude-oil/news/569821"
+    },
+    {
+      "theme": "Fundamentals / Inventory",
+      "impact": "Bullish",
+      "horizon": "Now",
+      "headline": "LME aluminium stock drew another 1,600 t to 275,175 t on the 23-Jul official, a fresh low since 2022 (~-46% YTD), with SHFE stocks also falling. Macquarie flags a ~930 kt 2026 deficit. Inventories kept drawing even as the flat price eased - no buffer against a fresh interruption.",
+      "source": "Westmetall; alcircle / Macquarie",
+      "url": "https://www.westmetall.com/en/markdaten.php?action=table&field=LME_Al_cash"
+    },
+    {
+      "theme": "China / Exports",
+      "impact": "Bearish",
+      "horizon": "Weeks",
+      "headline": "The SHFE/LME price ratio recovered last week, sharply narrowing the export margins that drove record H1 semis exports (June 711 kt; H1 +16.3% y/y). New orders are softening and semis-export flow faces reduction risk if margins stay compressed - a potential loosening of the export valve. Q2 GDP grew 4.3%.",
+      "source": "SMM; alcircle (Jul-2026)",
+      "url": "https://www.alcircle.com/press-release/china-aluminium-market-h1-2026-review-and-h2-outlook-120287"
+    },
+    {
+      "theme": "Supply / Alumina",
+      "impact": "Bearish",
+      "horizon": "H2-26",
+      "headline": "EGA's Al Taweelah refinery has been at full alumina output since 10-Jul, ramping toward 50% of capacity and full capability by end-2026; ex-China alumina eased to ~$322/t FOB Australia as the surplus deepens. The principal supply-side offset to the geopolitical risk keeps building.",
+      "source": "EGA; SMM (Jul-2026)",
+      "url": "https://media.ega.ae/ega-reports-strong-early-progress-in-al-taweelah-restart-and-updates-on-business-performance/"
+    },
+    {
+      "theme": "Policy / Tariff",
+      "impact": "Neutral",
+      "horizon": "Now",
+      "headline": "US Section 232 stays at 50% on covered aluminium (eff. 08-Jun through 31-Dec-2027); from 20-Jul a new incentive program lets approved US-investing producers import primary at half-rate. The US duty-paid premium stays policy-dominated (~$1,597/t tariff at the 23-Jul $3,194 LME cash).",
+      "source": "White House; CBP (Jul-2026)",
+      "url": "https://www.whitehouse.gov/presidential-actions/2026/06/further-adjusting-the-tariff-regimes-for-imports-of-aluminum-steel-and-copper-into-the-united-states/"
+    }
+  ],
+  "earnings": [
+    {
+      "company": "Alcoa (AA)",
+      "group": "Aluminum producer",
+      "period": "Q2 2026",
+      "reported": "16 Jul 2026",
+      "headline": "Revenue $3.97bn (+24% q/q, highest in nearly a decade); adj. EPS $2.12 (MISS vs ~$2.31 consensus); adj. net income $562m; adj. EBITDA $901m (from $595m in Q1); Aluminum segment RECORD EBITDA $1.073bn at 32.3% margin.",
+      "readthrough": "First producer P&L under the Hormuz-disruption regime: record aluminium margins and near-decade-high revenue on higher LME + strong US Midwest premiums, but adj. EPS missed on higher costs — notably ~$35m more Section-232 tariff on Canadian metal into the US — and the shares fell. South32 upstream acquisition ($4.1bn upfront, up to $5.6bn contingent to 2030) progressing, close expected H1-2027. The tariff is a double edge: it inflates US premia but taxes Alcoa's cross-border Canadian metal.",
+      "sentiment": "Positive (mixed)",
+      "eps": 2.12,
+      "revenue_bn": 3.97,
+      "yoy_pct": null,
+      "reported_iso": "2026-07-16",
+      "url": "https://investors.alcoa.com"
+    },
+    {
+      "company": "Norsk Hydro (NHY)",
+      "group": "Aluminum producer",
+      "period": "Q2 2026",
+      "reported": "22 Jul 2026",
+      "headline": "Q2 2026 BEAT: adjusted EBITDA NOK 8,923m (+14.5% y/y vs NOK 7,790m; above consensus); Aluminium Metal adjusted EBITDA NOK 6,421m; adjusted EPS NOK 2.2 (from NOK 1.7); free cash flow NOK 4bn; 12-month adjusted RoaCE 10.9%. Shares rose on the print.",
+      "readthrough": "First European producer P&L of the Hormuz-disruption quarter. Higher aluminium prices and product premiums plus stronger recycling earnings drove the beat; a stronger NOK and lower hydro-power output were partial offsets. Confirms the disruption-quarter price/premium is translating into real producer margin - a positive read-across for the smelter complex.",
+      "sentiment": "Positive",
+      "eps": null,
+      "revenue_bn": null,
+      "yoy_pct": 14.5,
+      "reported_iso": "2026-07-22",
+      "url": "https://www.hydro.com/en/global/investors/reports-and-presentations/quarterly-reports/"
+    },
+    {
+      "company": "Century Aluminum (CENX)",
+      "group": "Aluminum producer",
+      "period": "Q1 2026",
+      "reported": "7 May 2026",
+      "headline": "Adj. EPS $1.63 (beat $1.56); revenue $649m; net income $327m (incl. $288m Hawesville sale gain).",
+      "readthrough": "Higher LME + strong US Midwest premiums; Q2 adj. EBITDA guided $315–335m.",
+      "sentiment": "Positive",
+      "eps": 1.63,
+      "revenue_bn": 0.649,
+      "yoy_pct": null,
+      "reported_iso": "2026-05-07",
+      "url": "https://investors.centuryaluminum.com"
+    },
+    {
+      "company": "Alba (Bahrain)",
+      "group": "Saudi / regional Gulf",
+      "period": "Q1 2026",
+      "reported": "May 2026",
+      "headline": "Net profit $200.3m (+316% YoY); EPS 53 fils; sales −17% on Gulf supply-chain disruption.",
+      "readthrough": "LME averaged $3,195/t (+22% YoY) drove profit surge; volumes hit by regional conflict; ~19% capacity in controlled shutdown — restart path improves post-truce.",
+      "sentiment": "Positive",
+      "eps": null,
+      "revenue_bn": null,
+      "yoy_pct": 316.0,
+      "reported_iso": "2026-05-15",
+      "url": "https://www.albasmelter.com/en"
+    },
+    {
+      "company": "Maaden (1211)",
+      "group": "Saudi / regional",
+      "period": "Q1 2026",
+      "reported": "Apr 2026",
+      "headline": "Net profit SAR 1.63bn (~$436m, +5.5% YoY); revenue SAR 8.79bn (+3.2%); EBITDA $964m.",
+      "readthrough": "Strong pricing across commodities; partly offset by lower phosphate volumes; 2026 capex set >$4bn. Ma'aden (1211) reports Q2 2026 on 06-Aug-2026; the Q1 print remains the latest public result.",
+      "sentiment": "Positive",
+      "eps": null,
+      "revenue_bn": 2.34,
+      "yoy_pct": 5.5,
+      "reported_iso": "2026-04-30",
+      "url": "https://www.maaden.com/investor-relations"
+    },
+    {
+      "company": "Rio Tinto (RIO)",
+      "group": "Diversified major",
+      "period": "Q2 2026 (prod.)",
+      "reported": "14 Jul 2026",
+      "headline": "Q2 2026 production (14-Jul): aluminium 841 kt (flat y/y, +1% q/q); bauxite recovered from Q1 weather; alumina reduced q/q on Yarwun/Vaudreuil reliability events; group aluminium guidance intact 3.25-3.45 Mt.",
+      "readthrough": "Kitimat, NZAS and AP60 continued their ramp-up while Arvida's final two potlines closed in June as planned, completing the transition to AP60. Steady low-carbon Canadian output into a tight, premium-rich market - constructive for realised margins even as the flat price eased.",
+      "sentiment": "Positive",
+      "eps": null,
+      "revenue_bn": null,
+      "yoy_pct": 3.0,
+      "reported_iso": "2026-07-14",
+      "url": "https://www.riotinto.com/en/invest"
+    },
+    {
+      "company": "South32 (S32)",
+      "group": "Alumina / upstream",
+      "period": "Q4 FY26 (Jun-26)",
+      "reported": "20 Jul 2026",
+      "headline": "June-quarter production report: Worsley alumina 943 kt, Hillside aluminium 179 kt; group beat FY26 production guidance with quarterly sales +15%. Sale of the aluminium value chain to Alcoa (announced 01-Jul) progressing.",
+      "readthrough": "Upstream volumes intact and above guidance; the aluminium/alumina divestment to Alcoa repositions S32 as an upstream base-metals play. Confirms Western supply is expressing the Gulf disruption through price/freight, not lost tonnage.",
+      "sentiment": "Positive",
+      "eps": null,
+      "revenue_bn": null,
+      "yoy_pct": 15.0,
+      "reported_iso": "2026-07-20",
+      "url": "https://www.south32.net/investors"
+    },
+    {
+      "company": "Hindalco / Novelis",
+      "group": "Alumina / downstream",
+      "period": "Q4 FY26 (Mar)",
+      "reported": "May 2026",
+      "headline": "Hindalco PAT ₹5,283cr (+66% YoY); India Al upstream EBITDA margin ~46%; Novelis FY26 adj. EBITDA $1.6bn (−9%).",
+      "readthrough": "Record India operations; Novelis pressured by Oswego outage (~$104m) and tariffs (~$143m).",
+      "sentiment": "Positive (mixed)",
+      "eps": null,
+      "revenue_bn": null,
+      "yoy_pct": 66.0,
+      "reported_iso": "2026-05-30",
+      "url": "https://www.hindalco.com/investor-centre"
+    },
+    {
+      "company": "Chalco (2600)",
+      "group": "Aluminum producer (China)",
+      "period": "Q1 2026 (prelim)",
+      "reported": "Apr 2026",
+      "headline": "Net profit guided RMB 5.30–5.59bn (+50–58% YoY).",
+      "readthrough": "Strong on higher Al prices; China output near self-imposed 45 Mt capacity cap.",
+      "sentiment": "Positive",
+      "eps": null,
+      "revenue_bn": null,
+      "yoy_pct": 54.0,
+      "reported_iso": "2026-04-30",
+      "url": "https://www.chalco.com.cn"
+    },
+    {
+      "company": "BHP",
+      "group": "Diversified major",
+      "period": "H1 FY26 (Dec-25)",
+      "reported": "17 Feb 2026",
+      "headline": "Underlying profit $6.2bn (+>20%); underlying EBITDA $15.5bn (+25%, 58% margin); interim div 73c.",
+      "readthrough": "Copper-led strength; broad base-metals read-across positive for the complex.",
+      "sentiment": "Positive",
+      "eps": null,
+      "revenue_bn": null,
+      "yoy_pct": 20.0,
+      "reported_iso": "2026-02-17",
+      "url": "https://www.bhp.com/investors"
+    },
+    {
+      "company": "Glencore",
+      "group": "Diversified major",
+      "period": "FY2025",
+      "reported": "18 Feb 2026",
+      "headline": "FY25 results; copper & aluminium average prices +9% YoY; zinc metal +4%.",
+      "readthrough": "Resilient structural demand for Cu/Al cited; broadly constructive sector tone.",
+      "sentiment": "Neutral",
+      "eps": null,
+      "revenue_bn": null,
+      "yoy_pct": 9.0,
+      "reported_iso": "2026-02-18",
+      "url": "https://www.glencore.com/investors"
+    },
+    {
+      "company": "Rusal",
+      "group": "Aluminum producer (Russia)",
+      "period": "FY2025",
+      "reported": "Mar 2026",
+      "headline": "FY25 net loss $455m (vs $803m profit in 2024) on higher costs & lower output.",
+      "readthrough": "Analysts expect stronger H1 2026 on higher prices; Asia pivot amid fractured trade flows.",
+      "sentiment": "Negative",
+      "eps": null,
+      "revenue_bn": null,
+      "yoy_pct": null,
+      "reported_iso": "2026-03-31",
+      "url": "https://rusal.ru/en/investors/"
+    },
+    {
+      "company": "Zhongfu Industrial (600595.SH)",
+      "group": "China producer/processor",
+      "period": "H1 2026 (profit alert)",
+      "reported": "08-Jul-26 announcement (SMM 11-Jul)",
+      "headline": "Guides H1-26 net profit ¥1.8–1.95bn, +154.4–175.6% YoY.",
+      "readthrough": "Credits industry-chain cost reduction, aluminium prices fluctuating at highs, high-value-added deep-processing mix and energy-saving retrofits — the first sizeable China H1 pre-announcement of the season and a positive read-across for Chinese producer margins.",
+      "sentiment": "Positive",
+      "eps": null,
+      "revenue_bn": null,
+      "yoy_pct": 165.0,
+      "reported_iso": "2026-07-08",
+      "url": "https://www.sse.com.cn"
+    }
+  ],
+  "earnings_note": "Earnings are quarterly and episodic; entries show each listed peer's most recent reported results as of 25-Jul (public, listed-company information). Recent prints: Norsk Hydro's Q2 2026 (22-Jul) BEAT - adjusted EBITDA NOK 8,923m (+14.5% y/y), Aluminium Metal EBITDA NOK 6,421m, adjusted EPS NOK 2.2, FCF NOK 4bn - on higher aluminium prices and product premiums; the shares rose. South32's Q4 FY26 production (20-Jul) beat FY26 guidance (Worsley alumina 943 kt, Hillside 179 kt), with its aluminium value chain being sold to Alcoa. Alcoa (16-Jul) posted record Aluminum-segment EBITDA ($1.073bn, 32.3% margin) and near-decade-high revenue ($3.97bn) but missed on adjusted EPS ($2.12 vs ~$2.31) on ~$35m of extra Section-232 tariff on Canadian metal. Rio Tinto's Q2 production (14-Jul) held aluminium at 841 kt (flat y/y, +1% q/q) with Kitimat/AP60 ramping and Arvida closed as planned. Ma'aden (1211) reports Q2 2026 on 06-Aug.",
+  "commercial": [
+    {
+      "function": "Market monitoring - flat price",
+      "priority": "High",
+      "text": "The rebound paused: the latest published 23-Jul official is cash $3,194.00 / 3M $3,182.00 (-$11/-$3 on the day) and the traded 3M slipped to ~$3,165 on 24-Jul, holding the rebound off the $3,085 four-month low. LME closed for the weekend; Monday 27-Jul is the next official. Resistance $3,230 (MA20) then $3,260; support $3,085."
+    },
+    {
+      "function": "Curve and inventory",
+      "priority": "High",
+      "text": "Cash-3M backwardation NARROWED to +$12.00 (from +$20.00) as the war-risk premium eased, but LME stock drew again to a fresh 2022 low of 275,175 t (~-46% YTD) with SHFE also falling. Prompt tightness is intact even as the front softened - the pullback is a pause, not a loosening."
+    },
+    {
+      "function": "Regional premiums",
+      "priority": "Medium",
+      "text": "The three regions stay decoupled: Japan's Q3 MJP settled at a decade-high $395/t, Rotterdam duty-unpaid sits at a $542.50/t mid (03-Jul) with its war-risk leg easing as Brent comes off $100, and the US duty-paid premium is dominated by the 50% Section 232 rate (~$1,597/t at the 23-Jul cash). A new 20-Jul incentive program grants approved US investors a half-rate on tied primary imports. Watch Q4 MJP talks (~Sep)."
+    },
+    {
+      "function": "Input costs",
+      "priority": "High",
+      "text": "Energy eased off the spike - Brent fell to ~$96.7 on 24-Jul from >$100 - a modest smelter-cost relief, though EU gas (~EUR 63/MWh) stays exposed to renewed escalation. Alumina keeps loosening (~$322/t FOB Australia) as EGA's Al Taweelah ramps; copper's LME-transparent leg eased to a $13,741/t 3M official (23-Jul)."
+    },
+    {
+      "function": "Catalyst watch",
+      "priority": "High",
+      "text": "The tape turned two-sided: the US-Iran diplomacy track (Pakistan/China) pulled the war premium lower even as strikes continued. Ahead: whether diplomacy firms or strikes re-escalate, the SHFE/LME arb and China export flow, the pace of the Al Taweelah alumina ramp, and Monday's LME official / whether stock keeps drawing below 275,175 t."
+    }
+  ],
+  "bottom_line": "On 25-Jul the benchmark table carries the 23-Jul LME official (cash $3,194.00, 3M $3,182.00, cash-3M +$12.00 backwardation, stock 275,175 t, ~-46% YTD) - the latest published, with the LME closed for the weekend (next session Mon 27-Jul). The 23-Jul settlement eased after two firm sessions and narrowed the front of the curve. The pivotal development is a narrowing war-risk premium: Brent fell ~4% toward $96 on 24-Jul after reports Pakistan, backed by China, is seeking to revive US-Iran negotiations, even as US strikes ran a 13th straight night and Trump threatened a 'massive attack'. Fundamentals stay tight - the lowest LME stocks since 2022, SHFE also drawing, and Macquarie flagging a ~930 kt 2026 deficit - while the supply offsets build (EGA's Al Taweelah alumina at full output since 10-Jul; a narrowing China export arb). Net: a tight physical market whose asymmetry has swung from one-way escalation back to two-sided - the diplomacy track is the swing factor into next week, capped on the downside by 2022-low inventory and on the upside by visible alumina relief and the fading oil spike.",
+  "sources": [
+    [
+      "LME official settlements & stock (22-Jul - latest PUBLISHED official; Westmetall had not posted the 23-Jul official at this 24-Jul morning refresh)",
+      "London Metal Exchange via Westmetall - westmetall.com (Al cash $3,205.00 / 3M $3,185.00 / stock 276,775 t; June-2026 monthly means from the same table). https://www.westmetall.com/en/markdaten.php?action=table&field=LME_Al_cash"
+    ],
+    [
+      "LME copper official series (23-Jul: cash $13,745.00 / 3M $13,741.00 / stock 281,425 t)",
+      "London Metal Exchange via Westmetall - westmetall.com. https://www.westmetall.com/en/markdaten.php?action=table&field=LME_Cu_cash"
+    ],
+    [
+      "Base-metals board reference levels (nickel, zinc, lead latest publicly reported prints)",
+      "Trading Economics / MetalCharts commodity references, 23-Jul-2026. https://tradingeconomics.com/commodity/aluminum"
+    ],
+    [
+      "Red Sea tanker attacks, oil above $100, ceasefire stalled (23-Jul)",
+      "The Washington Post - 'Oil prices leap after Houthi attacks in Red Sea' (23-Jul-2026); CNN live coverage; CNBC. https://www.washingtonpost.com/world/2026/07/23/least-one-saudi-oil-tanker-is-attacked-red-sea-war-risks-widen/"
+    ],
+    [
+      "Oil tops $100 / Brent close and Q4 outlook",
+      "The National - 'Oil hits $100 for the first time since May after Houthi attacks on Saudi ships in Red Sea' (23-Jul-2026); OilPrice.com. https://www.thenationalnews.com/business/energy/2026/07/23/oil-hits-100-for-the-first-time-since-may-after-houthi-attacks-on-saudi-ships-in-red-sea/"
+    ],
+    [
+      "Alumina supply - EGA Al Taweelah restart",
+      "Emirates Global Aluminium media release; The National; Reuters (10-Jul-2026) - full alumina production resumed, 50% within days, full capability by end-2026; 2.4 Mt produced in 2025. https://media.ega.ae/ega-reports-strong-early-progress-in-al-taweelah-restart-and-updates-on-business-performance/"
+    ],
+    [
+      "European & US premium assessments",
+      "S&P Global - 'TRADE REVIEW: European aluminum market seeks floor as Middle East war premium fades' (07-Jul-2026): Rotterdam duty-unpaid P1020A $525-560/t (mid $542.50) on 03-Jul; US Midwest 108.7 c/lb on 03-Jul. https://www.spglobal.com/energy/en/news-research/latest-news/metals/070726-trade-review-european-aluminum-market-seeks-floor-as-middle-east-war-premium-fades"
+    ],
+    [
+      "Japan quarterly premium settlement",
+      "S&P Global Platts Q3-2026 MJP CIF Japan settlement $395/t (assessed 06-Jul-2026), via IndexBox - decade high, roughly +12% q/q. https://www.indexbox.io/blog/japan-q3-2026-aluminum-premium-hits-decade-high-at-395mt/"
+    ],
+    [
+      "US trade policy - Section 232 aluminium",
+      "U.S. Customs and Border Protection - Section 232 FAQs: 50% on full customs value; proclamation signed 01-Jun-2026, effective 08-Jun-2026 to 31-Dec-2027; CBP CSMS #68855869. https://www.cbp.gov/trade/programs-administration/entry-summary/232-tariffs-aluminum-and-steel-faqs"
+    ],
+    [
+      "Peer earnings - Norsk Hydro Q2 2026 (22-Jul) & South32 Q4 FY26 production (20-Jul)",
+      "Norsk Hydro Q2 2026 release via Business Recorder / StockTitan; South32 June-2026 quarterly report via Smartkarma / TradingView. https://www.brecorder.com/news/40431235/aluminium-producer-norsk-hydros-q2-core-profit-beats-forecasts"
+    ]
+  ],
+  "caveats": [
+    "Report refreshed Sat 25-Jul-2026 (weekend). The benchmark table and lme_series carry the latest PUBLISHED LME official - the 23-Jul settlement (cash $3,194.00 / 3M $3,182.00 / stock 275,175 t) from Westmetall. The LME is closed for the weekend; the 24-Jul official had not been published at this refresh and Monday 27-Jul is the next ring. Officials print 13:20 London. Official settlements are the reference for the benchmark table.",
+    "MIXED SOURCE BASIS ON THE BOARD: aluminium, copper, nickel and zinc are set to their LME 23-Jul 3-month officials (Westmetall, latest published); lead is the LME 22-Jul 3-month official as no 23-Jul lead print had posted. Spot references (Trading Economics / MetalCharts) are a different reference point from officials and will not tie out exactly.",
+    "GEOPOLITICAL DEVELOPMENTS ARE FAST-MOVING and largely post-date the settled 23-Jul official. The floated Pakistan/China-brokered US-Iran talks, the ~4% Brent pullback toward $96, and the continued US strikes (13th night) all continue to evolve; treat the flat price as lagging the news flow, with the near-term skew now two-sided as the war-risk premium narrows.",
+    "PREMIUM ASSESSMENTS ARE PERIODIC, NOT DAILY: MJP settles quarterly (Q3 $395/t, 06-Jul); Rotterdam duty-unpaid ($542.50, 03-Jul) and US Midwest (108.7-112 c/lb, 03-07 Jul) are assessed by Platts/Fastmarkets/SMM on their own schedules. The figures shown are the latest PUBLIC prints, not daily marks.",
+    "ALL CONTENT IS PUBLIC MARKET INFORMATION for situational awareness only. No confidential, internal, company-specific or position data is included, and nothing here is trading, hedging or investment advice. Elliott Wave analysis is technical context, not a forecast or recommendation."
+  ],
+  "outlook": {
+    "forward_path": [
+      {
+        "tenor": "Cash (23-Jul official)",
+        "price": "3,194.0",
+        "basis": "Latest PUBLISHED official (Westmetall); -$11.00 vs 22-Jul. Cash-3M +$12.00 BACKWARDATION (narrowed from +$20.00). LME closed for the weekend; Mon 27-Jul is the next session."
+      },
+      {
+        "tenor": "3-Month (23-Jul official)",
+        "price": "3,182.0",
+        "basis": "Latest published official; -$3.00 vs 22-Jul; front +$12.00 BACKWARDATION. Traded 3M ~$3,165 on 24-Jul. Resistance $3,230 (MA20) then $3,260 (.382)."
+      }
+    ],
+    "curve_note": "The curve eased but stayed backwardated: the cash-3M spread was last published at +$12.00 on the 23-Jul official (cash $3,194.00 over 3M $3,182.00), NARROWED from +$20.00 on 22-Jul, on a 275,175 t stock base (~-46% YTD, the lowest since 2022). The disruption the spread had been pricing began to ease: Brent fell ~4% toward $96 on 24-Jul after reports Pakistan, backed by China, is seeking to revive US-Iran talks, even as US strikes ran a 13th night - so the near-term skew has swung from one-way escalation back to two-sided. The counterweights are quantified and building: China exported a record 3.4 Mt in H1 (June 711 kt) but the SHFE/LME arb has narrowed enough to threaten that flow, and EGA's Al Taweelah alumina restart is at full output (10-Jul) with ex-China alumina easing to ~$322. Norsk Hydro's Q2 beat (22-Jul) confirms the price/premium is reaching producer margins. The 2026 consensus band ($3,200-3,600 averages) and a structural deficit (-365 kt Reuters, up to -930 kt Macquarie) remain the floor; Monday's official is the next chance for the curve to reprice.",
+    "consensus": [
+      {
+        "source": "World Bank (Apr-26 CMO)",
+        "y2026": "$3,200",
+        "y2027": "$3,000",
+        "note": "+21.6% vs 2025 ($2,632)"
+      },
+      {
+        "source": "Analyst consensus",
+        "y2026": "$3,300-3,600",
+        "y2027": "-",
+        "note": "Running above the World Bank base"
+      },
+      {
+        "source": "BofA / Morgan / BNP",
+        "y2026": "Deficit",
+        "y2027": "Deficit",
+        "note": "First structural deficit in ~20 years; BofA flags near-term downside"
+      },
+      {
+        "source": "Balance polls",
+        "y2026": "-365 to -930 kt",
+        "y2027": "-",
+        "note": "Reuters poll -365 kt; Macquarie sees ~-930 kt"
+      }
+    ],
+    "balance": [
+      {
+        "year": "2025",
+        "value": "-100 kt",
+        "label": "Deficit"
+      },
+      {
+        "year": "2026",
+        "value": "-365 to -930 kt",
+        "label": "Deficit - Reuters poll -365 kt; Macquarie -930 kt"
+      },
+      {
+        "year": "2027",
+        "value": "Deficit",
+        "label": "BofA/Morgan/BNP structural deficit; Goldman flags later surplus risk"
+      }
+    ],
+    "capacity_pipeline": [
+      {
+        "asset": "EGA Al Taweelah (UAE)",
+        "change": "Alumina refinery at FULL output since 10-Jul (ramping toward 50% of capacity within days, full capability targeted end-2026); smelter rebuild ahead of schedule",
+        "timing": "Pre-incident output targeted within ~a year"
+      },
+      {
+        "asset": "Alba (Bahrain)",
+        "change": "~19% capacity in controlled shutdown through the Gulf disruption; restart path improves as US-Iran diplomacy advances (Pakistan/China track now floated)",
+        "timing": "Restart path tied to de-escalation"
+      },
+      {
+        "asset": "China",
+        "change": "Output near the 45 Mt self-imposed cap; H1 unwrought-aluminium exports a record 3.4 Mt (+16.3% y/y; June 711 kt), but the SHFE/LME arb has narrowed and semis-export flow now faces reduction risk; Q2 GDP 4.3%",
+        "timing": "Structural ceiling on output; export valve tightening"
+      },
+      {
+        "asset": "Indonesia",
+        "change": "New smelter capacity ramping (BofA flags as added supply)",
+        "timing": "2026 ramp"
+      },
+      {
+        "asset": "Rio Tinto (Canada)",
+        "change": "Q2 production (14-Jul): aluminium 841 kt (flat y/y, +1% q/q); Kitimat/NZAS/AP60 ramping, Arvida closed as planned (transition to AP60 complete); group aluminium guidance intact 3.25-3.45 Mt",
+        "timing": "Ramping through 2026"
+      }
+    ],
+    "scenarios": [
+      {
+        "case": "Bull",
+        "prob": "50%",
+        "target": "$3,300-3,850",
+        "drivers": "The shipping disruption is still two-waterway (a strained Hormuz plus a live Red Sea front) and inventory is at a 2022 low with a structural deficit (-365 to -930 kt). Any breakdown in the floated US-Iran talks, a widening of enforcement into general aluminium-bearing traffic, or a fresh stock draw re-steepens the backwardation and lifts the flat price back toward the $3,600-3,850 zone."
+      },
+      {
+        "case": "Base / Range",
+        "prob": "37%",
+        "target": "$3,080-3,300",
+        "drivers": "The war-risk premium keeps unwinding gradually on the diplomacy track while 2022-low inventory and the deficit hold a floor - price consolidates between the $3,085 four-month low and the $3,230-3,260 resistance stack. EGA's alumina ramp and the narrowing China export arb cap the upside; the tight curve caps the downside."
+      },
+      {
+        "case": "Bear",
+        "prob": "13%",
+        "target": "$2,850-3,080",
+        "drivers": "A durable US-Iran ceasefire (Pakistan/China-brokered) collapses the war-risk premium, reopens both waterways and releases Gulf supply just as EGA alumina and Indonesian smelter capacity ramp - a combination that could break $3,085 and extend the correction toward the .618 near $2,894."
+      }
+    ],
+    "risks": [
+      {
+        "risk": "Diplomacy unwind (now the prominent downside): the floated Pakistan/China-brokered US-Iran talks could firm into a durable ceasefire, collapsing the war-risk premium sharply, reopening both waterways and releasing Gulf supply - the single biggest downside trigger this week",
+        "likelihood": "Medium",
+        "impact": "High",
+        "trend": "down"
+      },
+      {
+        "risk": "Two-waterway escalation: a strained Strait of Hormuz plus the Red Sea front keep ~9% of global primary supply at risk; a breakdown in talks or a widening into general aluminium-bearing traffic would put physical units directly at risk",
+        "likelihood": "Medium",
+        "impact": "High",
+        "trend": "flat"
+      },
+      {
+        "risk": "Inventory floor: LME stock at 275,175 t is a fresh low since 2022 and roughly -46% YTD with SHFE also drawing - there is no inventory buffer to absorb a fresh supply interruption",
+        "likelihood": "High",
+        "impact": "High",
+        "trend": "up"
+      },
+      {
+        "risk": "China export valve: the SHFE/LME arb has narrowed sharply, threatening the record H1 semis-export flow (June 711 kt); a sustained reduction would loosen ex-China availability and cap prices",
+        "likelihood": "Medium",
+        "impact": "Medium",
+        "trend": "flat"
+      },
+      {
+        "risk": "Alumina ramp / surplus: EGA's Al Taweelah is at full output and ex-China alumina is easing to ~$322 - the input-cost offset holding the flat price down, but a Gulf freight disruption to its output remains a tail risk",
+        "likelihood": "Medium",
+        "impact": "High",
+        "trend": "down"
+      },
+      {
+        "risk": "Demand destruction: sustained elevated prices plus the 50% Section 232 rate on US imports encourage substitution and scrap displacement, particularly in packaging and construction",
+        "likelihood": "Medium",
+        "impact": "Medium",
+        "trend": "flat"
+      }
+    ],
+    "catalysts": [
+      {
+        "date": "Days",
+        "event": "Whether the floated Pakistan/China-brokered US-Iran talks firm into a ceasefire (war-premium unwind) or the strikes re-escalate - the single biggest swing factor, now two-sided",
+        "impact": "High"
+      },
+      {
+        "date": "Mon 27-Jul",
+        "event": "The next LME official after the weekend - watch whether the cash-3M backwardation re-steepens beyond +$12 or the premium keeps unwinding",
+        "impact": "High"
+      },
+      {
+        "date": "Daily",
+        "event": "LME warehouse stock report - whether draws continue below 275,175 t, a fresh low since 2022",
+        "impact": "Medium"
+      },
+      {
+        "date": "Weeks",
+        "event": "The SHFE/LME arb and China semis-export flow (June 711 kt) - whether the narrowing margin reduces the export valve",
+        "impact": "Medium"
+      },
+      {
+        "date": "Wed 30-Jul",
+        "event": "CBP mandatory reporting of primary country of smelt and cast for copper articles begins - a marker of tightening Section-232 administration",
+        "impact": "Low"
+      },
+      {
+        "date": "Around September",
+        "event": "Q4-2026 MJP CIF Japan premium negotiations open against the decade-high Q3 settlement of $395/t, into a narrowing risk premium",
+        "impact": "Medium"
+      }
+    ],
+    "ai_analysis": [
+      "The defining feature is a shift in the tape from one-way escalation to a two-sided setup: the 23-Jul official eased (cash $3,194.00 / 3M $3,182.00), narrowing the cash-3M backwardation to +$12.00, and on 24-Jul Brent fell ~4% toward $96 after reports Pakistan, backed by China, is seeking to revive US-Iran talks. The war-risk premium that had been building began to unwind - even as US strikes ran a 13th straight night - so a market that was gapping higher is now consolidating.",
+      "The structural tightness is intact, not resolved: LME stock at 275,175 t is a fresh low since 2022 and roughly 46% below the start of the year, SHFE inventories are drawing, and the curve is still backwardated at +$12.00. Macquarie flags a ~930 kt 2026 deficit, wider than the Reuters poll's -365 kt. The offsets are building on the other side - EGA's Al Taweelah alumina at full output (10-Jul) with ex-China alumina easing to ~$322, and a SHFE/LME arb that has narrowed enough to threaten the record China export flow.",
+      "The corporate read still corroborates the price: Norsk Hydro's Q2 (22-Jul) beat with adjusted EBITDA NOK 8,923m (+14.5% y/y) and the shares rose; Alcoa (16-Jul) posted record Aluminum-segment EBITDA but missed on EPS on Section-232 costs; South32 (20-Jul) beat FY26 production guidance; Rio Tinto (14-Jul) held aluminium at 841 kt with Arvida closed and AP60/Kitimat ramping. The disruption-quarter price and premiums are reaching real producer margin.",
+      "The swing variable has flipped: the de-escalation path (a durable ceasefire) is back on the table via the Pakistan/China track, which is now the prominent downside trigger, while the escalation path (continued strikes, Trump's 'massive attack' threat) remains live. Regionally the premium complex stays decoupled - Japan Q3 MJP $395/t (decade high), Rotterdam duty-unpaid ~$542.50/t with its war-risk leg easing, and the US duty-paid premium dominated by the 50% Section 232 rate (~$1,597/t at the 23-Jul cash), now with a new 20-Jul half-rate incentive for US-investing producers."
+    ],
+    "sources": [
+      [
+        "Westmetall - LME official price & stock series (latest published 23-Jul)",
+        "https://www.westmetall.com/en/markdaten.php?action=table&field=LME_Al_cash"
+      ],
+      [
+        "Trading Economics - Brent slides on US-Iran peace-talk hopes (24-Jul-2026)",
+        "https://tradingeconomics.com/commodity/brent-crude-oil/news/569821"
+      ],
+      [
+        "Emirates Global Aluminium - Al Taweelah restart at full alumina output (10-Jul)",
+        "https://media.ega.ae/ega-reports-strong-early-progress-in-al-taweelah-restart-and-updates-on-business-performance/"
+      ],
+      [
+        "S&P Global - European aluminum market seeks floor as war premium fades (07-Jul-2026)",
+        "https://www.spglobal.com/energy/en/news-research/latest-news/metals/070726-trade-review-european-aluminum-market-seeks-floor-as-middle-east-war-premium-fades"
+      ],
+      [
+        "S&P Global Platts - Japanese Q3-2026 MJP settles at $395/t (decade high)",
+        "https://www.spglobal.com/energy/en/news-research/latest-news/metals/070626-japanese-q3-aluminum-premium-settles-higher-at-395mt-cif-japan"
+      ],
+      [
+        "The White House / CBP - Section 232 aluminium tariffs at 50% + 20-Jul incentive program",
+        "https://www.whitehouse.gov/presidential-actions/2026/06/further-adjusting-the-tariff-regimes-for-imports-of-aluminum-steel-and-copper-into-the-united-states/"
+      ],
+      [
+        "Rio Tinto - Q2 2026 production results (14-Jul); aluminium 841 kt",
+        "https://www.riotinto.com/en/news/releases/2026/rio-tinto-releases-second-quarter-2026-production-results"
+      ],
+      [
+        "Norsk Hydro - Q2 2026 results (22-Jul); adjusted EBITDA NOK 8,923m",
+        "https://www.hydro.com/en/global/investors/reports-and-presentations/quarterly-reports/"
+      ]
+    ],
+    "scenario_paths": {
+      "labels": [
+        "Now",
+        "Sep-26",
+        "Dec-26",
+        "Mar-27",
+        "Jun-27"
+      ],
+      "bull": [
+        3185.0,
+        3360,
+        3560,
+        3700,
+        3800
+      ],
+      "base": [
+        3185.0,
+        3150,
+        3200,
+        3240,
+        3260
+      ],
+      "bear": [
+        3185.0,
+        2980,
+        2900,
+        2860,
+        2840
+      ]
+    }
   },
-  {
-   "q": "Q1-26",
-   "v": 195
+  "premium_explainer": [
+    {
+      "term": "What a premium is",
+      "desc": "The physical-delivery adder over the LME price: regional logistics, duties/tariffs and local tightness — quoted $/t (or ¢/lb in the US) on top of LME cash. It is what converts an exchange price into a delivered price."
+    },
+    {
+      "term": "MJP — Japan (quarterly)",
+      "desc": "Q3-2026 settled at $395/t CIF Japan (Platts, 06-Jul) - a decade high and the fourth straight rise ($86 -> $195 -> $351.5 -> $395). SMM flags spot tightness under the LME backwardation, though CIF spot eased to ~$365 with the narrowing risk premium. Q4 talks (~Sep) open against the decade-high anchor, but into a war premium that is fading rather than widening - a more two-sided Q4 than a week ago."
+    },
+    {
+      "term": "EDU Rotterdam — Europe (daily)",
+      "desc": "Platts duty-unpaid last publicly marked ~$525-560 (mid $542.50, 03-Jul). The 6% EU duty, CBAM and Mozal's care & maintenance keep the structural floor; the war-risk freight component is easing again as Brent comes off $100 and US-Iran talks are floated."
+    },
+    {
+      "term": "US Midwest (daily)",
+      "desc": "SMM's weekly DDP ~109.75 c/lb ~ $2,420/t (10-Jul); Platts MW Transaction ~108.7 c (03-Jul), Fastmarkets ~110-112 c (07-Jul). The 50% Section-232 tariff-$ leg (~$1,597 at the 23-Jul LME cash) dominates the all-in - US premia track Washington and the LME, not local tightness. A new 20-Jul incentive program grants approved US-investing producers a half-rate on tied primary imports."
+    },
+    {
+      "term": "Policy vs market split",
+      "desc": "The decomposition below separates the mechanical tariff leg (Section-232 rate x LME) from the residual market premium. Most of the US 'premium' is a policy transfer, not a scarcity signal - and the new half-rate incentive for US-investing producers (20-Jul) is the first targeted crack in that administered wall."
+    }
+  ],
+  "premium_history": {
+    "labels_reg": [
+      "Q1-26 sett.",
+      "Q2-26 sett.",
+      "Q3-26 settled",
+      "Now (MJP spot)"
+    ],
+    "mjp": [
+      195,
+      351.5,
+      395,
+      365
+    ],
+    "cif": [
+      195,
+      319.5,
+      395,
+      365
+    ],
+    "edu": [
+      519.1,
+      612.5,
+      542.5,
+      535
+    ],
+    "labels_us": [
+      "May peak (Platts)",
+      "03-Jul (Platts MW)",
+      "Now (10-Jul SMM DDP)",
+      "Q3-26e"
+    ],
+    "usmw_usd": [
+      2624,
+      2396,
+      2420,
+      2390
+    ]
   },
-  {
-   "q": "Q2-26",
-   "v": 351.5
+  "premium_outlook": [
+    "Asian (MJP / CIF Japan): Q3 settled $395 (decade high, unchanged); CIF spot ~$365, eased as the risk premium narrowed. With US-Iran talks now floated, Q4 negotiations (~Sep) open against the $395 anchor into a more two-sided backdrop than a week ago - firm, but no longer one-way higher.",
+    "European (EDU): last public Platts mark ~$525-560 (mid $542.50, 03-Jul), unchanged. The 6% duty + CBAM floor plus Mozal's outage keep Europe structurally tighter than pre-war; the marginal driver - Gulf/Red Sea war-risk freight - is easing again as Brent comes off $100.",
+    "US Midwest: SMM DDP ~109.75 c/lb (10-Jul), unchanged. The tariff leg (50% x LME ~ $1,597 at the 23-Jul cash) is ~two-thirds of the all-in, so US premia track the LME and Washington more than Gulf events directly. A new 20-Jul incentive program grants approved US-investing producers a half-rate on tied primary imports - the first policy step that could compress the US premium. Watch the next weekly print."
+  ],
+  "alumina_explainer": [
+    {
+      "term": "Alumina (Al₂O₃)",
+      "desc": "Refined intermediate from bauxite via the Bayer process; ~1.9–2 t alumina per 1 t aluminium. Smelter-grade is the traded form."
+    },
+    {
+      "term": "Alumina API / Platts",
+      "desc": "The ex-China benchmark (Platts Alumina Price Index) referenced in many alumina contracts."
+    },
+    {
+      "term": "FOB Australia (Fastmarkets)",
+      "desc": "Spot index for Australian-origin smelter-grade alumina — a key seaborne reference."
+    },
+    {
+      "term": "Bauxite",
+      "desc": "The ore refined into alumina; ~2–3 t bauxite per 1 t alumina. Guinea & Australia dominate seaborne supply."
+    },
+    {
+      "term": "Caustic soda (NaOH)",
+      "desc": "Primary Bayer reagent that dissolves alumina from bauxite — a major refining cost (~$80–120 per t of alumina)."
+    },
+    {
+      "term": "Lime (CaO / quicklime)",
+      "desc": "Used for causticisation & desilication in refining — a smaller but essential reagent cost."
+    }
+  ],
+  "raw_materials": [
+    {
+      "name": "Bauxite (Guinea, CIF China)",
+      "val": "~68",
+      "unit": "$/dmt",
+      "asof": "Jul-26",
+      "trend": "flat",
+      "src": "~$68 CIF China (FOB Guinea ~$38, 45/3 grade); oversupply persists - Metro Mining shipped a record 1.8 Mt in Q2 (+7% y/y; 2026 guidance 6.6-7.1 Mt held). Guinea is reportedly weighing a 2026 export cap near 150 Mt (vs 178 Mt shipped in 2025, a ~15.7% cut) to target >$100/dmt, but no formal decree had been issued; no fresher public print over the weekend."
+    },
+    {
+      "name": "Caustic soda (flakes >=98%, FOB NE Asia)",
+      "val": "~500",
+      "unit": "$/t",
+      "asof": "Q2-26",
+      "trend": "flat",
+      "src": "~$500-510 FOB NE Asia; CFR Asia ~$380-560 - major refining reagent (ChemAnalyst/ChemTradeAsia); no fresher public print over the weekend."
+    },
+    {
+      "name": "Lime / quicklime (CaO)",
+      "val": "~120-180",
+      "unit": "$/t",
+      "asof": "2026",
+      "trend": "flat",
+      "src": "No liquid global index - largely regional/contract; indicative range (causticisation reagent); no fresher public print over the weekend."
+    }
+  ],
+  "alumina_history": {
+    "labels": [
+      "Q1-26 avg",
+      "May-26",
+      "Now (Jul)",
+      "Q3-26e"
+    ],
+    "fob": [
+      355,
+      345,
+      322,
+      320
+    ],
+    "api": [
+      307,
+      304,
+      300,
+      298
+    ]
   },
-  {
-   "q": "Q3-26",
-   "v": 395
+  "alumina_outlook": [
+    "Alumina: surplus intact and deepening - EGA's restart ramps through H2, the SMM Alumina Index eases toward ~Y2,700/t, and ex-China consolidation sits at ~$300-322 (FOB Australia ~$322, API ~$300, Platts futures ~$305). SMM's June ex-China output dip (-6% y/y) and Guinea's still-undecreed quota push are the counterweights to watch.",
+    "Bauxite: Guinea oversupply keeps CIF China ~$68/dmt (FOB Guinea ~$38); record Australian shipments add length. Guinea is reportedly weighing a 2026 export cap near 150 Mt (vs 178 Mt in 2025) to defend a >$100/dmt target, but had issued no formal decree.",
+    "Caustic soda / lime / freight: caustic stable (~$500/t FOB NE Asia). The delivered-cost leg is easing at the margin - the shipping disruption still spans Hormuz and the Red Sea, but Brent came off $100 on 24-Jul as US-Iran talks were floated, trimming the war-risk cover on Gulf- and Red Sea-routed reagent and alumina freight. The commodity stays cheap; moving it is still more expensive than pre-war, but less so than at the peak of the conflict."
+  ],
+  "inputs": [
+    {
+      "cat": "Smelter carbon",
+      "name": "Calcined petroleum coke (CPC, anode-grade)",
+      "val": "~600",
+      "unit": "$/t",
+      "ratio": "~0.33 t",
+      "share": "part of ~15% (carbon)",
+      "index": "Low–Med",
+      "risk": "High",
+      "trend": "up",
+      "src": "Peaked ~$896/t (2022); battery-anode demand + tight seaborne supply pressuring — CRU; limited price transparency"
+    },
+    {
+      "cat": "Smelter carbon",
+      "name": "Coal tar pitch (CTP)",
+      "val": "~800",
+      "unit": "$/t",
+      "ratio": "~0.10 t",
+      "share": "(within carbon)",
+      "index": "Low",
+      "risk": "Medium",
+      "trend": "flat",
+      "src": "Anode binder; by-product of steel coke ovens — supply tied to steel output; thin spot market"
+    },
+    {
+      "cat": "Smelter carbon",
+      "name": "Pre-baked anodes",
+      "val": "~600",
+      "unit": "$/t",
+      "ratio": "~0.42 t net C",
+      "share": "~12–15%",
+      "index": "Low",
+      "risk": "Medium",
+      "trend": "flat",
+      "src": "Often produced in-house; China the swing exporter — mostly contract pricing"
+    },
+    {
+      "cat": "Power / energy",
+      "name": "Electricity (smelter power)",
+      "val": "~30–60",
+      "unit": "$/MWh",
+      "ratio": "~13–15 MWh",
+      "share": "~30–40% (largest)",
+      "index": "N/A",
+      "risk": "High",
+      "trend": "flat",
+      "src": "Single largest cost & the competitiveness driver; no single index - PPAs / regional grid / self-gen. Energy complex eased off the spike: Brent fell to ~$96.7/bbl on 24-Jul (from >$100) on US-Iran talk hopes; EU TTF gas ~EUR 63/MWh (+1.6% on the day) stays exposed. Gas-indexed smelter power follows with a lag - a modest cost relief vs a week ago, but still elevated."
+    },
+    {
+      "cat": "Bath & cell",
+      "name": "Aluminium fluoride (AlF₃)",
+      "val": "~1,800",
+      "unit": "$/t",
+      "ratio": "~15–20 kg",
+      "share": "small",
+      "index": "Low–Med",
+      "risk": "Medium",
+      "trend": "flat",
+      "src": "~$1,500–2,200 (China); tied to fluorspar/HF — China-concentrated"
+    },
+    {
+      "cat": "Bath & cell",
+      "name": "Cryolite / bath makeup",
+      "val": "contract",
+      "unit": "$/t",
+      "ratio": "makeup",
+      "share": "small",
+      "index": "Low",
+      "risk": "Low",
+      "trend": "flat",
+      "src": "Largely synthetic & recycled in-cell; limited spot market"
+    },
+    {
+      "cat": "Bath & cell",
+      "name": "Cathode / graphite blocks",
+      "val": "contract",
+      "unit": "$/set",
+      "ratio": "reline",
+      "share": "periodic capex",
+      "index": "Low",
+      "risk": "Medium",
+      "trend": "flat",
+      "src": "Multi-year pot-reline cost; graphite-electrode supply (China) is the risk"
+    },
+    {
+      "cat": "Alloying & casting",
+      "name": "Silicon metal",
+      "val": "~1,250–1,600",
+      "unit": "$/t",
+      "ratio": "alloy-dep.",
+      "share": "alloy-dep.",
+      "index": "Medium",
+      "risk": "Medium",
+      "trend": "down",
+      "src": "China Q2-26 ~$1,250 FOB; EU ~$1,580, US ~$2,625 (tariff split) — SMM/ChemAnalyst"
+    },
+    {
+      "cat": "Alloying & casting",
+      "name": "Magnesium (99.9%)",
+      "val": "~2,400",
+      "unit": "$/t",
+      "ratio": "alloy-dep.",
+      "share": "alloy-dep.",
+      "index": "Medium",
+      "risk": "High",
+      "trend": "flat",
+      "src": "China ~85% of global supply (~$2,359 Jan-26) — concentration risk; SMM/Asian Metal"
+    },
+    {
+      "cat": "Alloying & casting",
+      "name": "Copper (LME)",
+      "val": "~13,741",
+      "unit": "$/t",
+      "ratio": "alloy-dep.",
+      "share": "alloy-dep.",
+      "index": "High",
+      "risk": "Medium",
+      "trend": "down",
+      "src": "LME-transparent leg of the input basket - Cu 3M $13,741.00 (23-Jul official, latest published), eased from ~$13,876 on 22-Jul as the complex came off its highs; Cu still ~+9.8% YTD. Busbar/cathode exposure prices off the LME."
+    },
+    {
+      "cat": "Alloying & casting",
+      "name": "Ti-B grain refiner (AlTi5B1)",
+      "val": "contract",
+      "unit": "$/t",
+      "ratio": "~1–2 kg",
+      "share": "small",
+      "index": "Low",
+      "risk": "Low–Med",
+      "trend": "flat",
+      "src": "Master-alloy rod; priced off titanium + conversion — mostly contract"
+    }
+  ],
+  "logistics": [
+    {
+      "name": "Strait of Hormuz transit",
+      "val": "Strained; open with US naval support",
+      "trend": "up",
+      "note": "Hormuz traffic stays strained after a run of tanker interdictions, but the US military says the waterway 'remains open with American support' as US Central Command runs a 13th straight night of strikes on Iran. Roughly 80-85% of Gulf aluminium exports and ~60% of regional alumina imports use this route; ~9% of global primary supply sits behind the strait."
+    },
+    {
+      "name": "Red Sea corridor",
+      "val": "Live front - Houthi attacks on Saudi tankers",
+      "trend": "up",
+      "note": "Houthis struck two Saudi oil tankers (Encelia, Layla) in the Red Sea, and Asian buyers have begun rerouting Saudi crude via the Suez Canal and around Africa. The alternative-to-Hormuz corridor for Gulf exports is itself a war-risk zone - a second maritime chokepoint under active attack."
+    },
+    {
+      "name": "Gulf / Red Sea war-risk insurance",
+      "val": "Elevated - two fronts, premium easing at the margin",
+      "trend": "flat",
+      "note": "War-risk quotes stay elevated with attacks spanning both Hormuz and the Red Sea, but the premium has begun to ease at the margin as Brent comes off $100 on US-Iran talk hopes. Retain elevated insurance, interdiction and deviation-risk assumptions in all Gulf- and Red Sea-routed freight and delivered-cost models."
+    },
+    {
+      "name": "Baltic Dry Index (BDI)",
+      "val": "~2,671 (20-Jul) - off a mid-month ~2,944 peak",
+      "trend": "down",
+      "note": "Dry-bulk freight (a separate, slower-moving cost line) eased to ~2,671 on 20-Jul, down 81 points and off a mid-month peak near 2,944 on softer Capesize demand. Price the two legs separately: dry-bulk freight vs. the Gulf/Red Sea war-risk surcharge (Trading Economics / Baltic Exchange)."
+    },
+    {
+      "name": "Land-bridge / alt routes (Gulf, Kazakh oil)",
+      "val": "Contingencies themselves exposed",
+      "trend": "up",
+      "note": "The overland-to-Red-Sea contingency is less clean with the Red Sea under attack. Separately, the Caspian Pipeline Consortium suspended loadings at its Black Sea terminal after tanker attacks, disrupting ~80% of Kazakhstan's oil exports - a reminder that alternative routes are also under stress. Keep carrier capacity and lead times current for any Gulf-origin cargo."
+    },
+    {
+      "name": "Incoterms / demurrage",
+      "val": "Force-majeure & war-risk clauses live",
+      "trend": "up",
+      "note": "Attacks spanning two waterways keep force-majeure and deviation clauses live for any Gulf- or Red Sea-routed cargo; war-risk surcharge pass-through and interdiction/delay risk remain live contract points to negotiate cargo-by-cargo. Generic supply-chain observation, not company-specific."
+    }
+  ],
+  "inputs_summary": [
+    "Track closely (material and tradeable): power - Brent eased to ~$96.7/bbl on 24-Jul off the $100+ spike on US-Iran talk hopes, with EU gas still exposed on a lag; calcined pet coke (rising, low transparency); silicon and magnesium (indexed, China-concentrated); copper (LME-transparent, 3M official $13,741.00 on 23-Jul).",
+    "Easing since March: alumina. EGA's Al Taweelah refinery has been at full alumina production since 10-Jul, targeting 50% of plant capacity within days and full capability by end-2026, and ex-China alumina eased to ~$322/t FOB Australia. At 2.4 Mt in 2025 it covered close to half of EGA's alumina requirement - the single most important input-cost offset in the current picture.",
+    "Low transparency / contract (monitor via proxies): coal tar pitch, pre-baked anodes, cryolite, cathodes, Ti-B - no liquid index; track through supplier contracts and China export trends.",
+    "Highest supply-concentration risk: magnesium (roughly 85% China), CPC, and Gulf- and Red Sea-routed material still exposed to interdiction risk across two waterways, though the war-risk leg is easing at the margin as oil comes off its highs."
+  ],
+  "ew": {
+    "updated": "2026-07-25",
+    "long_term": {
+      "label": "Long-term — weekly (position degree)",
+      "ymin": 2200,
+      "ymax": 3950,
+      "yticks": [
+        2200,
+        2600,
+        3000,
+        3400,
+        3800
+      ],
+      "now_x": 0.66,
+      "fwd_label": "forecast 12-mo →",
+      "xlabels": [
+        [
+          "May-25",
+          0.0
+        ],
+        [
+          "Jan-26",
+          0.22
+        ],
+        [
+          "Jun-26",
+          0.6
+        ],
+        [
+          "Jun-27",
+          1.0
+        ]
+      ],
+      "waves": [
+        {
+          "t": 0.0,
+          "p": 2300,
+          "w": "0"
+        },
+        {
+          "t": 0.2,
+          "p": 3325,
+          "w": "1"
+        },
+        {
+          "t": 0.26,
+          "p": 3050,
+          "w": "2"
+        },
+        {
+          "t": 0.42,
+          "p": 3676,
+          "w": "3"
+        },
+        {
+          "t": 0.48,
+          "p": 3520,
+          "w": "4"
+        },
+        {
+          "t": 0.55,
+          "p": 3855,
+          "w": "5"
+        },
+        {
+          "t": 0.6,
+          "p": 3359,
+          "w": "A"
+        },
+        {
+          "t": 0.63,
+          "p": 3406,
+          "w": "B"
+        },
+        {
+          "t": 0.65,
+          "p": 3061.5,
+          "w": "C"
+        }
+      ],
+      "fib": [
+        {
+          "l": "23.6%",
+          "p": 3488,
+          "k": "res"
+        },
+        {
+          "l": "38.2%",
+          "p": 3261,
+          "k": "sup"
+        },
+        {
+          "l": "50%",
+          "p": 3077,
+          "k": "key"
+        },
+        {
+          "l": "61.8%",
+          "p": 2894,
+          "k": "deep"
+        }
+      ],
+      "zone": [
+        2950,
+        3110
+      ],
+      "proj": {
+        "bull": [
+          [
+            0.66,
+            3146.5
+          ],
+          [
+            0.76,
+            3410
+          ],
+          [
+            0.88,
+            3630
+          ],
+          [
+            1,
+            3780
+          ]
+        ],
+        "base": [
+          [
+            0.66,
+            3146.5
+          ],
+          [
+            0.78,
+            3245
+          ],
+          [
+            0.9,
+            3340
+          ],
+          [
+            1,
+            3420
+          ]
+        ],
+        "bear": [
+          [
+            0.66,
+            3146.5
+          ],
+          [
+            0.8,
+            2975
+          ],
+          [
+            1,
+            2820
+          ]
+        ]
+      },
+      "fwd_pivots": [
+        {
+          "t": 0.76,
+          "p": 3260,
+          "w": ".382 trigger"
+        },
+        {
+          "t": 0.9,
+          "p": 2894,
+          "w": ".618 bear"
+        }
+      ],
+      "annos": [
+        {
+          "t": 0.55,
+          "p": 3855,
+          "dy": -10,
+          "text": "3,855 · 4-yr high"
+        },
+        {
+          "t": 0.6,
+          "p": 3359,
+          "dy": 16,
+          "text": "A 3,359"
+        },
+        {
+          "t": 0.65,
+          "p": 3061.5,
+          "dy": 16,
+          "text": "C 3,061.5 (.50 held)",
+          "anchor": "start"
+        }
+      ],
+      "legend": [
+        [
+          "price",
+          "#3A3322",
+          ""
+        ],
+        [
+          "bull",
+          "#007A3D",
+          "7 4"
+        ],
+        [
+          "base",
+          "#8E7C42",
+          ""
+        ],
+        [
+          "bear",
+          "#C76210",
+          "2 4"
+        ]
+      ],
+      "writeup": "LONG TERM (weekly / position). Count unchanged at the 25-Jul refresh - no invalidation break. It remains a completed five-wave impulse from the 2,300 base into the 3,855 high of 02-Jun-2026 (wave 5 extended, as commodities typically do), followed by a corrective A-B-C: A to 3,359, B to 3,406, C bottoming at 3,061.50 on 02-Jul, holding the .50 retracement at 3,077 within the 2,950-3,110 target zone. All three cardinal rules hold (wave 2 < 100% of wave 1; wave 3 not shortest; wave 4 no overlap with wave 1). BASE CASE still leans BULL (52%): a new impulse is building off 3,061.50, but the 23-Jul pullback (cash $3,194, 3M $3,182, backwardation narrowing to +$12) and the fading war premium temper conviction versus a week ago - a wave (i)/(ii) sequence rather than a clean breakout. A sustained weekly close above 3,260 opens 3,450 then the 3,620-3,780 zone. RANGE ALTERNATE (35%): the recovery holds between the 3,085 low and the 3,230-3,260 resistance stack as the war premium unwinds. BEAR ALTERNATE (13%): a durable Pakistan/China-brokered ceasefire releases the war premium and extends the correction toward the .618 at 2,894. INVALIDATION: a weekly close below 3,061.50 negates the completed-C reading; a decisive weekly close above 3,260 confirms the new impulse. CONFIDENCE: moderate - the .50 hold and 2022-low inventory support the bull lean, but the narrowing premium and the revived diplomacy track are the tail risk to watch. Technical context only, not advice."
+    },
+    "short_term": {
+      "label": "Short-term — daily (swing degree)",
+      "ymin": 3000,
+      "ymax": 3900,
+      "yticks": [
+        3100,
+        3300,
+        3500,
+        3700
+      ],
+      "now_x": 0.95,
+      "fwd_label": "forecast 4–6 wk →",
+      "xlabels": [
+        [
+          "Jun 3",
+          0
+        ],
+        [
+          "Jul 21",
+          0.975
+        ],
+        [
+          "Aug-26",
+          1
+        ]
+      ],
+      "line": [
+        [
+          0,
+          3855
+        ],
+        [
+          0.1,
+          3608
+        ],
+        [
+          0.22,
+          3536
+        ],
+        [
+          0.33,
+          3359
+        ],
+        [
+          0.45,
+          3405
+        ],
+        [
+          0.55,
+          3400
+        ],
+        [
+          0.6,
+          3607
+        ],
+        [
+          0.68,
+          3271
+        ],
+        [
+          0.74,
+          3164
+        ],
+        [
+          0.78,
+          3160.5
+        ],
+        [
+          0.82,
+          3112
+        ],
+        [
+          0.85,
+          3073
+        ],
+        [
+          0.875,
+          3065
+        ],
+        [
+          0.9,
+          3087
+        ],
+        [
+          0.92,
+          3113
+        ],
+        [
+          0.9375,
+          3127.5
+        ],
+        [
+          0.95,
+          3147
+        ],
+        [
+          0.9625,
+          3167.5
+        ],
+        [
+          0.9675,
+          3150.5
+        ],
+        [
+          0.97,
+          3166.5
+        ],
+        [
+          0.975,
+          3146.5
+        ],
+        [
+          0.9775,
+          3170.5
+        ],
+        [
+          0.98,
+          3205.0
+        ]
+      ],
+      "waves": [
+        {
+          "t": 0.0,
+          "p": 3855,
+          "w": "5"
+        },
+        {
+          "t": 0.33,
+          "p": 3359,
+          "w": "A"
+        },
+        {
+          "t": 0.6,
+          "p": 3607,
+          "w": "B"
+        },
+        {
+          "t": 0.86,
+          "p": 3065,
+          "w": "C"
+        },
+        {
+          "t": 0.94,
+          "p": 3205.0,
+          "w": "i"
+        }
+      ],
+      "fib": [
+        {
+          "l": "R .618",
+          "p": 3666,
+          "k": "res"
+        },
+        {
+          "l": ".382",
+          "p": 3260,
+          "k": "key"
+        },
+        {
+          "l": "S .50",
+          "p": 3077,
+          "k": "sup"
+        }
+      ],
+      "proj": {
+        "base": [
+          [
+            0.95,
+            3185.0
+          ],
+          [
+            0.975,
+            3225
+          ],
+          [
+            1.0,
+            3260
+          ]
+        ]
+      },
+      "fwd_pivots": [
+        {
+          "t": 1,
+          "p": 3260,
+          "w": ".382"
+        }
+      ],
+      "annos": [
+        {
+          "t": 0.0,
+          "p": 3855,
+          "dy": -9,
+          "text": "3,855"
+        },
+        {
+          "t": 0.6,
+          "p": 3607,
+          "dy": -9,
+          "text": "B 3,607 (spike sold)",
+          "anchor": "start"
+        },
+        {
+          "t": 0.875,
+          "p": 3065,
+          "dy": 14,
+          "text": "C 3,065 · .50 held"
+        }
+      ],
+      "legend": [
+        [
+          "price",
+          "#3A3322",
+          ""
+        ],
+        [
+          "expected path",
+          "#8E7C42",
+          ""
+        ]
+      ],
+      "writeup": "SHORT TERM (daily / swing). Count unchanged at the 25-Jul refresh. The corrective sequence off the 3,855 high of 02-Jun counts as A to 3,359, B to 3,607 (the spike that was sold), and C to 3,065 on 02-Jul, which held the .50 retracement. Price then based and turned up into an early impulse (wave i) - the 21-22 Jul officials cleared the $3,160 pivot to 3,205 - but the 23-Jul official eased to cash $3,194 / 3M $3,182 (a minor wave (ii) pullback) and the traded 3M slipped to ~$3,165 on 24-Jul as the war premium narrowed. Because wave A was a five-wave move, alternation still argues a zigzag correction that has completed, keeping the base/impulse read alive. BASE CASE (52%): price holds above 3,085 and presses the 3,230 MA20 then the .382 at 3,260. RANGE ALTERNATE (35%): a stall between 3,085 and 3,260 while diplomacy and strikes trade off. BEAR ALTERNATE (13%): a revived ceasefire and a break below 3,085 opens a retest of 3,061.50. INVALIDATION: a daily close below 3,061.50 voids the base/impulse count; a decisive close above 3,260 confirms the next leg. Watch whether the cash-3M backwardation re-steepens from +$12 - curve confirmation is the tell. CONFIDENCE: moderate. Technical context only, not advice."
+    }
   },
-  {
-   "q": "Q4-26",
-   "v": null,
-   "range": [
-    345,
-    425
-   ]
-  }
- ],
- "premium_tariff": {
-  "us_rate": 0.5,
-  "eu_duty": 0.06,
-  "us_dp_match": "US Midwest Duty-Paid"
- },
- "premium_drivers": [
-  {
-   "t": "Hormuz: enforcement, not just threat - the dominant driver",
-   "d": "Iran disabled two oil tankers attempting to transit the Strait of Hormuz without permission on Monday 20-Jul, the first direct interdiction of individual merchant vessels in this conflict. A third US service member was killed since Friday, US strikes reached a ninth consecutive day, and Iran struck Kuwaiti power/desalination sites and Bahrain. With roughly 9% of global primary aluminium supply originating in the Gulf, war-risk cover and routing costs are building rather than fading.",
-   "src": [
-    "NPR - U.S. and Iran launch new strikes after 3 U.S. service members are killed (20-Jul-2026)",
-    "https://www.npr.org/2026/07/20/nx-s1-5900601/us-iran-updates"
-   ]
+  "metals_board": [
+    {
+      "name": "Aluminium",
+      "price": 3182.0,
+      "day": -0.1,
+      "ytd": 5.7
+    },
+    {
+      "name": "Copper",
+      "price": 13741.0,
+      "day": -0.97,
+      "ytd": 9.8
+    },
+    {
+      "name": "Nickel",
+      "price": 17420.0,
+      "day": 1.6,
+      "ytd": 3.0
+    },
+    {
+      "name": "Zinc",
+      "price": 3611.0,
+      "day": 0.8,
+      "ytd": 15.3
+    },
+    {
+      "name": "Lead",
+      "price": 1886.0,
+      "day": -0.1,
+      "ytd": -6.1
+    }
+  ],
+  "metals_history": {
+    "labels": [
+      "Jun-25",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+      "Jan-26",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "now"
+    ],
+    "al": [
+      100,
+      103,
+      105,
+      104,
+      108,
+      112,
+      116,
+      121,
+      126,
+      129,
+      132,
+      135,
+      120.3
+    ],
+    "cu": [
+      100,
+      104,
+      108,
+      110,
+      115,
+      121,
+      126,
+      132,
+      136,
+      138,
+      140,
+      141,
+      141.4
+    ],
+    "ni": [
+      100,
+      101,
+      103,
+      102,
+      104,
+      106,
+      108,
+      107,
+      109,
+      110,
+      111,
+      112,
+      106.2
+    ]
   },
-  {
-   "t": "US Section 232 at 50% - the administered floor under the US duty-paid premium",
-   "d": "Products made entirely or almost entirely of aluminium pay 50% on their full customs value under the proclamation signed 01-Jun-2026, effective 08-Jun-2026 through 31-Dec-2027, with CBP guidance issued 05-Jun-2026 (CSMS #68855869). At an LME around $3,150/t this is roughly $1,575/t of pure policy cost embedded in US duty-paid metal, mechanically decoupling the US premium from the rest of the world.",
-   "src": [
-    "U.S. Customs and Border Protection - Section 232 Tariffs on Steel and Aluminum FAQs",
-    "https://www.cbp.gov/trade/programs-administration/entry-summary/232-tariffs-aluminum-and-steel-faqs"
-   ]
+  "premium_quarters": [
+    {
+      "q": "Q4-25",
+      "v": 86
+    },
+    {
+      "q": "Q1-26",
+      "v": 195
+    },
+    {
+      "q": "Q2-26",
+      "v": 351.5
+    },
+    {
+      "q": "Q3-26",
+      "v": 395
+    },
+    {
+      "q": "Q4-26",
+      "v": null,
+      "range": [
+        335,
+        420
+      ]
+    }
+  ],
+  "premium_tariff": {
+    "us_rate": 0.5,
+    "eu_duty": 0.06,
+    "us_dp_match": "US Midwest Duty-Paid"
   },
-  {
-   "t": "Europe: war premium fading against a structural floor",
-   "d": "Platts assessed duty-unpaid P1020A in-warehouse Rotterdam at $525-560/t (mid $542.50) on 03-Jul, down from $600-625/t on 13-May as the Middle East war premium receded. The floor beneath it is structural rather than sentiment-driven: the 6% EU import duty, CBAM, and idled European capacity. Liquidity remains thin as Rotterdam competes with Asia for units.",
-   "src": [
-    "S&P Global - TRADE REVIEW: European aluminum market seeks floor as Middle East war premium fades (07-Jul-2026)",
-    "https://www.spglobal.com/energy/en/news-research/latest-news/metals/070726-trade-review-european-aluminum-market-seeks-floor-as-middle-east-war-premium-fades"
-   ]
-  },
-  {
-   "t": "Japan: Q3 settled at a decade high, Q4 negotiations open against it",
-   "d": "The Q3-2026 MJP CIF Japan premium settled at $395/t (assessed 06-Jul), a decade high and roughly 12% above Q2's $350-353/t. Q4 talks open around September against that anchor; the swing variable is whether Hormuz disruption persists at current intensity or a diplomatic track restores flow.",
-   "src": [
-    "S&P Global Platts Q3-2026 MJP settlement $395/t, via IndexBox",
+  "premium_drivers": [
+    {
+      "t": "Shipping risk spans two waterways - but the risk premium is now NARROWING",
+      "d": "Hormuz remains strained and the Red Sea is a live front after Houthi attacks on two Saudi tankers, yet the premium is fading at the margin: Brent fell ~4% to ~$96.7 on 24-Jul after reports Pakistan, backed by China, is trying to revive US-Iran talks, even as US strikes ran a 13th straight night. Roughly 9% of global primary supply still sits behind these routes, so the floor is real - but the near-term skew has swung from one-way escalation back to two-sided.",
+      "src": [
+        "Trading Economics - Brent slides on US-Iran peace-talk hopes (24-Jul-2026)",
+        "https://tradingeconomics.com/commodity/brent-crude-oil/news/569821"
+      ]
+    },
+    {
+      "t": "US Section 232 at 50% - plus a new half-rate incentive for US investors",
+      "d": "Covered aluminium articles pay 50% on full customs value (proclamation 01-Jun-2026, effective 08-Jun through 31-Dec-2027; CBP guidance CSMS #68855869). At the 23-Jul cash of $3,194 that is ~$1,597/t of pure policy cost embedded in US duty-paid metal. From 20-Jul a new Section-232 incentive program lets approved companies investing in US primary-aluminium capacity import metal tied to expected output at half the applicable rate.",
+      "src": [
+        "The White House - Further Adjusting the Tariff Regimes for Aluminum, Steel and Copper",
+        "https://www.whitehouse.gov/presidential-actions/2026/06/further-adjusting-the-tariff-regimes-for-imports-of-aluminum-steel-and-copper-into-the-united-states/"
+      ]
+    },
+    {
+      "t": "Europe: war premium fading against a structural floor",
+      "d": "Platts duty-unpaid P1020A in-warehouse Rotterdam sits at $525-560/t (mid $542.50, 03-Jul), down from $600-625 in mid-May as the Middle East war premium receded - a move that extends as Brent comes off $100. The floor beneath it is structural: the 6% EU import duty, CBAM and idled European capacity.",
+      "src": [
+        "S&P Global - European aluminum market seeks floor as Middle East war premium fades (07-Jul-2026)",
+        "https://www.spglobal.com/energy/en/news-research/latest-news/metals/070726-trade-review-european-aluminum-market-seeks-floor-as-middle-east-war-premium-fades"
+      ]
+    },
+    {
+      "t": "Japan: Q3 settled at a decade high; Q4 opens into a softer risk backdrop",
+      "d": "The Q3-2026 MJP CIF Japan premium settled at $395/t (assessed 06-Jul), a decade high and ~12% above Q2. Q4 talks open ~September against that anchor - but into a war-risk premium that is narrowing rather than widening, making the Q4 outcome more two-sided than a week ago.",
+      "src": [
+        "S&P Global Platts Q3-2026 MJP settlement $395/t, via IndexBox",
+        "https://www.indexbox.io/blog/japan-q3-2026-aluminum-premium-hits-decade-high-at-395mt/"
+      ]
+    }
+  ],
+  "premium_settlement_src": [
+    "S&P Global Platts Q3-2026 MJP settlement $395/t (assessed 06-Jul-2026), via IndexBox",
     "https://www.indexbox.io/blog/japan-q3-2026-aluminum-premium-hits-decade-high-at-395mt/"
-   ]
+  ],
+  "so_what": {
+    "line": "Aluminium's rebound paused on the latest official - the 23-Jul settlement printed cash $3,194 / 3M $3,182, trimming the cash-3M backwardation to +$12 - as the war-risk premium began to NARROW: Brent fell ~4% toward $96 on 24-Jul after reports Pakistan, backed by China, is trying to revive US-Iran talks, even as US strikes ran a 13th night. Stock still drew to a fresh 2022 low (275,175 t), keeping fundamentals tight beneath the softer tape.",
+    "points": [
+      "What moved: the 23-Jul LME official eased (cash $3,194.00, -$11; 3M $3,182.00, -$3), narrowing the cash-3M backwardation from +$20 to +$12; the traded 3M slipped further to ~$3,165 on 24-Jul. A pause after two firm sessions, not a reversal - price is holding the rebound off the $3,085 four-month low.",
+      "Why: the geopolitical risk premium is narrowing. Brent fell ~3.9% to ~$96.7 on 24-Jul after reports Pakistan, backed by China, is seeking to revive US-Iran talks - even as US Central Command ran a 13th straight night of strikes and Trump threatened a 'massive attack'. Escalation and de-escalation are running in parallel; the skew is two-sided again, not one-way.",
+      "Still tight: LME stock drew another 1,600 t to 275,175 t, a fresh low since 2022 (~-46% YTD), with SHFE also drawing and Macquarie flagging a ~930 kt 2026 deficit - no inventory buffer. The still-backwardated curve is the market pricing physical tightness even as the front eased.",
+      "Watch this week: whether US-Iran diplomacy firms (further war-premium unwind) or strikes re-escalate; the SHFE/LME arb, which has narrowed and threatens the record China export flow (June 711 kt); EGA's Al Taweelah alumina ramp and the deepening ex-China surplus (FOB Australia ~$322); and the $3,230/$3,260 resistance stack when the LME reopens Monday."
+    ]
+  },
+  "forward": {
+    "as_of": "2026-07-25",
+    "basis": "LME official prices via Westmetall. Baseline = LME 3-month official (a traded market price). Range = random-walk cone from realized volatility. Driver score = 3 transparent rules, hit rate measured on history.",
+    "source": "London Metal Exchange official settlements via Westmetall (https://www.westmetall.com/en/markdaten.php?action=table&field=LME_Al_cash)",
+    "spot_cash": 3194.0,
+    "forward_3m": 3182.0,
+    "vol": {
+      "weekly_pct": 3.21,
+      "annual_pct": 23.2,
+      "window_weeks": 26,
+      "full_sample_weekly_pct": 2.5
+    },
+    "cone": [
+      {
+        "horizon": "1 month",
+        "weeks": 4,
+        "central": 3182.0,
+        "lo68": 2984.0,
+        "hi68": 3393.2,
+        "lo95": 2805.5,
+        "hi95": 3609.1
+      },
+      {
+        "horizon": "3 months",
+        "weeks": 13,
+        "central": 3182.0,
+        "lo68": 2834.0,
+        "hi68": 3572.8,
+        "lo95": 2535.7,
+        "hi95": 3993.0
+      },
+      {
+        "horizon": "6 months",
+        "weeks": 26,
+        "central": 3182.0,
+        "lo68": 2701.2,
+        "hi68": 3748.4,
+        "lo95": 2308.1,
+        "hi95": 4386.7
+      }
+    ],
+    "cone_path": [
+      {
+        "date": "2026-07-30",
+        "weeks": 1,
+        "central": 3182.0,
+        "lo68": 3081.4,
+        "hi68": 3285.9,
+        "lo95": 2987.8,
+        "hi95": 3388.8
+      },
+      {
+        "date": "2026-08-06",
+        "weeks": 2,
+        "central": 3182.0,
+        "lo68": 3040.7,
+        "hi68": 3329.9,
+        "lo95": 2910.9,
+        "hi95": 3478.4
+      },
+      {
+        "date": "2026-08-13",
+        "weeks": 3,
+        "central": 3182.0,
+        "lo68": 3009.8,
+        "hi68": 3364.1,
+        "lo95": 2853.2,
+        "hi95": 3548.7
+      },
+      {
+        "date": "2026-08-20",
+        "weeks": 4,
+        "central": 3182.0,
+        "lo68": 2984.0,
+        "hi68": 3393.2,
+        "lo95": 2805.5,
+        "hi95": 3609.1
+      },
+      {
+        "date": "2026-08-27",
+        "weeks": 5,
+        "central": 3182.0,
+        "lo68": 2961.4,
+        "hi68": 3419.0,
+        "lo95": 2764.1,
+        "hi95": 3663.1
+      },
+      {
+        "date": "2026-09-03",
+        "weeks": 6,
+        "central": 3182.0,
+        "lo68": 2941.2,
+        "hi68": 3442.5,
+        "lo95": 2727.2,
+        "hi95": 3712.7
+      },
+      {
+        "date": "2026-09-10",
+        "weeks": 7,
+        "central": 3182.0,
+        "lo68": 2922.7,
+        "hi68": 3464.3,
+        "lo95": 2693.7,
+        "hi95": 3758.8
+      },
+      {
+        "date": "2026-09-17",
+        "weeks": 8,
+        "central": 3182.0,
+        "lo68": 2905.6,
+        "hi68": 3484.7,
+        "lo95": 2662.9,
+        "hi95": 3802.3
+      },
+      {
+        "date": "2026-09-24",
+        "weeks": 9,
+        "central": 3182.0,
+        "lo68": 2889.6,
+        "hi68": 3503.9,
+        "lo95": 2634.3,
+        "hi95": 3843.6
+      },
+      {
+        "date": "2026-10-01",
+        "weeks": 10,
+        "central": 3182.0,
+        "lo68": 2874.6,
+        "hi68": 3522.3,
+        "lo95": 2607.5,
+        "hi95": 3883.1
+      },
+      {
+        "date": "2026-10-08",
+        "weeks": 11,
+        "central": 3182.0,
+        "lo68": 2860.4,
+        "hi68": 3539.8,
+        "lo95": 2582.3,
+        "hi95": 3921.0
+      },
+      {
+        "date": "2026-10-15",
+        "weeks": 12,
+        "central": 3182.0,
+        "lo68": 2846.9,
+        "hi68": 3556.6,
+        "lo95": 2558.4,
+        "hi95": 3957.6
+      },
+      {
+        "date": "2026-10-22",
+        "weeks": 13,
+        "central": 3182.0,
+        "lo68": 2834.0,
+        "hi68": 3572.8,
+        "lo95": 2535.7,
+        "hi95": 3993.0
+      },
+      {
+        "date": "2026-10-29",
+        "weeks": 14,
+        "central": 3182.0,
+        "lo68": 2821.6,
+        "hi68": 3588.4,
+        "lo95": 2514.1,
+        "hi95": 4027.4
+      },
+      {
+        "date": "2026-11-05",
+        "weeks": 15,
+        "central": 3182.0,
+        "lo68": 2809.7,
+        "hi68": 3603.6,
+        "lo95": 2493.4,
+        "hi95": 4060.8
+      },
+      {
+        "date": "2026-11-12",
+        "weeks": 16,
+        "central": 3182.0,
+        "lo68": 2798.3,
+        "hi68": 3618.3,
+        "lo95": 2473.5,
+        "hi95": 4093.4
+      },
+      {
+        "date": "2026-11-19",
+        "weeks": 17,
+        "central": 3182.0,
+        "lo68": 2787.2,
+        "hi68": 3632.7,
+        "lo95": 2454.4,
+        "hi95": 4125.3
+      },
+      {
+        "date": "2026-11-26",
+        "weeks": 18,
+        "central": 3182.0,
+        "lo68": 2776.5,
+        "hi68": 3646.7,
+        "lo95": 2436.0,
+        "hi95": 4156.5
+      },
+      {
+        "date": "2026-12-03",
+        "weeks": 19,
+        "central": 3182.0,
+        "lo68": 2766.2,
+        "hi68": 3660.3,
+        "lo95": 2418.2,
+        "hi95": 4187.0
+      },
+      {
+        "date": "2026-12-10",
+        "weeks": 20,
+        "central": 3182.0,
+        "lo68": 2756.1,
+        "hi68": 3673.6,
+        "lo95": 2401.0,
+        "hi95": 4217.0
+      },
+      {
+        "date": "2026-12-17",
+        "weeks": 21,
+        "central": 3182.0,
+        "lo68": 2746.4,
+        "hi68": 3686.7,
+        "lo95": 2384.4,
+        "hi95": 4246.4
+      },
+      {
+        "date": "2026-12-24",
+        "weeks": 22,
+        "central": 3182.0,
+        "lo68": 2736.9,
+        "hi68": 3699.5,
+        "lo95": 2368.3,
+        "hi95": 4275.3
+      },
+      {
+        "date": "2026-12-31",
+        "weeks": 23,
+        "central": 3182.0,
+        "lo68": 2727.6,
+        "hi68": 3712.1,
+        "lo95": 2352.6,
+        "hi95": 4303.8
+      },
+      {
+        "date": "2027-01-07",
+        "weeks": 24,
+        "central": 3182.0,
+        "lo68": 2718.6,
+        "hi68": 3724.4,
+        "lo95": 2337.4,
+        "hi95": 4331.8
+      },
+      {
+        "date": "2027-01-14",
+        "weeks": 25,
+        "central": 3182.0,
+        "lo68": 2709.8,
+        "hi68": 3736.5,
+        "lo95": 2322.6,
+        "hi95": 4359.5
+      },
+      {
+        "date": "2027-01-21",
+        "weeks": 26,
+        "central": 3182.0,
+        "lo68": 2701.2,
+        "hi68": 3748.4,
+        "lo95": 2308.1,
+        "hi95": 4386.7
+      }
+    ],
+    "stance": "Mildly tight",
+    "score": 1,
+    "score_max": 3,
+    "stance_label": "Current physical-market condition (diagnostic, not a forecast)",
+    "drivers": [
+      {
+        "name": "Curve carry (cash − 3M)",
+        "value": "+12.00 $/t",
+        "reading": "Tightening",
+        "score": 1,
+        "rule": "Backwardation (cash above 3M) = prompt physical tightness = bullish; contango = bearish.",
+        "basis": "LME official cash and 3-month settlement."
+      },
+      {
+        "name": "Inventory trend (13-week)",
+        "value": "-26.9%",
+        "reading": "Tightening",
+        "score": 1,
+        "rule": "LME stock falling more than 2% over 13 weeks = tightening = bullish; rising >2% = bearish.",
+        "basis": "LME warehouse stock."
+      },
+      {
+        "name": "Momentum (3M vs 20-week average)",
+        "value": "3,182 vs 3,422",
+        "reading": "Loosening",
+        "score": -1,
+        "rule": "Price above its 20-week average = uptrend = bullish; below = bearish.",
+        "basis": "LME official 3-month."
+      }
+    ],
+    "score_history": [
+      {
+        "date": "2025-08-01",
+        "score": -1,
+        "price": 2547.0
+      },
+      {
+        "date": "2025-08-08",
+        "score": -1,
+        "price": 2610.5
+      },
+      {
+        "date": "2025-08-15",
+        "score": -1,
+        "price": 2602.0
+      },
+      {
+        "date": "2025-08-22",
+        "score": 1,
+        "price": 2587.5
+      },
+      {
+        "date": "2025-08-29",
+        "score": 1,
+        "price": 2615.5
+      },
+      {
+        "date": "2025-09-05",
+        "score": 1,
+        "price": 2613.0
+      },
+      {
+        "date": "2025-09-12",
+        "score": 1,
+        "price": 2695.5
+      },
+      {
+        "date": "2025-09-19",
+        "score": 1,
+        "price": 2684.0
+      },
+      {
+        "date": "2025-09-26",
+        "score": -1,
+        "price": 2648.0
+      },
+      {
+        "date": "2025-10-03",
+        "score": -1,
+        "price": 2705.0
+      },
+      {
+        "date": "2025-10-10",
+        "score": 1,
+        "price": 2787.0
+      },
+      {
+        "date": "2025-10-17",
+        "score": 1,
+        "price": 2776.0
+      },
+      {
+        "date": "2025-10-24",
+        "score": 1,
+        "price": 2852.0
+      },
+      {
+        "date": "2025-10-31",
+        "score": 1,
+        "price": 2882.0
+      },
+      {
+        "date": "2025-11-07",
+        "score": -1,
+        "price": 2851.5
+      },
+      {
+        "date": "2025-11-14",
+        "score": -1,
+        "price": 2857.0
+      },
+      {
+        "date": "2025-11-21",
+        "score": -1,
+        "price": 2792.0
+      },
+      {
+        "date": "2025-11-28",
+        "score": -1,
+        "price": 2852.0
+      },
+      {
+        "date": "2025-12-05",
+        "score": -1,
+        "price": 2893.0
+      },
+      {
+        "date": "2025-12-12",
+        "score": -1,
+        "price": 2876.0
+      },
+      {
+        "date": "2025-12-19",
+        "score": 0,
+        "price": 2945.0
+      },
+      {
+        "date": "2025-12-31",
+        "score": 0,
+        "price": 2990.0
+      },
+      {
+        "date": "2026-01-02",
+        "score": 0,
+        "price": 3010.5
+      },
+      {
+        "date": "2026-01-09",
+        "score": 3,
+        "price": 3163.0
+      },
+      {
+        "date": "2026-01-16",
+        "score": 2,
+        "price": 3138.5
+      },
+      {
+        "date": "2026-01-23",
+        "score": -1,
+        "price": 3177.0
+      },
+      {
+        "date": "2026-01-30",
+        "score": 1,
+        "price": 3134.0
+      },
+      {
+        "date": "2026-02-06",
+        "score": 1,
+        "price": 3063.5
+      },
+      {
+        "date": "2026-02-13",
+        "score": 1,
+        "price": 3028.0
+      },
+      {
+        "date": "2026-02-20",
+        "score": 1,
+        "price": 3079.0
+      },
+      {
+        "date": "2026-02-27",
+        "score": 1,
+        "price": 3165.0
+      },
+      {
+        "date": "2026-03-06",
+        "score": 3,
+        "price": 3362.0
+      },
+      {
+        "date": "2026-03-13",
+        "score": 3,
+        "price": 3486.0
+      },
+      {
+        "date": "2026-03-20",
+        "score": 3,
+        "price": 3287.5
+      },
+      {
+        "date": "2026-03-27",
+        "score": 3,
+        "price": 3242.0
+      },
+      {
+        "date": "2026-04-02",
+        "score": 3,
+        "price": 3425.0
+      },
+      {
+        "date": "2026-04-10",
+        "score": 3,
+        "price": 3483.0
+      },
+      {
+        "date": "2026-04-17",
+        "score": 3,
+        "price": 3632.0
+      },
+      {
+        "date": "2026-04-24",
+        "score": 3,
+        "price": 3600.0
+      },
+      {
+        "date": "2026-05-01",
+        "score": 3,
+        "price": 3523.0
+      },
+      {
+        "date": "2026-05-08",
+        "score": 3,
+        "price": 3511.5
+      },
+      {
+        "date": "2026-05-15",
+        "score": 3,
+        "price": 3580.0
+      },
+      {
+        "date": "2026-05-22",
+        "score": 3,
+        "price": 3642.0
+      },
+      {
+        "date": "2026-05-29",
+        "score": 3,
+        "price": 3685.0
+      },
+      {
+        "date": "2026-06-05",
+        "score": 3,
+        "price": 3669.5
+      },
+      {
+        "date": "2026-06-12",
+        "score": 3,
+        "price": 3532.0
+      },
+      {
+        "date": "2026-06-19",
+        "score": 1,
+        "price": 3398.0
+      },
+      {
+        "date": "2026-06-26",
+        "score": -1,
+        "price": 3176.0
+      },
+      {
+        "date": "2026-07-03",
+        "score": -1,
+        "price": 3087.0
+      },
+      {
+        "date": "2026-07-10",
+        "score": 1,
+        "price": 3153.0
+      },
+      {
+        "date": "2026-07-17",
+        "score": 1,
+        "price": 3146.5
+      },
+      {
+        "date": "2026-07-23",
+        "score": 1,
+        "price": 3182.0
+      }
+    ],
+    "backtest": {
+      "horizon_weeks": 13,
+      "observations": 96,
+      "hit_rate_pct": 39.6,
+      "bull_calls": 54,
+      "bull_hit_pct": 61.1,
+      "bear_calls": 42,
+      "bear_hit_pct": 11.9,
+      "baseline_up_pct": 73.3,
+      "cond_return_bullish_pct": 2.32,
+      "cond_return_bearish_pct": 7.04,
+      "edge_pp": -4.72,
+      "has_edge": false,
+      "verdict": "These condition indicators showed NO predictive edge when tested: a 39.6% directional hit rate against a 73.3% naive 'always higher' baseline over the same sample, and forward returns after 'tightening' readings averaged 2.32% versus 7.04% after 'loosening' readings. They are therefore published as a read on CURRENT market condition only — not as a price forecast. The forward baseline and probability range above are the forward-looking view.",
+      "sample_start": "2024-05-24",
+      "sample_end": "2026-04-24",
+      "caveat": "Measured on overlapping 13-week windows of weekly LME data (96 observations, 2024-05-24 to 2026-04-24). Overlapping windows overstate significance and the sample spans a single, largely rising market — evidence in either direction is weak."
+    },
+    "history": [
+      {
+        "date": "2024-08-02",
+        "price": 2272.5
+      },
+      {
+        "date": "2024-08-09",
+        "price": 2318.5
+      },
+      {
+        "date": "2024-08-16",
+        "price": 2342.5
+      },
+      {
+        "date": "2024-08-23",
+        "price": 2509.0
+      },
+      {
+        "date": "2024-08-30",
+        "price": 2486.0
+      },
+      {
+        "date": "2024-09-06",
+        "price": 2388.5
+      },
+      {
+        "date": "2024-09-13",
+        "price": 2421.5
+      },
+      {
+        "date": "2024-09-20",
+        "price": 2504.5
+      },
+      {
+        "date": "2024-09-27",
+        "price": 2624.0
+      },
+      {
+        "date": "2024-10-04",
+        "price": 2665.5
+      },
+      {
+        "date": "2024-10-11",
+        "price": 2653.5
+      },
+      {
+        "date": "2024-10-18",
+        "price": 2588.0
+      },
+      {
+        "date": "2024-10-25",
+        "price": 2630.5
+      },
+      {
+        "date": "2024-11-01",
+        "price": 2642.5
+      },
+      {
+        "date": "2024-11-08",
+        "price": 2636.0
+      },
+      {
+        "date": "2024-11-15",
+        "price": 2672.0
+      },
+      {
+        "date": "2024-11-22",
+        "price": 2615.0
+      },
+      {
+        "date": "2024-11-29",
+        "price": 2586.0
+      },
+      {
+        "date": "2024-12-06",
+        "price": 2592.5
+      },
+      {
+        "date": "2024-12-13",
+        "price": 2606.5
+      },
+      {
+        "date": "2024-12-20",
+        "price": 2525.0
+      },
+      {
+        "date": "2024-12-31",
+        "price": 2540.5
+      },
+      {
+        "date": "2025-01-03",
+        "price": 2505.0
+      },
+      {
+        "date": "2025-01-10",
+        "price": 2577.0
+      },
+      {
+        "date": "2025-01-17",
+        "price": 2666.0
+      },
+      {
+        "date": "2025-01-24",
+        "price": 2644.5
+      },
+      {
+        "date": "2025-01-31",
+        "price": 2598.0
+      },
+      {
+        "date": "2025-02-07",
+        "price": 2634.5
+      },
+      {
+        "date": "2025-02-14",
+        "price": 2645.0
+      },
+      {
+        "date": "2025-02-21",
+        "price": 2694.0
+      },
+      {
+        "date": "2025-02-28",
+        "price": 2618.5
+      },
+      {
+        "date": "2025-03-07",
+        "price": 2682.5
+      },
+      {
+        "date": "2025-03-14",
+        "price": 2689.0
+      },
+      {
+        "date": "2025-03-21",
+        "price": 2636.0
+      },
+      {
+        "date": "2025-03-28",
+        "price": 2562.5
+      },
+      {
+        "date": "2025-04-04",
+        "price": 2394.0
+      },
+      {
+        "date": "2025-04-11",
+        "price": 2405.0
+      },
+      {
+        "date": "2025-04-17",
+        "price": 2367.0
+      },
+      {
+        "date": "2025-04-25",
+        "price": 2444.0
+      },
+      {
+        "date": "2025-05-02",
+        "price": 2424.0
+      },
+      {
+        "date": "2025-05-09",
+        "price": 2413.0
+      },
+      {
+        "date": "2025-05-16",
+        "price": 2469.0
+      },
+      {
+        "date": "2025-05-23",
+        "price": 2448.0
+      },
+      {
+        "date": "2025-05-30",
+        "price": 2448.0
+      },
+      {
+        "date": "2025-06-06",
+        "price": 2441.0
+      },
+      {
+        "date": "2025-06-13",
+        "price": 2487.0
+      },
+      {
+        "date": "2025-06-20",
+        "price": 2529.5
+      },
+      {
+        "date": "2025-06-27",
+        "price": 2580.5
+      },
+      {
+        "date": "2025-07-04",
+        "price": 2591.0
+      },
+      {
+        "date": "2025-07-11",
+        "price": 2593.0
+      },
+      {
+        "date": "2025-07-18",
+        "price": 2596.0
+      },
+      {
+        "date": "2025-07-25",
+        "price": 2656.0
+      },
+      {
+        "date": "2025-08-01",
+        "price": 2547.0
+      },
+      {
+        "date": "2025-08-08",
+        "price": 2610.5
+      },
+      {
+        "date": "2025-08-15",
+        "price": 2602.0
+      },
+      {
+        "date": "2025-08-22",
+        "price": 2587.5
+      },
+      {
+        "date": "2025-08-29",
+        "price": 2615.5
+      },
+      {
+        "date": "2025-09-05",
+        "price": 2613.0
+      },
+      {
+        "date": "2025-09-12",
+        "price": 2695.5
+      },
+      {
+        "date": "2025-09-19",
+        "price": 2684.0
+      },
+      {
+        "date": "2025-09-26",
+        "price": 2648.0
+      },
+      {
+        "date": "2025-10-03",
+        "price": 2705.0
+      },
+      {
+        "date": "2025-10-10",
+        "price": 2787.0
+      },
+      {
+        "date": "2025-10-17",
+        "price": 2776.0
+      },
+      {
+        "date": "2025-10-24",
+        "price": 2852.0
+      },
+      {
+        "date": "2025-10-31",
+        "price": 2882.0
+      },
+      {
+        "date": "2025-11-07",
+        "price": 2851.5
+      },
+      {
+        "date": "2025-11-14",
+        "price": 2857.0
+      },
+      {
+        "date": "2025-11-21",
+        "price": 2792.0
+      },
+      {
+        "date": "2025-11-28",
+        "price": 2852.0
+      },
+      {
+        "date": "2025-12-05",
+        "price": 2893.0
+      },
+      {
+        "date": "2025-12-12",
+        "price": 2876.0
+      },
+      {
+        "date": "2025-12-19",
+        "price": 2945.0
+      },
+      {
+        "date": "2025-12-31",
+        "price": 2990.0
+      },
+      {
+        "date": "2026-01-02",
+        "price": 3010.5
+      },
+      {
+        "date": "2026-01-09",
+        "price": 3163.0
+      },
+      {
+        "date": "2026-01-16",
+        "price": 3138.5
+      },
+      {
+        "date": "2026-01-23",
+        "price": 3177.0
+      },
+      {
+        "date": "2026-01-30",
+        "price": 3134.0
+      },
+      {
+        "date": "2026-02-06",
+        "price": 3063.5
+      },
+      {
+        "date": "2026-02-13",
+        "price": 3028.0
+      },
+      {
+        "date": "2026-02-20",
+        "price": 3079.0
+      },
+      {
+        "date": "2026-02-27",
+        "price": 3165.0
+      },
+      {
+        "date": "2026-03-06",
+        "price": 3362.0
+      },
+      {
+        "date": "2026-03-13",
+        "price": 3486.0
+      },
+      {
+        "date": "2026-03-20",
+        "price": 3287.5
+      },
+      {
+        "date": "2026-03-27",
+        "price": 3242.0
+      },
+      {
+        "date": "2026-04-02",
+        "price": 3425.0
+      },
+      {
+        "date": "2026-04-10",
+        "price": 3483.0
+      },
+      {
+        "date": "2026-04-17",
+        "price": 3632.0
+      },
+      {
+        "date": "2026-04-24",
+        "price": 3600.0
+      },
+      {
+        "date": "2026-05-01",
+        "price": 3523.0
+      },
+      {
+        "date": "2026-05-08",
+        "price": 3511.5
+      },
+      {
+        "date": "2026-05-15",
+        "price": 3580.0
+      },
+      {
+        "date": "2026-05-22",
+        "price": 3642.0
+      },
+      {
+        "date": "2026-05-29",
+        "price": 3685.0
+      },
+      {
+        "date": "2026-06-05",
+        "price": 3669.5
+      },
+      {
+        "date": "2026-06-12",
+        "price": 3532.0
+      },
+      {
+        "date": "2026-06-19",
+        "price": 3398.0
+      },
+      {
+        "date": "2026-06-26",
+        "price": 3176.0
+      },
+      {
+        "date": "2026-07-03",
+        "price": 3087.0
+      },
+      {
+        "date": "2026-07-10",
+        "price": 3153.0
+      },
+      {
+        "date": "2026-07-17",
+        "price": 3146.5
+      },
+      {
+        "date": "2026-07-23",
+        "price": 3182.0
+      }
+    ]
   }
- ],
- "premium_settlement_src": [
-  "S&P Global Platts Q3-2026 MJP settlement $395/t (assessed 06-Jul-2026), via IndexBox",
-  "https://www.indexbox.io/blog/japan-q3-2026-aluminum-premium-hits-decade-high-at-395mt/"
- ],
- "so_what": {
-  "line": "Iran disabled two oil tankers that tried to transit the Strait of Hormuz without its permission on Monday - the first direct interdiction of individual merchant vessels in this conflict - which turns a de-facto shipping stoppage into an enforced one, even as the aluminium flat price slipped to about $3,138/t on the 20-Jul session.",
-  "points": [
-   "What moved: the 20-Jul session traded aluminium down to roughly $3,138/t (-0.85%), giving back part of the rebound off the early-July four-month low near $3,085 (Trading Economics). Note the LME official for 20-Jul had not yet been published by Westmetall at this ~06:05 London refresh, so the benchmark table still carries the 17-Jul official (cash $3,154.00 / 3M $3,146.50).",
-   "Why it matters: Iran's disabling of two tankers on Monday escalates Hormuz from blockade-by-threat to blockade-by-enforcement. The Gulf accounts for roughly 9% of global primary aluminium supply, so shipping risk now sits directly on the physical supply line rather than only on sentiment.",
-   "The offset: EGA's Al Taweelah refinery resumed full alumina production on 10-Jul and is ramping toward full capability by end-2026 - the only genuine supply-side relief in the picture, and the reason the flat price is drifting rather than spiking despite the escalation.",
-   "Watch this week: Norsk Hydro's Q2 results tomorrow (22-Jul, 07:00 CEST) - the first European producer P&L covering the full disruption quarter; whether LME stocks continue drawing from 280,100 t; and whether the cash-3M backwardation widens when the official curve next prints."
-  ]
- }
 }
