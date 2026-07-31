@@ -130,6 +130,18 @@ td .note{font-size:11.5px;color:var(--mut);margin-top:2px;line-height:1.4}
 .ncol h3{font-size:11px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px}
 .gz{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
 .bigfig{font-size:26px;font-weight:800}
+/* mobile */
+.pb{overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media(max-width:700px){
+  .pb table{min-width:560px}
+  .rail-earn{min-width:0!important}
+  .qpx{font-size:30px}
+  .qin,.pb{padding:10px}
+  .main{padding:0 10px;gap:12px}
+  .kpis{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+  .brand{font-size:16px}
+  .tki{padding:0 14px}
+}
 /* misc */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:800px){.grid2{grid-template-columns:1fr}}
@@ -245,7 +257,7 @@ function wireCharts(){
   ch.setAttribute('stroke','var(--mut)'); ch.setAttribute('stroke-dasharray','3 3'); ch.setAttribute('visibility','hidden');
   svg.appendChild(ch);
   const dots=reg.rows.map(r=>{const c=document.createElementNS(NS,'circle'); c.setAttribute('r','3.5'); c.setAttribute('fill',r.color); c.setAttribute('stroke','var(--panel)'); c.setAttribute('stroke-width','1.5'); c.setAttribute('visibility','hidden'); svg.appendChild(c); return c;});
-  svg.addEventListener('mousemove',e=>{
+  const onPoint=e=>{
     const rect=svg.getBoundingClientRect(); if(!rect.width) return;
     const xv=(e.clientX-rect.left)*reg.W/rect.width;
     const n=reg.labels.length;
@@ -262,8 +274,13 @@ function wireCharts(){
     const px=e.clientX-rect.left, py=e.clientY-rect.top;
     tip.style.left=Math.max(0,Math.min(px+14,rect.width-180))+'px';
     tip.style.top=Math.max(0,py-10)+'px';
-  });
-  svg.addEventListener('mouseleave',()=>{tip.style.display='none'; ch.setAttribute('visibility','hidden'); dots.forEach(d=>d.setAttribute('visibility','hidden'));});
+  };
+  const hide=()=>{tip.style.display='none'; ch.setAttribute('visibility','hidden'); dots.forEach(d=>d.setAttribute('visibility','hidden'));};
+  svg.addEventListener('mousemove',onPoint);
+  svg.addEventListener('mouseleave',hide);
+  svg.addEventListener('touchstart',e=>{if(e.touches[0])onPoint({clientX:e.touches[0].clientX,clientY:e.touches[0].clientY});},{passive:true});
+  svg.addEventListener('touchmove',e=>{if(e.touches[0])onPoint({clientX:e.touches[0].clientX,clientY:e.touches[0].clientY});},{passive:true});
+  svg.addEventListener('touchend',()=>setTimeout(hide,1500));
  });
 }
 /* ---------- section renderers ---------- */
