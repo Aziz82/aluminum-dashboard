@@ -1,13 +1,13 @@
 {
  "source": "London Metal Exchange official settlements via Westmetall (https://www.westmetall.com/en/markdaten.php?action=table&field=LME_Al_cash)",
- "basis": "London Metal Exchange official settlements via Westmetall. LME Aluminium official cash settlement, official 3-month, and LME warehouse stock. Weekly sampling (last published official session of each week). AT THE 09-OCTOBER-2026 UPDATE the row for the week of 05-October is PROVISIONAL: the Thursday 08-October session (cash 3,060.50, 3-month 3,069.00, stock 238,875 t), replacing Wednesday's, to be replaced by the Friday 09-October session once it prints; the week of 28-September is FINAL at the Friday 02-October session. Verified against both cache-busted Westmetall language overviews and the per-metal aluminium daily table.",
+ "basis": "London Metal Exchange official settlements via Westmetall. LME Aluminium official cash settlement, official 3-month, and LME warehouse stock. Weekly sampling (last published official session of each week). AT THE 10-OCTOBER-2026 UPDATE the row for the week of 05-October is FINAL at the Friday 09-October session (cash 3,055.50, 3-month 3,070.00, stock 238,875 t); a new row for the week of 12-October will be appended once Monday's official prints. Verified against both cache-busted Westmetall language overviews and the per-metal aluminium daily table.",
  "fields": [
   "date",
   "cash",
   "m3",
   "stock"
  ],
- "updated": "2026-10-09",
+ "updated": "2026-10-10",
  "rows": [
   [
    "2024-01-05",
@@ -874,9 +874,9 @@
    240375
   ],
   [
-   "2026-10-08",
-   3060.5,
-   3069.0,
+   "2026-10-09",
+   3055.5,
+   3070.0,
    238875
   ]
  ]
