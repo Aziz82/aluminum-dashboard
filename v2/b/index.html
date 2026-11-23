@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- prov-aware -->
 <head>
+<meta name="data-url" content="../data.json">
+<meta name="robots" content="noindex">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Aluminum Market Brief</title>
@@ -39,7 +42,7 @@ a{color:var(--ember2);text-underline-offset:2px}
 .verdict b{color:var(--ember2);font-weight:700}.verdict .sep{color:var(--ember);margin:0 .45em}
 .stage{position:relative;width:100%;aspect-ratio:21/9;overflow:hidden;background:#0c0d10}
 .scene{position:absolute;inset:0}
-.fb{position:absolute;inset:0;width:100%;height:100%}
+.fb{position:absolute;inset:0;width:100%;height:100%;display:none}.noimg .fb{display:block}
 .pimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .scrim{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(14,15,19,.78) 0%,rgba(14,15,19,.38) 34%,rgba(14,15,19,0) 56%),linear-gradient(180deg,rgba(14,15,19,.5) 0%,rgba(14,15,19,0) 34%,rgba(14,15,19,0) 70%,rgba(20,22,26,.92) 100%)}
 .flow{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
@@ -166,6 +169,22 @@ table.klist td.v small{color:var(--silver);font-weight:500;margin-left:3px}
 .prow .bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--emberd),var(--ember));box-shadow:0 0 10px rgba(255,122,47,.5)}
 .prow .v{font-weight:700}.prow .c{min-width:42px;text-align:right;font-size:12px}
 
+
+.tag .s2{display:block;font-size:10.5px;color:#aeb4bb;margin-top:2px;line-height:1.25}
+.tag.stale .s2{color:#ffb07a}
+.src{font-size:11.5px;color:var(--muted)}.src a{color:#cfd3d8;text-decoration:underline;text-decoration-color:rgba(201,206,212,.4)}
+.src.stale,.src.stale a{color:#8c929a}.src.nosrc{color:#ff9d92;font-style:italic}
+.kpi.stale .big,.vrow.stale .vv{color:#9aa1aa}
+.kp{margin-top:8px;line-height:1.35;font-size:11.5px;color:var(--muted)}
+.vrow{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:10px 0;border-top:1px solid var(--line)}
+.vl{font-size:13px;color:var(--silver)}.vv{font-size:22px;font-weight:700;color:#fff;text-align:right}.vv small{font-size:12px;color:var(--silver);font-weight:500;margin-left:3px}
+.vs{grid-column:1/-1}
+.srcsec{background:#0c0d10;padding:6px 0 6px;border-top:1px solid var(--line)}
+.srcsec h2{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--silver);font-weight:600;margin-bottom:8px}
+.srclist{list-style:none;margin:0;padding:0;columns:2;column-gap:28px;font-size:12.5px}
+.srclist li{break-inside:avoid;padding:3px 0;color:var(--muted)}.srclist a{color:#d4d8dd}.srclist span{margin-left:6px}
+@media(max-width:760px){.srclist{columns:1}}
+.tapnote{display:none}
 @media(max-width:1023px){
   .kpis{grid-template-columns:1fr 1fr;row-gap:22px}
   .kpi:nth-child(3){border-left:0;padding-left:0}
@@ -235,6 +254,7 @@ table.klist td.v small{color:var(--silver);font-weight:500;margin-left:3px}
 <section class="band" aria-label="Key figures"><div class="wrap"><div class="kpis" id="kpis"></div></div></section>
 <section class="mflow" aria-label="Regional premiums"><div class="wrap" id="mflow"></div></section>
 <section class="refsec" id="reference"><div class="wrap"><h2>Reference</h2><div id="l2"></div></div></section>
+<section class="srcsec" aria-label="Sources"><div class="wrap"><details class="ref srcd"><summary id="srcsum">Sources</summary><div class="body" id="srcs"></div></details></div></section>
 <footer class="ft"><div class="wrap" id="ft"></div></footer>
 
 <div class="veil" id="veil"></div>
@@ -261,7 +281,8 @@ const STAGES=[
   {k:'market',   n:'Market',           x:90, y:74, ty:34}
 ];
 /* Where the feed lives; ?data=relative/path.json also works. Deployed at /v2/b/ so the feed is two levels up. */
-const DATA_URL=(()=>{const q=new URLSearchParams(location.search).get('data');return q&&/^[\w.\-\/]+$/.test(q)?q:'../../data.json'})();
+const DATA_DEFAULT=(()=>{const m=document.querySelector('meta[name="data-url"]'),c=m&&m.getAttribute('content');return c&&/^[\w.\-\/]+$/.test(c)?c:'./data.json'})();
+const DATA_URL=(()=>{const q=new URLSearchParams(location.search).get('data');return q&&/^[\w.\-\/]+$/.test(q)?q:DATA_DEFAULT})();
 const REDUCED=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 
@@ -406,7 +427,7 @@ function assessedISO(row,t){
   const m=AGE_RX.exec(t||'');return m?dmToISO(m[1],m[2],m[3]):null;
 }
 const ageDays=iso=>dayNum(String(D.meta.as_of))-dayNum(iso);
-const shortDM=iso=>{const d=new Date(iso+'T00:00:00Z');return `${String(d.getUTCDate()).padStart(2,'0')} ${M3[d.getUTCMonth()]}`};
+const shortDM=iso=>{const d=new Date(iso+'T00:00:00Z');if(isNaN(d))return '';const cy=(typeof D!=='undefined'&&D&&D.meta&&/^\d{4}/.test(String(D.meta.as_of||'')))?String(D.meta.as_of).slice(0,4):String(new Date().getUTCFullYear());return `${String(d.getUTCDate()).padStart(2,'0')} ${M3[d.getUTCMonth()]}${String(iso).slice(0,4)!==cy?' '+String(iso).slice(0,4):''}`};
 function rowAge(row,key){   /* {iso,age,periodic} */
   const as=String((D.meta||{}).as_of||'');if(!/^\d{4}-/.test(as))return {};
   const t=String(row[key]||row.note||row.basis||''),lab=String(row.label||row.region||'');
@@ -476,31 +497,6 @@ function readHTML(text,n,max){
   if(m){const iso=dmToISO(m[1],m[2]);if(iso&&ageDays(iso)>21)tag=` <span class="age old">text dated ${shortDM(iso)}</span>`}
   return esc(r)+tag;
 }
-const REF=[
- ['lme','LME and base metals board',()=>{
-   const bm=asList((D.lme||{}).benchmarks),bd=asList((D.base_metals||{}).board);
-   return `<div class="sub2">LME benchmarks (cash and 3-month)</div><table class="t"><thead><tr><th>Metal</th><th class="r">Cash</th><th class="r">3-month</th><th class="r">Average</th><th class="r">Spread</th><th>Structure</th></tr></thead><tbody>${bm.map(r=>`<tr><td><b>${esc(disp(r.metal))}</b></td><td class="r">${fmt(r.cash,2)}</td><td class="r">${fmt(r.three_month,2)}</td><td class="r">${fmt(r.average,2)}</td><td class="r">${fmt(r.spread,2)}</td><td>${esc(disp(r.structure))}</td></tr>`).join('')}</tbody></table>
-   <div class="sub2">Base metals, 3-month</div><table class="t"><thead><tr><th>Metal</th><th class="r">Price, $/t</th><th class="r">Day</th><th class="r">Year to date</th></tr></thead><tbody>${bd.map(r=>`<tr><td><b>${esc(disp(r.name))}</b> <span class="muted">${esc(r.symbol)}</span></td><td class="r">${fmt(r.price,1)}</td><td class="r ${cls(r.day_pct)}">${isN(r.day_pct)?arrow(r.day_pct)+' '+pct(r.day_pct):'—'}</td><td class="r ${cls(r.ytd_pct)}">${isN(r.ytd_pct)?arrow(r.ytd_pct)+' '+pct(r.ytd_pct):'—'}</td></tr>`).join('')}</tbody></table>`}],
- ['earn','Earnings (peers)',()=>{
-   const rs=asList((D.peers||{}).earnings).slice().sort((a,b)=>String(b.reported_iso||'').localeCompare(String(a.reported_iso||'')));
-   return `<table class="t"><thead><tr><th>Company</th><th>Period</th><th>Result</th><th class="r">Y/Y</th><th>Read</th><th>Reported</th></tr></thead><tbody>${rs.map(r=>{const u=safeUrl(r.url);return `<tr><td><b>${esc(us(r.company||''))}</b><br><span class="muted">${esc(r.ticker||'')}</span></td><td>${esc(us(r.period||''))}</td><td>${esc(firstN(r.headline||r.note,1,200))}${u?` <a href="${esc(u)}" target="_blank" rel="noopener">Source</a>`:''}</td><td class="r ${cls(r.yoy_pct)}">${isN(r.yoy_pct)?pct(r.yoy_pct):'—'}</td><td>${r.sentiment?`<span class="pill ${/pos/i.test(r.sentiment)?'up':/neg/i.test(r.sentiment)?'dn':''}">${esc(r.sentiment)}</span>`:'—'}</td><td>${esc(r.reported||'—')}</td></tr>`}).join('')}</tbody></table>`}],
- ['prod','Producers',()=>asList((D.producers||{}).status).map(p=>{const u=safeUrl(asList(p.src)[1]);return `<div class="item"><h4>${esc(us(p.name))} <span class="pill ${/high/i.test(p.impact||'')?'dn':''}">${esc(p.impact||'')}</span></h4>${esc(firstN(p.status,1,260,true))}<div class="muted" style="margin-top:3px">${esc(firstN(p.update,2,360))}${u?` <a href="${esc(u)}" target="_blank" rel="noopener">Source</a>`:''}</div></div>`}).join('')],
- ['trade','Trade flows',()=>{const t=D.trade||{};return `<div class="cap" style="margin-bottom:8px">Trade corridors are reviewed periodically. Last review: ${esc(t.asof||'—')}.</div>`+asList(t.flows).map(f=>{const u=safeUrl(asList(f.src)[1]);return `<div class="item"><h4>${esc(us(f.from))} → ${esc(us(f.to))}</h4><b>${esc(disp(f.impact||''))}</b><div class="muted" style="margin-top:3px">${esc(firstN(f.note,2,360))}${u?` <a href="${esc(u)}" target="_blank" rel="noopener">Source</a>`:''}</div></div>`}).join('')}],
- ['out','Outlook',()=>{
-   const o=D.outlook||{};
-   return `<div class="sub2">Bank and analyst targets</div><table class="t"><thead><tr><th>Source</th><th class="r">Target, $/t</th><th>Horizon</th></tr></thead><tbody>${asList(o.consensus).map(c=>`<tr><td>${esc(us(c.bank))}</td><td class="r">${fmt(c.target,0)}</td><td>${esc(c.horizon||'—')}</td></tr>`).join('')}</tbody></table>
-   <div class="sub2">Supply-demand balance</div>${asList(o.balance).map(b=>`<div class="item"><h4>${esc(b.year)}: ${esc(us(b.value))}</h4>${esc(firstN(b.label,2,300))}</div>`).join('')}
-   <div class="sub2">Catalysts</div>${asList(o.catalysts).map(c=>`<div class="item"><h4>${esc(us(c.date||''))}</h4>${esc(firstN(c.text,2,320))}</div>`).join('')}
-   <div class="sub2">Risks</div>${asList(o.risks).map(r=>`<div class="item"><span class="pill">likelihood ${esc(r.likelihood||'—')}</span> <span class="pill ${/high/i.test(r.impact||'')?'dn':''}">impact ${esc(r.impact||'—')}</span> <span class="pill">${esc(r.trend||'—')}</span><div style="margin-top:4px">${esc(firstN(r.text,2,320))}</div></div>`).join('')}`}],
- ['model','Market condition model',()=>{
-   const f=D.forward||{},bt=f.backtest||{};
-   return `<div class="model"><div><div class="sub2" style="margin-top:0">Current reading</div><div style="font-size:22px;font-weight:700">${esc(us(f.stance||'—'))} <span class="muted" style="font-size:15px">${isN(f.score)?f.score+' of '+f.score_max:''}</span></div><div class="cap">${esc(us(f.stance_label||''))}</div>
-   <table class="t" style="margin-top:8px"><thead><tr><th>Driver</th><th class="r">Value</th><th>Reading</th></tr></thead><tbody>${asList(f.drivers).map(d=>`<tr><td>${esc(us(d.name))}</td><td class="r">${esc(d.value)}</td><td>${esc(d.reading)}</td></tr>`).join('')}</tbody></table></div>
-   <div class="verdict"><h4>Backtest verdict (verbatim)</h4>${esc(us(bt.verdict||'No backtest in the feed.'))}${isN(bt.hit_rate_pct)?`<div class="cap" style="margin-top:6px">Hit rate ${fmt(bt.hit_rate_pct,1)}% over ${esc(bt.observations)} observations, ${esc(bt.horizon_weeks)}-week horizon. Edge vs baseline: ${fmt(bt.edge_pp,1)} pp.</div>`:''}</div></div>`}],
- ['src','Sources and caveats',()=>{
-   const s=D.sources||{},refs=asList(s.references);
-   return `<div class="sub2" style="margin-top:0">Caveats</div>${asList(s.caveats).map(c=>`<div class="item">${esc(firstN(c,3,500,true))}</div>`).join('')}<div class="sub2">References (${refs.length}, first 25 shown)</div>`+refs.slice(0,25).map(r=>{const u=safeUrl(r.url);return `<div class="item" style="padding:5px 0">${u?`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(firstN(r.name,1,140,true))}</a>`:esc(firstN(r.name,1,140,true))}</div>`}).join('')}]
-];
 
 /* ================= panorama, drawer, band (new in v4) ================= */
 function renderHeader(){
@@ -519,44 +515,128 @@ const tagAge=(row,key)=>{try{const r=rowAge(row,key);if(r.iso)return {t:'as of '
 const ageChip=a=>a?`<span class="age${a.old?' old':''}${a.p?' p':''}">${esc(a.t)}</span>`:'';
 const unitS=u=>esc(unitDisp(u));
 
-/* one live value per stage */
+/* ================= provenance: every number carries a source and a date ================= */
+const REG=new Map();   /* sources used today, filled as values render */
+const MON='January|February|March|April|May|June|July|August|September|October|November|December';
+const HOSTN={'westmetall.com':'LME official via Westmetall','tradingeconomics.com':'Trading Economics','alcircle.com':'AL Circle','metal.com':'SMM','news.metal.com':'SMM','mysteel.net':'Mysteel','reuters.com':'Reuters','lme.com':'LME','tradingview.com':'TradingView','spglobal.com':'S&P Global Platts','fastmarkets.com':'Fastmarkets','alcircle.com':'AL Circle'};
+const hostName=u=>{const h=host(u);return HOSTN[h]||HOSTN[h.split('.').slice(-2).join('.')]||h};
+function normProv(p){
+  const u=safeUrl(p.url);let name=hostName(u);
+  if(/tradingview/i.test(u)&&p.symbol)name='TradingView '+p.symbol;
+  return {src:name,full:String(p.src||''),url:u,asof:String(p.asof),kind:p.kind,derived:p.kind==='derived',inferred:p.inferred||null,contract:p.contract||null};
+}
+/* engine `prov` only: no URL or no date means the value is not published */
+function provOf(row){
+  if(!row)return null;
+  const p=row.prov;
+  return p&&p.url&&p.asof&&safeUrl(p.url)?normProv(p):null;
+}
+const CAD={daily:5,weekly:10,monthly:35,quarterly:100};
+function provState(p,cad){
+  if(!p)return {ok:false};
+  const a=ageDays(p.asof);const stale=isN(a)&&a>(CAD[cad]||CAD.daily);
+  return {ok:true,stale,age:a};
+}
+function reg(p,what){if(!p)return;const k=p.url+'|'+p.asof;const e=REG.get(k)||{src:p.src,url:p.url,asof:p.asof,what:[]};if(what&&!e.what.includes(what))e.what.push(what);REG.set(k,e)}
+const dshort=iso=>iso?shortDM(iso):'';
+/* tiny source line: "<src> · as of 20 Nov" */
+function srcLine(p,cad,what){
+  if(!p)return '<span class="src nosrc">no public source</span>';
+  reg(p,what);const st=provState(p,cad);
+  return `<span class="src${st.stale?' stale':''}"><a href="${esc(p.url)}" target="_blank" rel="noopener" title="${esc(p.full||p.src)}">${esc(p.src)}</a> · as of ${esc(dshort(p.asof))}${p.inferred?' (date inferred)':''}</span>`;
+}
+const srcPlain=(p,cad,what)=>{if(!p)return '<span class="src nosrc">no public source</span>';reg(p,what);const st=provState(p,cad);return `<span class="src${st.stale?' stale':''}">${esc(p.src)} · as of ${esc(dshort(p.asof))}</span>`};
+/* LME values: Westmetall reference in the feed, dated by the session */
+const lmeProv=row=>provOf(row);
+
+function headParts(h){
+  const t=String(h.title||'').replace(/\s+/g,' ').trim();let head=t,src='';
+  const m=t.match(/^(.*?)\s*\(([^)]*)\)\s*:\s*(.*)$/);
+  const dateOnly=/^\d{1,2}[- ][A-Za-z]+(?:[- ]\d{4})?$/;
+  if(m){
+    if(dateOnly.test(m[2].trim())){
+      src=m[1].replace(/\s+analysis$/i,'');head=m[3].split(/\.\s+(?=[A-Z])/)[0].replace(/\.$/,'');if(head.length>140)head=head.slice(0,140).replace(/\s+\S*$/,'')+'…';
+    }else{head=m[1];src=m[2].replace(/,?\s*\d{1,2}[- ][A-Za-z]+(?:[- ]\d{4})?\s*$/,'')}
+  }else{head=t.split(/\.\s+(?=[A-Z][a-z])/)[0].replace(/\.$/,'')}
+  if(!src)src=host(h.url);
+  return {head:disp(head),src:us(src).replace(/^Al circle/i,'AL Circle')};
+}
+/* ---- stages: one sourced value per hotspot ---- */
+function ttfRow(){return asList((D.macro||{}).row).find(r=>/\bTTF\b/i.test(r.label||'')&&isN(r.value))}
+const isRange=r=>!!r&&r.basis==='range'&&isN(r.lo)&&isN(r.hi);
+const rangeTxt=r=>fmt0(r.lo)+'\u2013'+fmt0(r.hi);
+function vrow(label,val,unit,p,cad,what,dec){
+  const has=!!p&&isN(val);
+  return {label,has,v:has?fmt(val,dec==null?(Math.abs(val)<10?2:(val%1?2:0)):dec):'—',u:has?unitS(unit):'',p:has?p:null,cad,what:what||label};
+}
+const futContract=f=>{const p=provOf(f);return (p&&p.contract)||f.contract||'front month'};
+const futLabel=f=>`${f.symbol} futures, ${futContract(f)}`;
+function futRow(f,label){return f&&isN(f.value)?vrow(label||futLabel(f),f.value,f.unit,provOf(f),'daily',futLabel(f),isN(f.value)&&f.value<10?2:(f.value%1?2:0)):null}
+const futBy=(arr,sym)=>asList(arr).find(f=>f.symbol===sym);
 function stageInfo(k){
-  const alu=D.alumina||{},inp=D.inputs||{},prem=D.premiums||{},lme=D.lme||{};
-  const aluP=asList(alu.prices),inI=asList(inp.items);
-  const find=(arr,re)=>arr.find(r=>re.test(r.label||'')&&isN(r.value));
-  const row=(r,label,key)=>{const a=r?tagAge(r,key):null;return {has:!!r,v:r?fmt0(r.value):'—',u:r?unitS(r.unit):'',sub:esc(label),age:a,stale:!!a}};
-  if(k==='bauxite'){const r=find(aluP,/bauxite/i);return Object.assign(row(r,'Import index'),{
-    line:r?`Import index ${fmt0(r.value)} ${unitDisp(r.unit)}, the first link in the chain.`:'First link in the chain.',
-    chart(el){el.innerHTML=listRows(aluP.filter(x=>isN(x.value)))},read:asList(alu.notes)[1]||asList(alu.notes)[0]})}
-  if(k==='alumina'){const r=find(aluP,/^LME alumina/i);return Object.assign(row(r,'LME alumina'),{
-    line:r?`LME alumina ${fmt0(r.value)} ${unitDisp(r.unit)}; refineries turn bauxite into smelter feed.`:'Refineries turn bauxite into smelter feed.',
-    chart(el){aluminaChart(el)},read:asList(alu.notes)[0]})}
-  if(k==='smelter'){const r=find(inI,/electricity/i);return Object.assign(row(r,'Power'),{
-    line:r?`Power cost at the smelter: ${fmt0(r.value)} ${unitDisp(r.unit)}.`:'Smelter input costs.',
-    chart(el){const rs=inI.filter(x=>isN(x.value)).slice(0,6);el.innerHTML=rs.length?listRows(rs):'<div class="cap">—</div>'},read:r&&r.note})}
-  if(k==='casthouse'){const r=asList(prem.regional).find(x=>/billet/i.test(x.region||'')&&isN(x.premium));
-    const a=r?tagAge(r,'basis'):null;return {has:!!r,v:r?fmt0(r.premium):'—',u:r?unitS(r.unit):'',sub:'Billet premium, Rotterdam',age:a,stale:!!a,
-    line:r?`Billet premium over LME at Rotterdam: ${fmt0(r.premium)} ${unitDisp(r.unit)}.`:'Billet premium over LME.',
-    chart(el){el.innerHTML=premiumsHTML()},read:asList(prem.drivers)[0]&&asList(prem.drivers)[0].text}}
-  const k3=kpiBy(/lme-3|3-month/i),ks=kpiBy(/spread/i);
-  const c=k3&&k3.change_pct;
-  return {has:!!k3,v:k3?fmt(k3.value,isN(k3.decimals)?k3.decimals:1):'—',u:k3?unitS(k3.unit):'',
-    sub:`LME 3-month${isN(c)?` <span class="${cls(c)}">${arrow(c)} ${fmt(Math.abs(c),1)}%</span>`:''}`,age:null,stale:false,
-    line:ks&&isN(ks.value)?(ks.value>0?`Nearby metal tight: cash $${fmt0(Math.round(ks.value))} above 3-month.`:ks.value<0?`Nearby metal ample: cash $${fmt0(Math.round(-ks.value))} below 3-month.`:'Cash level with 3-month.'):'LME 3-month benchmark.',
-    chart(el){priceChart(el)},read:(D.lme||{}).commentary};
+  const alu=D.alumina||{},prem=D.premiums||{};
+  const aluP=asList(alu.prices);
+  const fnd=(arr,re)=>arr.find(r=>re.test(r.label||'')&&isN(r.value));
+  const aluRow=(r,label)=>r?vrow(label||r.label,r.value,r.unit,provOf(r),'weekly',label||r.label):vrow(label,null,'',null,'weekly');
+  let rows=[],tag,line,chart=null;
+  if(k==='bauxite'){
+    const r=fnd(aluP,/bauxite/i);const row=aluRow(r,r?r.label:'Bauxite import index');rows=[row,aluRow(fnd(aluP,/caustic/i),'')].filter(x=>x.label);
+    tag=Object.assign({},row,{label:'Guinea bauxite, CIF China'});line=row.has?`Guinea bauxite CIF China: ${row.v} ${unitDisp(r.unit)}.`:'No sourced bauxite value today.';
+  }else if(k==='alumina'){
+    const lr=fnd(aluP,/^LME alumina/i),lrow=aluRow(lr,'LME alumina (Platts), '+(lr&&lr.prov&&lr.prov.kind==='news'?'as reported by a news article':'per source'));
+    const f1=futBy((alu.futures),'COMEX:ALA1!'),frow=futRow(f1,'Alumina FOB Australia futures (COMEX:ALA1!), front month');
+    const f2=futRow(futBy(alu.futures,'LME:AM1!'),'LME alumina futures (LME:AM1!), front month');
+    rows=[lrow,frow,f2,aluRow(fnd(aluP,/Western Australia/i),'Alumina FOB Western Australia (SMM)'),aluRow(fnd(aluP,/SMM Alumina Index/i),'SMM alumina index, China (RMB/t)')].filter(x=>x&&x.label);
+    const recent=lrow.has&&provState(lrow.p,'weekly').age<=10;
+    const pick=recent?lrow:(frow&&frow.has?frow:lrow);
+    tag=Object.assign({},pick,{label:recent?(pick.p&&pick.p.kind==='news'?'LME alumina, news report':'LME alumina'):'Alumina FOB Aus. futures'});
+    line=pick.has?`${recent?'LME alumina':'Alumina FOB Australia futures, front month'}: $${pick.v}/t, as of ${dshort(pick.p.asof)}.`:'No sourced alumina value today.';
+  }else if(k==='smelter'){
+    const eb=D.energy_benchmark,t=eb&&isN(eb.value)?eb:ttfRow();const p=t?provOf(t):null;
+    const row=vrow('Energy benchmark: EU gas TTF, front-month futures',t&&t.value,'€/MWh',p,'daily','EU gas TTF futures');
+    const an=fnd(asList((D.inputs||{}).items),/anode/i);
+    rows=[row];if(an)rows.push(vrow(an.label,an.value,an.unit,provOf(an),'monthly',an.label,0));
+    tag=Object.assign({},row,{label:'Energy benchmark: TTF front-month futures'});
+    const tt=ttfRow();const dp=tt&&isN(tt.day_pct)&&Math.abs(tt.day_pct)<=10?tt.day_pct:null;
+    if(dp!=null)tag.chg=dp;
+    line=row.has?`Energy benchmark, EU gas TTF: €${row.v}/MWh.`:'No sourced energy benchmark today.';
+  }else if(k==='casthouse'){
+    const r=asList(prem.regional).find(x=>/duty unpaid|\bEDU\b/i.test(x.region||'')&&isN(x.premium));
+    const row=r?vrow('Europe duty-unpaid premium, Rotterdam',r.premium,r.unit,provOf(r),'monthly','Europe duty-unpaid premium',0):vrow('Europe duty-unpaid premium',null,'',null,'monthly');if(r&&isRange(r)&&row.has)row.v=rangeTxt(r);
+    const bil=asList(prem.regional).find(x=>/billet/i.test(x.region||''));
+    rows=[row,bil&&isN(bil.premium)?vrow('Billet premium, Rotterdam duty-paid',bil.premium,bil.unit,provOf(bil),'monthly','Billet premium',0):vrow('Billet premium, Rotterdam duty-paid',null,'',null,'monthly')];
+    tag=Object.assign({},row,{label:'Premium, Rotterdam'});
+    line=row.has?`Europe duty-unpaid premium over LME: ${row.v} ${unitDisp(r.unit)}${isRange(r)?' (range)':''}.`:'No sourced premium today.';
+    chart=el=>{el.innerHTML=premiumsHTML()};
+  }else{
+    const k3=kpiBy(/lme-3|3-month/i),kc=kpiBy(/cash-settle/i)||kpiBy(/lme.cash/i),ks=kpiBy(/spread/i),kt=kpiBy(/stock/i);
+    const kr=(kk,l,dec)=>kk?vrow(l,kk.value,kk.unit,lmeProv(kk),'daily',l,dec):vrow(l,null,'',null,'daily');
+    const r3=kr(k3,'LME 3-month',1);
+    rows=[r3,kr(kc,'LME cash',1),kr(ks,'Cash minus 3-month (derived)',1),kr(kt,'LME visible stock',0)];
+    const c=k3&&k3.change_pct;
+    tag=Object.assign({},r3,{label:'LME 3-month',chg:isN(c)?c:null});
+    line=ks&&isN(ks.value)&&lmeProv(ks)?(ks.value>0?`Cash $${fmt0(Math.round(ks.value))} above 3-month (backwardation).`:ks.value<0?`Cash $${fmt0(Math.round(-ks.value))} below 3-month (contango).`:'Cash level with 3-month.'):'LME benchmark.';
+    chart=el=>priceChart(el);
+  }
+  return {rows,tag,line,chart};
 }
 function renderPano(){
-  const img=$('#pimg'),src=IMG['panorama'+PANORAMA]||IMG.panoramaA;
-  img.onerror=()=>{img.style.display='none'};img.src=src;
+  const img=$('#pimg'),sc=$('#scene'),src=IMG['panorama'+PANORAMA]||IMG.panoramaA;
+  const bad=()=>{sc.classList.add('noimg');img.style.display='none'};
+  img.onerror=bad;img.onload=()=>{if(!img.naturalWidth)bad()};img.src=src;
   document.documentElement.style.setProperty('--tex',`url("${IMG.texture}")`);
   $('#hl').innerHTML=verdictHTML();
   $('#snaps').innerHTML=STAGES.map(s=>`<div class="snap" style="left:${s.x-10}%;scroll-snap-align:center"></div>`).join('');
   $('#hots').innerHTML=STAGES.map(s=>{
-    const i=stageInfo(s.k);
+    const t=stageInfo(s.k).tag,st=t.p?provState(t.p,t.cad):null;
     return `<div class="hs" style="left:${s.x}%;top:${s.ty}%;height:${s.y-s.ty}%">
       <span class="line"></span><span class="spot" style="top:100%"><i data-k="${s.k}"></i></span>
-      <button type="button" class="tag${i.stale?' stale':''}" data-k="${s.k}" aria-haspopup="dialog" aria-label="${esc(s.n)}: open details">
-        <span class="k">${esc(s.n)}</span><span class="v">${i.v}<small>${i.u}</small></span><span class="s">${i.sub}${i.age?' '+ageChip(i.age):''}</span></button></div>`}).join('');
+      <button type="button" class="tag${st&&st.stale?' stale':''}" data-k="${s.k}" aria-haspopup="dialog" aria-label="${esc(s.n)}: open values and sources">
+        <span class="k">${esc(s.n)}</span><span class="v">${t.v}<small>${t.u}</small></span>
+        <span class="s">${esc(t.label)}${t.chg!=null?` <span class="${cls(t.chg)}">${arrow(t.chg)} ${fmt(Math.abs(t.chg),1)}%</span>`:''}</span>
+        <span class="s2">${t.p?`${esc(t.p.src)} · as of ${esc(dshort(t.p.asof))}`:'no public source'}</span></button></div>`}).join('');
+  /* tag sources are registered when the drawer rows render; register all now so the Sources list is complete */
+  STAGES.forEach(s=>stageInfo(s.k).rows.forEach(r=>reg(r.p,r.what)));
   document.querySelectorAll('#hots [data-k]').forEach(e=>e.addEventListener('click',()=>openDrawer(e.dataset.k,e.closest('.hs').querySelector('.tag'))));
   fitLines();
 }
@@ -570,13 +650,11 @@ function openDrawer(k,opener){
   let i;try{i=stageInfo(k)}catch(e){console.error(k,e);return}
   lastOpener=opener||document.activeElement;openKey=k;
   $('#dk').textContent='Stage '+(STAGES.indexOf(s)+1)+' of '+STAGES.length;$('#dtitle').textContent=s.n;
-  const rd=i.read?readHTML(i.read,2,360):'';
-  $('#db').innerHTML=`<div class="dval">${i.v}<small>${i.u}</small>${i.age?ageChip(i.age):''}</div>
-   <div class="dline">${esc(i.line)}</div><div class="chartbox" id="dchart"></div>
-   ${rd&&rd!=='—'?`<details class="more"><summary>Read more</summary><p>${rd}</p></details>`:''}`;
+  const rowsHTML=i.rows.map(r=>`<div class="vrow${r.p&&provState(r.p,r.cad).stale?' stale':''}"><div class="vl">${esc(r.label)}</div><div class="vv">${r.v}<small>${r.u}</small></div><div class="vs">${srcLine(r.p,r.cad,r.what)}</div></div>`).join('');
+  $('#db').innerHTML=`<div class="dline">${esc(i.line)}</div><div class="chartbox" id="dchart"></div>${rowsHTML}`;
   $('#veil').classList.add('on');DR().classList.add('on');
   document.querySelectorAll('#hots .tag').forEach(t=>t.setAttribute('aria-expanded',t.dataset.k===k?'true':'false'));
-  requestAnimationFrame(()=>{const el=$('#dchart');if(el)try{i.chart(el)}catch(e){console.error(k,e);el.innerHTML=''}});
+  requestAnimationFrame(()=>{const el=$('#dchart');if(el&&i.chart)try{i.chart(el)}catch(e){console.error(k,e);el.innerHTML=''}});
   setTimeout(()=>{if(DR().classList.contains('on'))$('#dx').focus()},60);
 }
 function closeDrawer(){
@@ -599,10 +677,11 @@ document.addEventListener('keydown',e=>{
 $('#dx').addEventListener('click',closeDrawer);$('#veil').addEventListener('click',closeDrawer);
 {const st=$('#stage'),h=$('#hint');if(st&&h)st.addEventListener('scroll',()=>{if(st.scrollLeft>20)h.classList.add('gone')},{passive:true})}
 
-/* dark charts for the drawer */
+/* dark chart for the drawer: LME cash and stock series, dated by the Westmetall session */
 const GR='rgba(201,206,212,.16)',TX='#aab0b8';
 function priceChart(el){
   const s=(D.lme||{}).series||{};
+  if(!lmeProv(kpiBy(/cash-settle/i)||kpiBy(/lme.cash/i))){el.innerHTML='<div class="cap">No public source for the price series.</div>';return}
   const px=asList(s.price).slice().reverse(),st=asList(s.stocks).slice().reverse(),dt=asList(s.dates).slice().reverse();
   if(px.length<2){el.innerHTML='<div class="cap">No price series in the feed.</div>';return}
   const W=Math.max(260,el.clientWidth||340),H=200,P={l:44,r:st.length?44:10,t:10,b:24};
@@ -619,33 +698,28 @@ function priceChart(el){
   g+=`<polyline fill="none" stroke="#eceff2" stroke-width="2.2" stroke-linejoin="round" points="${px.map((v,i)=>`${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(' ')}"/>`;
   g+=`<circle cx="${X(n-1)}" cy="${Y(px[n-1])}" r="5" fill="#ff7a2f"/><text x="${X(n-1)-8}" y="${Y(px[n-1])-10}" text-anchor="end" font-size="12" font-weight="700" fill="#ffb072">${fmt(px[n-1],1)}</text>`;
   dt.forEach((d,i)=>{if((n-1-i)%4===0||i===n-1)g+=`<text x="${X(i)}" y="${H-7}" text-anchor="middle" font-size="11" fill="${TX}">${esc(d)}</text>`});
-  el.innerHTML=`<div class="legend"><span><i></i>LME cash, $/t</span><span><i class="b"></i>Visible stock, t</span></div><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="LME cash settlement price with visible stock">${g}</svg>`;
+  el.innerHTML=`<div class="legend"><span><i></i>LME cash, $/t</span><span><i class="b"></i>Visible stock, t</span></div><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="LME cash settlement price with visible stock">${g}</svg><div class="cap">${srcLine(lmeProv(kpiBy(/cash-settle/i)||kpiBy(/lme.cash/i)),'daily','LME price and stock series')}</div>`;
 }
-function aluminaChart(el){
-  const h=((D.alumina||{}).history)||{},ks=Object.keys(h.series||{}).slice(0,2),dt=asList(h.dates);
-  if(!ks.length||dt.length<2){el.innerHTML=listRows(asList((D.alumina||{}).prices).filter(r=>isN(r.value)));return}
-  const W=Math.max(240,el.clientWidth||340),H=160,P={l:38,r:10,t:12,b:24};
-  const all=ks.flatMap(k=>h.series[k]).filter(isN);const lo=Math.min(...all),hi=Math.max(...all),pad=(hi-lo)*.2||5;
-  const X=i=>P.l+(W-P.l-P.r)*i/(dt.length-1),Y=v=>P.t+(H-P.t-P.b)*(1-(v-(lo-pad))/((hi+pad)-(lo-pad)));
-  const cols=['#eceff2','#ff7a2f'];let g='';
-  for(let i=0;i<=2;i++){const v=lo-pad+(hi-lo+2*pad)*i/2;g+=`<line x1="${P.l}" x2="${W-P.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="${GR}"/><text x="${P.l-5}" y="${Y(v)+4}" text-anchor="end" font-size="10.5" fill="${TX}">${fmt(Math.round(v),0)}</text>`}
-  ks.forEach((k,si)=>{const v=h.series[k];
-    g+=`<polyline fill="none" stroke="${cols[si]}" stroke-width="2" points="${v.map((a,i)=>isN(a)?`${X(i)},${Y(a)}`:'').filter(Boolean).join(' ')}"/>`;
-    v.forEach((a,i)=>{if(isN(a))g+=`<circle cx="${X(i)}" cy="${Y(a)}" r="2.4" fill="${cols[si]}"/>`});
-    const li=v.length-1;if(isN(v[li]))g+=`<text x="${X(li)}" y="${Y(v[li])+(si?-7:15)}" text-anchor="end" font-size="11" font-weight="700" fill="${cols[si]}">${fmt0(v[li])}</text>`;});
-  dt.forEach((d,i)=>{if(i===0||i===dt.length-1||dt.length<=4)g+=`<text x="${X(i)}" y="${H-7}" text-anchor="${i===0?'start':i===dt.length-1?'end':'middle'}" font-size="10.5" fill="${TX}">${esc(disp(d))}</text>`});
-  el.innerHTML=`<div class="legend">${ks.map((k,i)=>`<span><i style="background:${cols[i]}"></i>${esc(unitDisp(k).replace(/^API ex-China/,'Alumina price index ex-China (API)'))}</span>`).join('')}</div><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Alumina price history to ${esc(disp(dt[dt.length-1]))}">${g}</svg>`;
+/* premium rows: only rows with a source are drawn */
+const PREM_PREF={japan:/metal\.com/i};
+function premRows(){
+  return asList((D.premiums||{}).regional).filter(r=>isN(r.premium)).map(r=>({r,p:provOf(r,{noFallback:true})})).filter(x=>x.p);
 }
+/* futures shown: one US row (LME:UP1!), the near-duplicate COMEX:AUP1! stays in Sources only */
+function premFutures(){return asList((D.premiums||{}).futures).filter(f=>isN(f.value)&&f.symbol!=='COMEX:AUP1!')}
 function premiumsHTML(){
-  const rows=asList((D.premiums||{}).regional).filter(r=>isN(r.premium));
-  if(!rows.length)return '<div class="cap">No premium rows in the feed.</div>';
-  const mx=Math.max(...rows.map(r=>r.premium));let h='';
-  ['Japan','Europe','United States','Other'].forEach(g=>{
-    const rs=rows.filter(r=>premGroup(r)===g);if(!rs.length)return;
-    h+=`<div class="pg">${g}</div>`+rs.map(r=>{const c=r.change;
-      return `<div class="prow"><div class="nm">${esc(disp(r.region))}${ageChip(tagAge(r,'basis'))}</div><div class="bar"><i style="width:${Math.max(1,r.premium/mx*100)}%"></i></div><div class="v">${fmt0(r.premium)}</div><div class="c ${cls(c)}">${isN(c)&&c!==0?arrow(c)+' '+fmt0(Math.abs(c)):''}</div></div>`}).join('');
-  });
-  return h+`<div class="cap" style="margin-top:6px">${esc(unitDisp(rows[0].unit||'$/t'))} over LME. Arrow: change since the previous assessment.</div>`;
+  const rows=premRows(),fut=premFutures();
+  if(!rows.length&&!fut.length)return '<div class="cap">No sourced items today.</div>';
+  const mx=Math.max(...rows.filter(x=>premGroup(x.r)!=='United States').map(x=>x.r.premium),1);
+  let h='<div class="pg">Assessments</div>'+(rows.length?rows.map(({r,p})=>{const c=r.change;
+    return `<div class="prow"><div class="nm">${esc(disp(r.region))}<br>${srcLine(p,/mjp q/i.test(r.region||'')?'quarterly':'monthly',r.region)}</div><div class="bar"><i style="width:${Math.max(1,r.premium/mx*100)}%"></i></div><div class="v">${isRange(r)?rangeTxt(r):fmt0(r.premium)}</div><div class="c ${cls(c)}">${isN(c)&&c!==0?arrow(c)+' '+fmt0(Math.abs(c)):''}</div></div>`}).join(''):'<div class="cap">—</div>');
+  if(fut.length){
+    const fm=Math.max(...fut.map(f=>f.value));
+    h+='<div class="pg">Exchange futures (front month)</div>'+fut.map(f=>{const p=provOf(f),c=f.change;
+      return `<div class="prow"><div class="nm">${esc(disp(f.label))}<br>${srcLine(p,'daily',futLabel(f))}</div><div class="bar"><i style="width:${Math.max(1,f.value/fm*100)}%"></i></div><div class="v">${fmt0(f.value)}</div><div class="c ${cls(c)}">${isN(c)&&c!==0?arrow(c)+' '+fmt(Math.abs(c),1):''}</div></div>`}).join('');
+  }
+  const ax=asList((D.premiums||{}).futures).find(f=>f.symbol==='COMEX:AUP1!');if(ax&&ax.prov)reg(provOf(ax),futLabel(ax));
+  return h+`<div class="cap" style="margin-top:6px">$/t over LME. Arrow: change vs previous assessment or bar. Futures are exchange contracts, not assessments.</div>`;
 }
 
 /* ================= KPI band ================= */
@@ -656,13 +730,15 @@ function spark(vals){
   const pts=vals.map((v,i)=>`${X(i).toFixed(1)},${Y(v).toFixed(1)}`),last=pts[pts.length-1];
   return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true" focusable="false"><polyline points="${pts.join(' ')}" fill="none" stroke="#c9ced4" stroke-width="1.8" vector-effect="non-scaling-stroke" stroke-linejoin="round"/><path d="M${last}z" stroke="#ff7a2f" stroke-width="8" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`;
 }
-function kpiCell(k,series,noPct){
+function kpiCell(k,series,derived){
   if(!k)return `<div class="kpi"><h3>—</h3><div class="big">—</div></div>`;
-  const dec=isN(k.decimals)?k.decimals:1,c=k.change_pct;
-  return `<div class="kpi"><h3>${esc(us(String(k.label||'').replace(/\s*\(t\)$/i,'')))}</h3>
-   <div class="big">${fmt(k.value,dec)}<small>${esc(unitDisp(k.unit))}</small></div>
-   <div class="chg ${noPct?'':cls(c)}">${(!noPct&&isN(c))?arrow(c)+' '+pct(c):'&nbsp;'}</div>
-   <div class="sp">${series&&series.length>1?spark(series):''}</div></div>`;
+  const p=lmeProv(k),dec=isN(k.decimals)?k.decimals:1,c=k.change_pct;
+  const ok=!!p;
+  return `<div class="kpi${ok&&provState(p,'daily').stale?' stale':''}"><h3>${esc(us(String(k.label||'').replace(/\s*\(t\)$/i,'')))}</h3>
+   <div class="big">${ok?fmt(k.value,dec):'—'}<small>${ok?esc(unitDisp(k.unit)):''}</small></div>
+   <div class="chg ${derived?'':cls(c)}">${(ok&&!derived&&isN(c))?arrow(c)+' '+pct(c):'&nbsp;'}</div>
+   <div class="sp">${ok&&series&&series.length>1?spark(series):''}</div>
+   <div class="kp">${derived&&ok?'Cash minus 3-month · ':''}${srcLine(p,'daily',String(k.label||''))}</div></div>`;
 }
 function renderKpis(){
   const ser=(D.lme||{}).series||{},rev=a=>asList(a).slice().reverse();
@@ -670,34 +746,66 @@ function renderKpis(){
   $('#kpis').innerHTML=kpiCell(k3,null)+kpiCell(kc,rev(ser.price))+kpiCell(ks,null,true)+kpiCell(kt,rev(ser.stocks));
 }
 
-/* ================= market flow: regional premiums ================= */
+/* ================= market flow: regional premiums, sourced rows only ================= */
 function renderFlow(){
-  const rows=asList((D.premiums||{}).regional).filter(r=>isN(r.premium));
-  const mk=[['Japan','MJP Q4',rows.find(r=>/mjp q|main japanese/i.test(r.region||''))],['Europe','Duty-unpaid',rows.find(r=>/duty unpaid|\bEDU\b/i.test(r.region||''))],['United States','Midwest',rows.find(r=>/midwest/i.test(r.region||''))]];
-  const mx=Math.max(1,...mk.filter(m=>m[0]!=='United States').map(m=>m[2]?m[2].premium:0));   /* the US row is on a different level (duty-paid), so it sits off scale */
-  const cells=mk.map(([nm,sub,r])=>{
-    if(!r)return `<div class="fcell"><div class="top"><span class="nm">${nm}</span><span class="n">—</span></div><div class="trk"></div></div>`;
-    const a=tagAge(r,'basis'),c=r.change;
-    return `<div class="fcell${a&&(a.old||a.p)?' old':''}"><div class="top"><span class="nm">${esc(nm)} <span class="muted">${esc(sub)}</span></span><span class="n">${fmt0(r.premium)}<small>${unitS(r.unit)}</small></span></div>
-      <div class="trk"><i style="width:${nm==='United States'?100:Math.max(3,r.premium/mx*100)}%"></i></div>
-      <div class="sub">${nm==='United States'?'<span class="age p">off scale</span>':''}${isN(c)&&c!==0?`<span class="${cls(c)}">${arrow(c)} ${fmt0(Math.abs(c))}</span>`:''}${a?ageChip(a):'<span class="age p">date not stated</span>'}</div></div>`}).join('');
+  const rows=premRows(),fut=premFutures();
+  const pick=re=>rows.find(x=>re.test(x.r.region||''));const fb=sym=>fut.find(f=>f.symbol===sym);
+  const mk=[['Japan','MJP Q4 settlement',pick(/mjp q|main japanese/i),fb('COMEX:MJP1!')],['Europe','Duty-unpaid, Rotterdam',pick(/duty unpaid|\bEDU\b/i),fb('LME:EA1!')],['United States','Midwest duty-paid',null,fb('LME:UP1!')]];
+  const mx=Math.max(1,...mk.filter(m=>m[0]!=='United States').map(m=>m[2]?m[2].r.premium:(m[3]?m[3].value:0)));
+  const cells=mk.map(([nm,sub,x,f])=>{
+    const main=x?{vt:isRange(x.r)?rangeTxt(x.r):null,v:x.r.premium,u:x.r.unit,c:x.r.change,p:x.p,cad:/mjp q/i.test(x.r.region||'')?'quarterly':'monthly',what:x.r.region,tagline:'assessment'}:(f?{v:f.value,u:f.unit,c:f.change,p:provOf(f),cad:'daily',what:futLabel(f),tagline:'futures, '+futContract(f)}:null);
+    if(!main||!main.p)return `<div class="fcell old"><div class="top"><span class="nm">${esc(nm)} <span class="muted">${esc(sub)}</span></span><span class="n">—</span></div><div class="trk"></div><div class="sub"><span class="src nosrc">no public source</span></div></div>`;
+    const st=provState(main.p,main.cad);
+    const fl=(x&&f)?`<div class="sub"><span class="age p">futures, ${esc(futContract(f))}</span><b>${fmt0(f.value)}</b> ${unitS(f.unit)} ${srcLine(provOf(f),'daily',futLabel(f))}</div>`:'';
+    return `<div class="fcell${st.stale?' old':''}"><div class="top"><span class="nm">${esc(nm)} <span class="muted">${esc(sub)}</span></span><span class="n">${main.vt||fmt0(main.v)}<small>${unitS(main.u)}</small></span></div>
+      <div class="trk"><i style="width:${nm==='United States'?100:Math.max(3,main.v/mx*100)}%"></i></div>
+      <div class="sub"><span class="age p">${esc(main.tagline)}</span>${nm==='United States'?'<span class="age p">off scale</span>':''}${isN(main.c)&&main.c!==0?`<span class="${cls(main.c)}">${arrow(main.c)} ${fmt(Math.abs(main.c),main.c%1?1:0)}</span>`:''}${srcLine(main.p,main.cad,main.what)}</div>${fl}</div>`}).join('');
   $('#mflow').innerHTML=`<h2>Market flow<span>Premium over LME, by region</span></h2><div class="flowrow">${cells}</div>`;
 }
 
-/* ================= reference, collapsed (all from v3) ================= */
-
-REF.unshift(['ctx','Context',()=>{
-  const b=D.brief||{};const lead=firstN(b.headline,3,420);
-  const items=asList(b.bullets).filter(x=>!/^\s*WHAT TO WATCH/i.test(x)).map(x=>{
-    const m=String(x).match(/^\s*([A-Z0-9][A-Z0-9 \-\/&]{2,40}):\s*(.*)$/);const label=m?m[1]:'',body=m?m[2]:String(x);
-    const bd=firstN(body,2,330);return {label:m?disp(label):'',body:bd.charAt(0).toUpperCase()+bd.slice(1)};}).filter(x=>x.body);
-  return (lead?`<p>${esc(lead)}</p>`:'')+`<ul class="plain">${items.map(i=>`<li>${i.label?`<b>${esc(i.label)}</b> `:''}${esc(i.body)}</li>`).join('')}</ul>`}]);
-REF.unshift(['watch','What to watch',()=>{
-  const b=D.brief||{};const wt=asList(b.bullets).find(x=>/^\s*WHAT TO WATCH/i.test(x));
-  const watch=wt?us(String(wt).replace(/^\s*WHAT TO WATCH\s*:?\s*/i,'')):'';
-  const c=catalysts(),nx=nextOfficial(nowDate());
-  const li=x=>`<li><b>${esc(us(x.date||''))}</b>${esc(firstN(x.text,1,170))}</li>`;
-  return `${watch?`<p>${esc(watch)}</p>`:''}<ul class="watchl plain">${nx?`<li><b>Next LME official</b>${esc(whenLabel(nx))}</li>`:''}${c.dated.map(li).join('')}</ul>${c.undated.length?`<div class="sub2">Undated, watch</div><ul class="watchl plain">${c.undated.map(li).join('')}</ul>`:''}`}]);
+/* ================= reference, collapsed: sourced facts only ================= */
+const dateInText=t=>{const m=String(t||'').match(new RegExp('\\b(\\d{1,2})[- ]('+MON+')(?:[- ](\\d{4}))?','i'));return m?dmToISO(m[1],m[2],m[3]):null};
+const REF=[
+ ['lme','LME and base metals board',()=>{
+   const p=lmeProv(asList((D.lme||{}).benchmarks)[0]);if(!p)return '<div class="cap">No sourced items today.</div>';
+   const bm=asList((D.lme||{}).benchmarks),bd=asList((D.base_metals||{}).board);
+   return `<div class="cap">${srcLine(p,'daily','LME benchmarks')}</div><div class="sub2">LME benchmarks (cash and 3-month)</div><table class="t"><thead><tr><th>Metal</th><th class="r">Cash</th><th class="r">3-month</th><th class="r">Spread (derived)</th></tr></thead><tbody>${bm.map(r=>`<tr><td><b>${esc(disp(r.metal))}</b></td><td class="r">${fmt(r.cash,2)}</td><td class="r">${fmt(r.three_month,2)}</td><td class="r">${fmt(r.spread,2)}</td></tr>`).join('')}</tbody></table>
+   <div class="sub2">Base metals, 3-month, $/t</div><table class="t"><thead><tr><th>Metal</th><th class="r">Price</th><th class="r">Day</th></tr></thead><tbody>${bd.map(r=>`<tr><td><b>${esc(disp(r.name))}</b></td><td class="r">${fmt(r.price,1)}</td><td class="r ${cls(r.day_pct)}">${isN(r.day_pct)?arrow(r.day_pct)+' '+pct(r.day_pct):'—'}</td></tr>`).join('')}</tbody></table>`}],
+ ['news','News headlines',()=>{
+   const hs=asList((D.news||{}).headlines).map(h=>{const pp=provOf(h),hp=headParts(h);return pp?{h:hp,u:pp.url,iso:pp.asof,inf:pp.inferred}:null}).filter(Boolean).sort((a,b)=>a.iso<b.iso?1:-1).slice(0,8);
+   if(!hs.length)return '<div class="cap">No sourced items today.</div>';
+   return hs.map(x=>{const p={src:hostName(x.u),url:x.u,asof:x.iso,inferred:x.inf};reg(p,'News');return `<div class="item">${esc(x.h.head)}<div class="cap">${esc(x.h.src)} · <a href="${esc(x.u)}" target="_blank" rel="noopener">Source</a> · ${esc(shortDM(x.iso))}</div></div>`}).join('')}],
+ ['earn','Earnings (peers)',()=>{
+   const rs=asList((D.peers||{}).earnings).map(r=>{const p=provOf(r);return p&&/^\d{4}-\d{2}-\d{2}$/.test(r.reported_iso||'')?{r,p}:null}).filter(Boolean).sort((a,b)=>String(b.r.reported_iso).localeCompare(String(a.r.reported_iso)));
+   if(!rs.length)return '<div class="cap">No sourced items today.</div>';
+   return `<table class="t"><thead><tr><th>Company</th><th>Period</th><th>Metric</th><th class="r">Value</th><th class="r">Y/Y</th><th>Reported</th><th>Source</th></tr></thead><tbody>${rs.map(({r,p})=>{reg(p,'Earnings');
+     return `<tr><td><b>${esc(us(r.company||''))}</b>${r.ticker?`<br><span class="muted">${esc(r.ticker)}</span>`:''}</td><td>${esc(us(r.period||'\u2014'))}</td><td>${esc(us(r.metric||'\u2014'))}</td><td class="r">${isN(r.value)?fmt0(r.value)+(r.unit?' <small class="muted">'+esc(unitDisp(r.unit))+'</small>':''):'\u2014'}</td><td class="r ${cls(r.yoy_pct)}">${isN(r.yoy_pct)?pct(r.yoy_pct)+(r.yoy_kind==='derived'?' <span class="age p">derived</span>':''):(r.yoy_note==='n.m.'?'<span title="not meaningful: base period near zero or negative">n.m.</span>':'\u2014')}</td><td>${esc(shortDM(r.reported_iso))}</td><td><a href="${esc(p.url)}" target="_blank" rel="noopener" title="${esc(p.full||p.src)}">${esc(p.src)}</a></td></tr>`}).join('')}</tbody></table>`}],
+ ['prod','Producers',()=>{
+   const rs=asList((D.producers||{}).status).map(p=>{const pr=provOf(p);return pr?{p,pr}:null}).filter(Boolean);
+   if(!rs.length)return '<div class="cap">No sourced items today.</div>';
+   return rs.map(({p,pr})=>{reg(pr,'Producers');return `<div class="item"><h4>${esc(us(p.name))}</h4>${esc(firstN(p.update||p.status,1,260))}<div class="cap"><a href="${esc(pr.url)}" target="_blank" rel="noopener">${esc(pr.src)}</a> · ${esc(shortDM(pr.asof))}${pr.inferred?' (date inferred)':''}</div></div>`}).join('')}],
+ ['trade','Trade flows',()=>{
+   const fl=asList((D.trade||{}).flows).map(f=>{const pr=provOf(f);return pr?{f,pr}:null}).filter(Boolean);
+   if(!fl.length)return '<div class="cap">No sourced items today.</div>';
+   return fl.map(({f,pr})=>{reg(pr,'Trade flows');return `<div class="item"><h4>${esc(us(f.from))} → ${esc(us(f.to))}</h4>${esc(firstN(f.note,1,260))}<div class="cap"><a href="${esc(pr.url)}" target="_blank" rel="noopener">${esc(pr.src)}</a> · ${esc(shortDM(pr.asof))}</div></div>`}).join('')}],
+ ['macro','Macro',()=>{
+   const rs=asList((D.macro||{}).row).map(r=>({r,p:provOf(r)}));
+   if(!rs.length)return '<div class="cap">No sourced items today.</div>';
+   const lab=r=>{const l=disp(r.label||'');return /brent/i.test(l)?'Brent crude (front-month futures)':/\bTTF\b/i.test(l)?'EU gas TTF (front-month futures)':/^EUR\/USD/i.test(l)?'EUR/USD (LME fixing)':l};
+   const yld=r=>/yield/i.test(r.label||'');
+   const chg=r=>{if(yld(r)){return isN(r.day_abs)?(r.day_abs>0?'▲ +':r.day_abs<0?'▼ −':'')+fmt(Math.abs(r.day_abs),2)+' pp':'—'}
+     const dp=isN(r.day_pct)&&Math.abs(r.day_pct)<=10?r.day_pct:null;return dp==null?'—':arrow(dp)+' '+pct(dp)};
+   return `<table class="t"><thead><tr><th>Indicator</th><th class="r">Value</th><th class="r">Day</th><th>Source</th></tr></thead><tbody>${rs.map(({r,p})=>{const ok=p&&isN(r.value);
+     return `<tr><td><b>${esc(lab(r))}</b></td><td class="r">${ok?fmt0(r.value)+' <small class="muted">'+esc(unitDisp(r.unit))+'</small>':'—'}</td><td class="r ${yld(r)?cls(r.day_abs):cls(r.day_pct)}">${ok?chg(r):'—'}</td><td>${srcLine(ok?p:null,'daily',r.label)}</td></tr>`}).join('')}</tbody></table>`}],
+ ['fc','Published forecasts',()=>{
+   const asIso=String((D.meta||{}).as_of||'');
+   const endOf=h=>{h=String(h||'');const y=(h.match(/20\d\d/g)||[]).pop();if(!y)return null;let m=12;const q=h.match(/Q([1-4])/i);if(q)m=3*+q[1];else{const ms=[...h.matchAll(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/gi)];if(ms.length)m=M3.findIndex(x=>x.toLowerCase()===ms[ms.length-1][1].toLowerCase())+1}
+     return y+'-'+String(m).padStart(2,'0')+'-28'};
+   const cs=asList((D.outlook||{}).consensus).map(c=>{const p=provOf(c),rng=isN(c.target_low)&&isN(c.target_high);return p&&(isN(c.target)||rng)?{c,p,rng}:null}).filter(Boolean);
+   if(!cs.length)return '<div class="cap">No sourced items today.</div>';
+   return `<table class="t"><thead><tr><th>Source</th><th class="r">Target, $/t</th><th>Horizon</th><th>Published</th></tr></thead><tbody>${cs.map(({c,p,rng})=>{reg(p,'Published forecasts');const e=endOf(c.horizon),el=e&&asIso&&e<asIso;return `<tr${el?' style="opacity:.55"':''}><td>${esc(us(c.bank))}</td><td class="r">${rng?fmt(c.target_low,0)+'–'+fmt(c.target_high,0):fmt(c.target,0)}</td><td>${esc(c.horizon||'—')}${el?' <span class="age p">horizon elapsed</span>':''}</td><td>${srcLine(p,'monthly','Published forecast')}</td></tr>`}).join('')}</tbody></table>`}],
+ ['cal','Calendar',()=>{const nx=nextOfficial(nowDate());return nx?`<p>Next LME official: ${esc(whenLabel(nx))}</p>`:'<div class="cap">—</div>'}]
+];
 function renderL2(){
   const box=$('#l2');
   box.innerHTML=REF.map(r=>`<details class="ref" data-k="${r[0]}"><summary>${esc(r[1])}</summary><div class="body"></div></details>`).join('');
@@ -705,6 +813,28 @@ function renderL2(){
     if(d.open&&!d.dataset.done){d.dataset.done='1';const r=REF.find(x=>x[0]===d.dataset.k);try{$('.body',d).innerHTML=r[2]()||'—'}catch(e){$('.body',d).textContent='—';console.error(e)}}
   }));
 }
+function renderSources(){
+  REF.forEach(r=>{try{r[2]()}catch(e){console.error(e)}});   /* registers fallback-parsed sources too */
+  const uniq=new Map();
+  const add=(p,what)=>{if(!p||!p.url||!p.asof||!safeUrl(p.url))return;const n=normProv(p),k=n.url+'|'+n.asof;const e=uniq.get(k)||Object.assign({},n,{what:[]});if(what&&!e.what.includes(what))e.what.push(what);if(n.inferred)e.inferred=n.inferred;uniq.set(k,e)};
+  (function walk(o,key){
+    if(Array.isArray(o)){o.forEach(x=>walk(x,key));return}
+    if(!o||typeof o!=='object')return;
+    for(const k in o){
+      const v=o[k];
+      if(k==='prov'&&v&&typeof v==='object'&&v.url)add(v,o.symbol||'');
+      else if(k==='prov_derived'&&v&&typeof v==='object'){for(const f in v)add(v[f],'')}
+      else walk(v,k);
+    }
+  })(D);
+  REG.forEach(e=>add(e,''));
+  const by=new Map();
+  uniq.forEach(e=>{const nm=/tradingview/i.test(e.url)?'TradingView':hostName(e.url);const g=by.get(nm)||{src:nm,url:e.url,n:0,latest:e.asof,inf:0,syms:[]};g.n++;if(String(e.asof)>String(g.latest)){g.latest=e.asof;g.url=e.url}if(e.inferred)g.inf++;by.set(nm,g)});
+  const list=[...by.values()].sort((a,b)=>b.n-a.n||a.src.localeCompare(b.src));
+  $('#srcsum').textContent='Sources ('+list.length+')';
+  $('#srcs').innerHTML=list.length?`<ul class="srclist">${list.map(g=>`<li><a href="${esc(g.url)}" target="_blank" rel="noopener">${esc(g.src)}</a> <span>${g.n} source item${g.n>1?'s':''} · latest as of ${esc(shortDM(g.latest))}${g.inf?` · ${g.inf} with date inferred from URL or label`:''}</span></li>`).join('')}</ul>`:'<div class="cap">No sourced values today.</div>';
+}
+
 const safe=(name,fn)=>{try{fn()}catch(e){console.error(name,e)}};
 function renderAll(){
   safe('header',renderHeader);
@@ -712,6 +842,7 @@ function renderAll(){
   safe('kpis',renderKpis);
   safe('flow',renderFlow);
   safe('reference',renderL2);
+  safe('sources',renderSources);
   safe('footer',()=>{
     const m=D.meta||{};let t='';
     if(m.generated_at){const off=(String(m.timezone||'').match(/UTC([+-]\d{1,2})/)||[])[1]||'+3';const o=(off[0]==='-'?'-':'+')+String(Math.abs(parseInt(off,10))).padStart(2,'0')+':00';const d=new Date(String(m.generated_at)+(String(m.generated_at).length<=16?':00':'')+o);if(!isNaN(d))t=' · compiled '+esc(localTime(d))}
@@ -727,11 +858,12 @@ async function loadData(){
 }
 loadData().then(d=>{
   if(!d||!d.meta||!d.kpis)throw new Error('unexpected data shape');
-  D=scrub(d);renderAll();
+  const pe=d.peers&&Array.isArray(d.peers.earnings)?d.peers.earnings:[];   /* the entity scrub skips peers.earnings rows only */
+  D=scrub(d);D.peers=Object.assign({},D.peers||{},{earnings:pe});renderAll();
 }).catch(e=>{console.error(e);fail(e&&e.message?e.message:'error')});
 document.addEventListener('visibilitychange',()=>{if(D&&!document.hidden)safe('header',renderHeader)});
 setInterval(()=>{if(D)safe('header',renderHeader)},3600000);
-let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{fitLines();const o=$('#dchart');if(D&&o&&openKey){try{stageInfo(openKey).chart(o)}catch(e){}}},150)});
+let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{fitLines();const o=$('#dchart');if(D&&o&&openKey){try{const c=stageInfo(openKey).chart;if(c)c(o)}catch(e){}}},150)});
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitLines);
 </script>
 </body>
